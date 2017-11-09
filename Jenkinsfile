@@ -6,6 +6,23 @@ pipeline {
                 bat 'python --version'
             }
         }
+        stage('Deploy') {
+            steps {
+                retry(3) {
+                    bat 'python --version'
+                }
+
+                timeout(time: 3, unit: 'MINUTES') {
+                    bat 'python --version'
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                bat 'python --version'
+            }
+        }
+        
     }
     post {
         always {
