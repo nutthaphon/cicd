@@ -14,6 +14,13 @@ pipeline {
                 bat 'python --version'
             }
         }
+        
+        stage('Test') {
+            steps {
+                bat 'python --version'
+            }
+        }
+        
         stage('Deploy') {
             steps {
                 retry(3) {
@@ -25,9 +32,9 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+		stage('Human check') {
             steps {
-                bat 'python --version'
+                input "Does the environment look ok?"
             }
         }
         
@@ -41,6 +48,10 @@ pipeline {
         }
         failure {
             echo 'This will run only if failed'
+            mail to: '47238@tmbbank.com',
+            	subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+            	body: "Something is wrong with ${env.BUILD_URL}"
+            
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
