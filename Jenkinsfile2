@@ -9,13 +9,14 @@ pipeline {
     
     stages {
     	stage('Prepare') {
-	        try {
-	            bat 'mkdir svn\\ETESystem'
-	        }
-	        catch (exc) {
-	            echo 'Create directory fail!'
-	           /* throw */
-	        }
+ 			steps {
+                bat 'mkdir svn\\ETESystem'
+            }
+            post {
+		        failure {
+		            echo 'Directory already exist.'
+		        }
+    		}
    		}
     	
         stage('Build') {
@@ -62,10 +63,6 @@ pipeline {
         }
         failure {
             echo 'This will run only if failed'
-            mail to: '47238@tmbbank.com',
-            	subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-            	body: "Something is wrong with ${env.BUILD_URL}"
-            
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
