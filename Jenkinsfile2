@@ -1,19 +1,30 @@
 pipeline {
     agent any
-    
+    parameters {
+        string(name: 'ETE_BRANCH', defaultValue: 'SIT', description: 'What is environment build for?')
+    }
     environment {
-    	ETE_BRANCH='UAT'
     	ETE_APP_NAME1='atmtransform'
-    	
     }
     
     stages {
+    	stage('Prepare') {
+	        try {
+	            bat 'mkdir svn\ETESystem'
+	        }
+	        catch (exc) {
+	            echo 'Create directory fail!'
+	            throw
+	        }
+   		}
     	
         stage('Build') {
+       		environment {
+                ETE_SERVER='127.0.0.1'
+            }
             steps {
-            	bat 'mkdir svn\ETESystem'
             	bat 'cd %ETE_WORK_HOME%'
-            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1% svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
+            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1% svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1%'
                 bat 'svn status svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
             }
         }
