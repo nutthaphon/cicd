@@ -14,7 +14,7 @@ pipeline {
 	        }
 	        catch (exc) {
 	            echo 'Create directory fail!'
-	            throw
+	           /* throw */
 	        }
    		}
     	
