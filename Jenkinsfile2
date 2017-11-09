@@ -10,7 +10,7 @@ pipeline {
     	
         stage('Build') {
             steps {
-            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/UAT/apps/%ETE_APP_NAME1% %ETE_WORK_HOME%branches/UAT/apps/%ETE_APP_NAME1%'
+            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/UAT/apps/%ETE_APP_NAME1% %ETE_WORK_HOME%/branches/UAT/apps/%ETE_APP_NAME1%'
                 bat 'svn status'
             }
         }
