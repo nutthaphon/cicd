@@ -2,16 +2,16 @@ pipeline {
     agent any
     
     environment {
-        DISABLE_AUTH = 'true'
-        DB_ENGINE    = 'sqlite'
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-    	AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    	ETE_WORK_HOME = 'd:\Users\47238\Downloads\TEMP\JENKINS\SVN\ETESystem'
+    	ETE_APP_NAME1 = 'atmtransform'
     }
     
     stages {
+    	
         stage('Build') {
             steps {
-                bat 'python --version'
+            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/UAT/apps/${ETE_APP_NAME1} ${ETE_WORK_HOME}branches/UAT/apps/${ETE_APP_NAME1}'
+                bat 'svn status'
             }
         }
         
