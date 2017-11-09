@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    	ETE_WORK_HOME = 'd:\Users\47238\Downloads\TEMP\JENKINS\SVN\ETESystem'
+    	ETE_WORK_HOME = 'd:\\Users\\47238\\Downloads\\TEMP\\JENKINS\\SVN\\ETESystem'
     	ETE_APP_NAME1 = 'atmtransform'
     }
     
