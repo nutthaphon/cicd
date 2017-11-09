@@ -10,7 +10,7 @@ pipeline {
     stages {
     	stage('Prepare') {
 	        try {
-	            bat 'mkdir svn\ETESystem'
+	            bat 'mkdir svn\\ETESystem'
 	        }
 	        catch (exc) {
 	            echo 'Create directory fail!'
