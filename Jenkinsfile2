@@ -1,8 +1,9 @@
 pipeline {
     agent any
     parameters {
-        /* string(name: 'ETE_BRANCH', defaultValue: 'UAT', description: 'What is environment build for?') */
         choice(name: 'ETE_BRANCH', choices: 'SIT\nVIT\nUAT\nPRD', description: 'What is environment build for?')
+        choice(name: 'ETE_APP_NAME', choices: 'atmtransform\natmtransform-financial\nbdc00-master\nbdc01-update-existing-customers', description: 'What is app/domain build for?')
+        
     }
     environment {
     	ETE_APP_NAME1='atmtransform'
@@ -16,8 +17,8 @@ pipeline {
             steps {
             	bat 'IF NOT EXIST svn\\ETESystem mkdir svn\\ETESystem'
             	bat 'cd %ETE_WORK_HOME%'
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1% svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1%"
-                bat 'svn status svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
+            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
             }
         }
         
