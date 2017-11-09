@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    	ETE_WORK_HOME='svn\ETESystem'
+    	ETE_WORK_HOME='svn\\ETESystem'
     	ETE_BRANCH='UAT'
     	ETE_APP_NAME1='atmtransform'
     	
