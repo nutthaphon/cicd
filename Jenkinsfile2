@@ -7,16 +7,7 @@ pipeline {
     	ETE_APP_NAME1='atmtransform'
     }
     
-    stages {
-    	stage('Prepare') {
- 			steps {
-     
-            }
-            post {
-
-    		}
-   		}
-    	
+    stages {   	
         stage('Build') {
        		environment {
                 ETE_SERVER='127.0.0.1'
