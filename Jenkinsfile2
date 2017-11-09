@@ -10,12 +10,10 @@ pipeline {
     stages {
     	stage('Prepare') {
  			steps {
-                bat 'mkdir svn\\ETESystem'
+     
             }
             post {
-		        failure {
-		            echo 'Directory already exist.'
-		        }
+
     		}
    		}
     	
@@ -24,6 +22,7 @@ pipeline {
                 ETE_SERVER='127.0.0.1'
             }
             steps {
+            	bat 'IF NOT EXIST mkdir svn\\ETESystem'
             	bat 'cd %ETE_WORK_HOME%'
             	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1% svn/ETESystem/branches/${params.ETE_BRANCH}/apps/%ETE_APP_NAME1%'
                 bat 'svn status svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
