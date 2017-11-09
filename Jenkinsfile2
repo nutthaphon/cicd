@@ -12,6 +12,7 @@ pipeline {
     	
         stage('Build') {
             steps {
+            	bat 'mkdir %ETE_WORK_HOME%'
             	bat 'cd %ETE_WORK_HOME%'
             	bat 'svn checkout http://10.175.230.180:8080/%ETE_WORK_HOME%/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1% %ETE_WORK_HOME%/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
                 bat 'svn status %ETE_WORK_HOME%/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
