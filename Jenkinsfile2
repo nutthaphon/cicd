@@ -1,7 +1,8 @@
 pipeline {
     agent any
     parameters {
-        string(name: 'ETE_BRANCH', defaultValue: 'UAT', description: 'What is environment build for?') 
+        /* string(name: 'ETE_BRANCH', defaultValue: 'UAT', description: 'What is environment build for?') */
+        choice(name: 'ETE_BRANCH', choices: 'SIT\nVIT\nUAT\nPRD', description: 'What is environment build for?')
     }
     environment {
     	ETE_APP_NAME1='atmtransform'
