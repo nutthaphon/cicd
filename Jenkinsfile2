@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-    	ETE_WORK_HOME='svn/ETESystem'
+    	ETE_WORK_HOME='svn\ETESystem'
     	ETE_BRANCH='UAT'
     	ETE_APP_NAME1='atmtransform'
     	
@@ -14,8 +14,8 @@ pipeline {
             steps {
             	bat 'mkdir %ETE_WORK_HOME%'
             	bat 'cd %ETE_WORK_HOME%'
-            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1% %ETE_WORK_HOME%/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
-                bat 'svn status %ETE_WORK_HOME%/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1%'
+            	bat 'svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/%ETE_BRANCH%/apps/%ETE_APP_NAME1% %ETE_WORK_HOME%/branches/%ETE_WORK_HOME%/apps/%ETE_APP_NAME1%'
+                bat 'svn status %ETE_WORK_HOME%\branches\%ETE_BRANCH%\apps\%ETE_APP_NAME1%'
             }
         }
         
