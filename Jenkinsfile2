@@ -3,7 +3,6 @@ pipeline {
     
     environment {
 		ETE_SERVER='127.0.0.1'
-		ETE_TYPE='apps'
     }
     
     stages {
@@ -28,8 +27,8 @@ pipeline {
             	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
             	bat "mkdir svn\\ETESystem"
             	bat "cd %ETE_WORK_HOME%"
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME}"
-                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME}"
+            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
+                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
             }
         }      
         
