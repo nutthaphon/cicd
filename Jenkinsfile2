@@ -5,6 +5,8 @@ pipeline {
     	ETE_SVN_HOST='http://10.175.230.180:8080'
 		ETE_REPO='svn/ETESystem'
 		
+		ETE_WORKSPACE='svn\\ETESystem'
+		
 		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
 		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
 		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
@@ -70,8 +72,8 @@ pipeline {
                 }
                 
             	echo "Checking out source code from SVN..."
-            	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
-            	bat "mkdir svn\\ETESystem"
+            	bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
+            	bat "mkdir ${ETE_WORKSPACE}"
             	
             	echo "Checking out source code from SVN..."
             	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
@@ -96,11 +98,11 @@ pipeline {
                     if (params.ETE_APP_NAME =~ /^atm/) { 
                         echo 'I am ATM'
                         bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
-                        bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
                     } else {
                         echo 'I am not ATM'
                         bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
-                        bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
                     }
 
 
