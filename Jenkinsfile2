@@ -3,7 +3,6 @@ pipeline {
     
     environment {
 		ETE_SERVER='127.0.0.1'
-		String[] arrStr = ['Ananas', 'Banana', 'Kiwi']
 		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
 		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
 		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
