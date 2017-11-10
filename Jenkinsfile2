@@ -65,12 +65,12 @@ pipeline {
                 	bat '''
 					    IF EXIST "pom.xml" (
 						    mvn clean package
-						    IF EXIST target/${params.ETE_APP_NAME}.zip copy target/${params.ETE_APP_NAME}.zip $SIT_APPS_HOME1
+						    
 						) ELSE (
 						    echo "pom.xml not found."
 						)
 					'''
-
+					bat "IF EXIST target/${params.ETE_APP_NAME}.zip copy target/${params.ETE_APP_NAME}.zip $SIT_APPS_HOME1"
 				}
 				
 
