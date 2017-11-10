@@ -75,9 +75,12 @@ pipeline {
 						) ELSE (
 						    echo "pom.xml not found."
 						)
+					
 					'''
+
 				}
-				bat "copy /y svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+				bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+				
             }
         } 
         
