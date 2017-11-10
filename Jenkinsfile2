@@ -58,8 +58,11 @@ pipeline {
                 
                 input "Continue ?"
                 
-				bat "cd svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}" 
-                bat "mvn --version"
+                dir ('svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}') {
+                	bat "pwd"
+                	bat "mvn --version"
+				}
+
             }
         } 
         
