@@ -4,6 +4,7 @@ pipeline {
     environment {
 		ETE_SERVER='127.0.0.1'
 		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
+		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
 		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
     }
     
@@ -79,8 +80,8 @@ pipeline {
 					'''
 
 				}
-				bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
-				
+				/* bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}" */
+				fileOperations([fileCopyOperation(excludes: '', flattenFiles: false, includes: "target/${params.ETE_APP_NAME}.zip", targetLocation: "${SIT_APPS_HOME1}")])
             }
         } 
         
