@@ -67,8 +67,6 @@ pipeline {
                     bat "svn status"
                 	bat "mvn --version"
                 	
-                	input "Continue ?"
-                	
                 	bat '''
 					    IF EXIST "pom.xml" (
 						    mvn clean package
