@@ -54,11 +54,13 @@ pipeline {
             	echo "Checking out source code from SVN..."
             	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
                 
-                input "Continue ?"
-                
                 dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
                     bat "svn status"
                 	bat "mvn --version"
+                	
+                	input "Continue ?"
+                	
+                	bat "IF EXIST pom.xml mvn clean package"
 				}
 
             }
