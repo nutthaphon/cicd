@@ -10,9 +10,10 @@ pipeline {
     	stage ('Check program type') {
 
     	when {
-                expression { params.IS_DOMAIN == TRUE }
+                expression { params.IS_DOMAIN == true }
             }
             steps {
+            	echo "It is domain."
                 bat "set ETE_TYPE=domains"
             }
         }
