@@ -60,8 +60,17 @@ pipeline {
                 	
                 	input "Continue ?"
                 	
-                	bat "IF EXIST pom.xml mvn clean package"
+                	bat '''
+					    
+					    IF EXIST "pom.xml" (
+						    mvn clean package
+						) ELSE (
+						    echo "pom.xml not found."
+						)
+					'''
+
 				}
+				
 
             }
         } 
