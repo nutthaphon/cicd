@@ -26,16 +26,14 @@ pipeline {
             steps {
             	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
             	bat "mkdir svn\\ETESystem"
-            	bat "cd %ETE_WORK_HOME%"
             	
             	echo "Checking out source code from SVN..."
             	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
-                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
                 
                 input "Continue ?"
                 
                 dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_DOMAIN_NAME}") {
-                	bat "cd"
+                	bat "svn status"
                 	bat "mvn --version"
 				}
             }
@@ -52,16 +50,14 @@ pipeline {
             	echo "Checking out source code from SVN..."
             	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
             	bat "mkdir svn\\ETESystem"
-            	bat "cd %ETE_WORK_HOME%"
             	
             	echo "Checking out source code from SVN..."
             	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
-                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
                 
                 input "Continue ?"
                 
                 dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
-                	bat "cd"
+                    bat "svn status"
                 	bat "mvn --version"
 				}
 
