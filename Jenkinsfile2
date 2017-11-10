@@ -78,11 +78,10 @@ pipeline {
 					'''
 										
 				}
-				bat '''
-					IF NOT EXIST ${SIT_APPS_HOME1} mkdir ${SIT_APPS_HOME1}
-					copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}
 				
-				'''
+				bat	"IF NOT EXIST $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
+				bat "copy /y svn\\ETESystem\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+				
             }
         } 
         
