@@ -11,7 +11,7 @@ pipeline {
                 ETE_SERVER='127.0.0.1'
             }
             steps {
-            	bat "IF NOT EXIST svn\ETESystem mkdir svn\ETESystem"
+            	bat "IF NOT EXIST svn\\ETESystem mkdir svn\\ETESystem"
             	bat "cd %ETE_WORK_HOME%"
             	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
                 bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
