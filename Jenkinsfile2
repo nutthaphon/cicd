@@ -80,8 +80,7 @@ pipeline {
 					'''
 					
 				}
-				bat "IF EXIST svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip copy svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip $SIT_APPS_HOME1"
-
+				fileOperations([fileCopyOperation(excludes: '', flattenFiles: false, includes: 'svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip', targetLocation: '$SIT_APPS_HOME1')])
             }
         } 
         
