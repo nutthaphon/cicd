@@ -13,22 +13,41 @@ pipeline {
                 expression { params.IS_DOMAIN == true }
             }
             steps {
-            	echo "It is domain."
-                bat "set ETE_TYPE=domains"
+            	echo "Build domain."
             }
         }
     	
-        stage('Build') {
+        stage('Build domains') {
        		environment {
                 ETE_SERVER='127.0.0.1'
             }
-            steps {
-            	bat "IF NOT EXIST svn\\ETESystem mkdir svn\\ETESystem"
-            	bat "cd %ETE_WORK_HOME%"
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
-                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+            when {
+                expression { params.IS_DOMAIN == true }
             }
-        }
+            steps {
+            	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
+            	bat "mkdir svn\\ETESystem"
+            	bat "cd %ETE_WORK_HOME%"
+            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME}"
+                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_APP_NAME}"
+            }
+        }      
+        
+        stage('Build applcations') {
+       		environment {
+                ETE_SERVER='127.0.0.1'
+            }
+            when {
+                expression { params.IS_DOMAIN == false }
+            }
+            steps {
+            	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
+            	bat "mkdir svn\\ETESystem"
+            	bat "cd %ETE_WORK_HOME%"
+            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+            }
+        } 
         
         stage('Test') {
             steps {
