@@ -2,10 +2,19 @@ pipeline {
     agent any
 
     environment {
-    	ETE_APP_NAME1='atmtransform'
+    	ETE_TYPE='apps'
     }
     
-    stages {   	
+    stages {
+    	stage ('Check program type') {
+            when {
+                expression { params.IS_DOMAIN == TRUE }
+            }
+            steps {
+                ETE_TYPE='domains'
+            }
+        }
+    	
         stage('Build') {
        		environment {
                 ETE_SERVER='127.0.0.1'
@@ -13,8 +22,8 @@ pipeline {
             steps {
             	bat "IF NOT EXIST svn\\ETESystem mkdir svn\\ETESystem"
             	bat "cd %ETE_WORK_HOME%"
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
-                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+                bat "svn status svn/ETESystem/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
             }
         }
         
