@@ -77,10 +77,7 @@ pipeline {
 						)
 					'''
 				}
-				dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}/target") {
-					echo env.WORKSPACE
-					fileOperations([fileCopyOperation(excludes: '', flattenFiles: false, includes: "${params.ETE_APP_NAME}.zip", targetLocation: "${SIT_APPS_HOME1}")])
-				}
+				bat "copy /y svn\ETESystem\branches\${params.ETE_BRANCH}\apps\${params.ETE_APP_NAME}\target\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
             }
         } 
         
