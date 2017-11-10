@@ -3,6 +3,8 @@ pipeline {
     
     environment {
 		ETE_SERVER='127.0.0.1'
+		SIT_APPS_HOME1 = 'env\SIT\ETE\App\mule-esb-3.7.3-SIT\apps'
+		VIT_APPS_HOME1 = 'env\VIT\ETE\App\mule-esb-3.7.3-VIT\apps'
     }
     
     stages {
@@ -39,7 +41,7 @@ pipeline {
             }
         }      
         
-        stage('Build applcations') {
+        stage('Build applications') {
        		environment {
                 ETE_SERVER='127.0.0.1'
             }
@@ -61,9 +63,9 @@ pipeline {
                 	input "Continue ?"
                 	
                 	bat '''
-					    
 					    IF EXIST "pom.xml" (
 						    mvn clean package
+						    IF EXIST target/${params.ETE_APP_NAME}.zip copy target/${params.ETE_APP_NAME}.zip $SIT_APPS_HOME1
 						) ELSE (
 						    echo "pom.xml not found."
 						)
