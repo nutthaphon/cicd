@@ -1,3 +1,5 @@
+#!groovy
+​
 pipeline {
     agent any
     
@@ -15,6 +17,12 @@ pipeline {
             }
             steps {
             	echo "Build domain."
+            	withEnv(['MY_HOME=C:\\']) {
+				    bat '''
+				    	cd $MY_HOME
+				    	cd
+				    '''
+				}
             }
         }
     	
