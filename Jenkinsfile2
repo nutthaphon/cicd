@@ -57,13 +57,13 @@ pipeline {
                 
                 input "Continue ?"
                 
-                
+                bat "mvn --version"
             }
         } 
         
         stage('Test') {
             steps {
-                bat 'python --version'
+                bat 'mvn --version'
             }
         }
         
