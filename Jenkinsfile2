@@ -1,17 +1,19 @@
 pipeline {
     agent any
-
+    
     environment {
-    	ETE_TYPE='apps'
+		ETE_SERVER='127.0.0.1'
+		ETE_TYPE='apps'
     }
     
     stages {
     	stage ('Check program type') {
-            when {
+
+    	when {
                 expression { params.IS_DOMAIN == TRUE }
             }
             steps {
-                ETE_TYPE='domains'
+                bat "set ETE_TYPE=domains"
             }
         }
     	
