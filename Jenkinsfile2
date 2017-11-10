@@ -2,10 +2,13 @@ pipeline {
     agent any
     
     environment {
-		ETE_SERVER='127.0.0.1'
+    	ETE_SVN_HOST='http://10.175.230.180:8080'
+		ETE_REPO='svn/ETESystem'
+		
 		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
 		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
 		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
+		
     }
     
     stages {
@@ -37,7 +40,7 @@ pipeline {
             	bat "mkdir svn\\ETESystem"
             	
             	echo "Checking out source code from SVN..."
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
                 
                 input "Continue ?"
                 
@@ -64,10 +67,6 @@ pipeline {
                         echo 'I am in elsewhere'
                     }
 
-                    def browsers = ['chrome', 'firefox']
-                    for (int i = 0; i < browsers.size(); ++i) {
-                        echo "Testing the ${browsers[i]} browser"
-                    }
                 }
                 
             	echo "Checking out source code from SVN..."
@@ -75,9 +74,9 @@ pipeline {
             	bat "mkdir svn\\ETESystem"
             	
             	echo "Checking out source code from SVN..."
-            	bat "svn checkout http://10.175.230.180:8080/svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
                 
-                dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
+                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
                     bat "svn status"
                 	bat "mvn --version"
                 	
@@ -105,10 +104,6 @@ pipeline {
                     }
 
 
-                    /* def browsers = ['chrome', 'firefox']
-                    for (int i = 0; i < browsers.size(); ++i) {
-                        echo "Testing the ${browsers[i]} browser"
-                    } */
                 }
 				
             }
