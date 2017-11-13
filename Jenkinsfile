@@ -170,13 +170,38 @@ pipeline {
                 expression { params.SEND_RA == true }
             }
             steps {
-                retry(3) {
-                    bat 'python --version'
-                }
+                
+                script {
+	                
+	                switch (params.ETE_BRANCH) {
+	                	case ~/SIT/:
+	                		dir ("env/SIT") {
+	                			bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps"        
+	                		        
+	                		}
+							dir ("env/VIT") {
+	                		    bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps"   
+	                		        
+	                		}
+	                		break;
+	                	case ~/UAT/:
+	                		dir ("env/UAT") {
+	                		    
+	                		        
+	                		}
+	                		break;
+	                	case ~/PRD/:
+	                		dir ("env/PRD") {
+	                		     
+	                		        
+	                		}
+	                		break;
+	                	default: input "Do not known your build environment !";             
+	                           
+	                }
 
-                timeout(time: 3, unit: 'MINUTES') {
-                    bat 'python --version'
-                }
+	                
+			    }
             }
         }
 
