@@ -120,25 +120,55 @@ pipeline {
             }
         } 
         
-        stage('Test') {
+        stage('Packaging') {
+        	when {
+                expression { params.SEND_RA == true }
+            }
             steps {
             	script {
-	                if (params.ETE_BRANCH == 'SIT') {
-	            		echo 'Testing in SIT'
-			        } else {
-			            echo 'Testing in another'
-			        }
+	                
+	                switch (params.ETE_BRANCH) {
+	                	case ~/SIT/:
+	                		dir ("env/SIT") {
+	                			bat "jar -cMf ETE.zip ETE"        
+	                		        
+	                		}
+							dir ("env/VIT") {
+	                		    bat "jar -cMf ETE.zip ETE"   
+	                		        
+	                		}
+	                		break;
+	                	case ~/UAT/:
+	                		dir ("env/UAT") {
+	                		    bat "jar -cMf ETE.zip ETE"   
+	                		        
+	                		}
+	                		break;
+	                	case ~/PRD/:
+	                		dir ("env/PRD") {
+	                		    bat "jar -cMf ETE.zip ETE"   
+	                		        
+	                		}
+	                		break;
+	                	default: input "Do not known your build environment !";             
+	                           
+	                }
+
+	                
 			    }
             }
         }
         
         stage('Human check') {
             steps {
-                input "Can deployment step continue ?"
+                input "Everything OK ?"
             }
         }
         
-        stage('Deploy') {
+        stage('Transfering') {
+        	when {
+                expression { params.SEND_RA == true }
+            }
             steps {
                 retry(3) {
                     bat 'python --version'
