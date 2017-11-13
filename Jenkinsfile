@@ -96,7 +96,7 @@ pipeline {
 				
 				script {
 				
-					switch (${params.ETE_BRANCH}) {
+					switch (params.ETE_BRANCH) {
 
 						case ~/SIT/: 
 							println "Packing SIT";
