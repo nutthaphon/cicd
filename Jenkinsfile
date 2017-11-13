@@ -2,22 +2,130 @@ pipeline {
     agent any
     
     environment {
-        DISABLE_AUTH = 'true'
-        DB_ENGINE    = 'sqlite'
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-    	AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    	ETE_SVN_HOST='http://10.175.230.180:8080'
+		ETE_REPO='svn/ETESystem'
+		
+		ETE_WORKSPACE='svn\\ETESystem'
+		
+		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
+		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
+		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
+		
     }
     
     stages {
-        stage('Build') {
+    	stage ('Check program type') {
+
+    	when {
+                expression { params.IS_DOMAIN == true }
+            }
             steps {
-                bat 'python --version'
+            	echo "Build domain."
+            	withEnv(['MY_HOME=C:\\']) {
+				    bat '''
+				    	cd $MY_HOME
+				    	cd
+				    '''
+				}
             }
         }
+    	
+        stage('Build domains') {
+       		environment {
+                ETE_SERVER='127.0.0.1'
+            }
+            when {
+                expression { params.IS_DOMAIN == true }
+            }
+            steps {
+            	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
+            	bat "mkdir svn\\ETESystem"
+            	
+            	echo "Checking out source code from SVN..."
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
+                
+                input "Continue ?"
+                
+                dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_DOMAIN_NAME}") {
+                	bat "svn status"
+                	bat "mvn --version"
+				}
+            }
+        }      
+        
+        stage('Build applications') {
+       		environment {
+                ETE_SERVER='127.0.0.1'
+            }
+            when {
+                expression { params.IS_DOMAIN == false }
+            }
+            steps {
+            
+            	 script {
+                    if (params.ETE_BRANCH == 'SIT') {
+                        echo 'I am in SIT'
+                    } else {
+                        echo 'I am in elsewhere'
+                    }
+
+                }
+                
+            	echo "Checking out source code from SVN..."
+            	bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
+            	bat "mkdir ${ETE_WORKSPACE}"
+            	
+            	echo "Checking out source code from SVN..."
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+                
+                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
+                    bat "svn status"
+                	bat "mvn --version"
+                	
+                	bat '''
+					    IF EXIST "pom.xml" (
+						    mvn clean package
+						    
+						) ELSE (
+						    echo "pom.xml not found."
+						)
+					
+					'''
+					
+				}
+				
+				script {
+                    if (params.ETE_APP_NAME =~ /^atm/) { 
+                        echo 'I am ATM'
+                        bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
+                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+                    } else {
+                        echo 'I am not ATM'
+                        bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
+                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+                    }
+
+
+                }
+				
+            }
+        } 
         
         stage('Test') {
             steps {
-                bat 'python --version'
+            	script {
+	                if (params.ETE_BRANCH == 'SIT') {
+	            		echo 'Testing in SIT'
+			        } else {
+			            echo 'Testing in another'
+			        }
+			    }
+            }
+        }
+        
+        stage('Human check') {
+            steps {
+                input "Can deployment step continue ?"
             }
         }
         
@@ -32,26 +140,18 @@ pipeline {
                 }
             }
         }
-		stage('Human check') {
-            steps {
-                input "Does the environment look ok?"
-            }
-        }
+
         
     }
     post {
         always {
-            echo '${currentBuild.fullDisplayName} This will always run'
+            echo 'This will always run'
         }
         success {
             echo 'This will run only if successful'
         }
         failure {
             echo 'This will run only if failed'
-            mail to: '47238@tmbbank.com',
-            	subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-            	body: "Something is wrong with ${env.BUILD_URL}"
-            
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
