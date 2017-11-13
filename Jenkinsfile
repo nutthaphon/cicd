@@ -15,6 +15,17 @@ pipeline {
     }
     
     stages {
+    	stage('Preparation') {
+            steps {
+            	script {
+	                if (params.DELETE_DIR == true) {
+			            bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
+		            	bat "mkdir ${ETE_WORKSPACE}"
+			        } 
+			    }
+            }
+        }
+
     	stage ('Check program type') {
 
     	when {
@@ -30,30 +41,7 @@ pipeline {
 				}
             }
         }
-    	
-        stage('Build domains') {
-       		environment {
-                ETE_SERVER='127.0.0.1'
-            }
-            when {
-                expression { params.IS_DOMAIN == true }
-            }
-            steps {
-            	bat "IF EXIST svn\\ETESystem rmdir /s /q svn\\ETESystem"
-            	bat "mkdir svn\\ETESystem"
-            	
-            	echo "Checking out source code from SVN..."
-            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME} svn/ETESystem/branches/${params.ETE_BRANCH}/domains/${params.ETE_DOMAIN_NAME}"
-                
-                input "Continue ?"
-                
-                dir ("svn/ETESystem/branches/${params.ETE_BRANCH}/apps/${params.ETE_DOMAIN_NAME}") {
-                	bat "svn status"
-                	bat "mvn --version"
-				}
-            }
-        }      
-        
+    	     
         stage('Build applications') {
        		environment {
                 ETE_SERVER='127.0.0.1'
@@ -72,10 +60,6 @@ pipeline {
 
                 }
                 
-            	echo "Checking out source code from SVN..."
-            	bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
-            	bat "mkdir ${ETE_WORKSPACE}"
-            	
             	echo "Checking out source code from SVN..."
             	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
                 
