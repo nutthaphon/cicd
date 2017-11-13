@@ -95,16 +95,34 @@ pipeline {
 				}
 				
 				script {
-                    if (params.ETE_APP_NAME =~ /^atm/) { 
-                        echo 'I am ATM'
-                        bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
-                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
-                    } else {
-                        echo 'I am not ATM'
-                        bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
-                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
-                    }
+				
+					switch (${params.ETE_BRANCH}) {
 
+						case ~/SIT/: 
+							println "Packing SIT";
+							if (params.ETE_APP_NAME =~ /^atm/) { 
+		                        bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+		                    } else {
+		                        bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+		                    }
+							println "Packing VIT";
+							bat "if not exist $VIT_APPS_HOME1 mkdir $VIT_APPS_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
+							break;
+				        case ~/UAT/: 
+					        println "Two"; 
+					        break;
+				        case ~/PRD/: 
+					        println "Three"; 
+					        break;
+				        default: input "Do not known your build environment.";           
+
+					}
+ 
+				
+                    
 
                 }
 				
