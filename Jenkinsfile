@@ -19,6 +19,7 @@ pipeline {
             steps {
             	script {
 	                if (params.DELETE_DIR == true) {
+	                	echo "Clean temporary directory."
 			            bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
 		            	bat "mkdir ${ETE_WORKSPACE}"
 			        } 
