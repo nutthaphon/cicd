@@ -20,9 +20,8 @@ pipeline {
             	script {
 	                if (params.DELETE_DIR == true) {
 	                	echo "Clean temporary directory."
-			            bat "IF EXIST ${ETE_WORKSPACE} rmdir /s /q ${ETE_WORKSPACE}"
+			            bat "IF EXIST svn rmdir /s /q svn"
 			            bat "IF EXIST env rmdir /s /q env"
-		            	//bat "mkdir ${ETE_WORKSPACE}"
 			        } 
 			    }
             }
