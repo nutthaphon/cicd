@@ -28,17 +28,6 @@ pipeline {
 			    }
             }
         }
-
-    	stage ('Check program type') {
-
-            steps {
-            	script {
-            	    
-            	    input "Continue to build ${ETE_TYPE}?"
-            	}
-
-            }
-        }
     	     
         stage('Build applications or domains') {
 
@@ -63,7 +52,8 @@ pipeline {
 						    mvn clean package
 						    
 						) ELSE (
-						    echo "pom.xml not found."
+						    input "A pom.xml not found, Abort?"
+						    
 						)
 					
 					'''
