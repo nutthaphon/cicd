@@ -56,8 +56,8 @@ pipeline {
             	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
                 
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
-
-                	if (fileExists('pom.xml')) {
+					def pomfile='pom.xml'
+                	if (fileExists(pomfile)) {
                 		bat "mvn clean package"
                 	} else {  
                 		input "File pom.xml is not exist, Continue ?"   
