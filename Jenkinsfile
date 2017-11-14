@@ -57,12 +57,15 @@ pipeline {
                 
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 					
-					def pomfile='pom.xml'
-					def testFile = new File(pomfile)
-                	if (testFile.exists()) {
-                		bat "mvn clean package"
-                	} else {  
-                		input "File pom.xml is not exist, Continue ?"   
+					script {
+					    
+						def pomfile='pom.xml'
+						def testFile = new File(pomfile)
+	                	if (testFile.exists()) {
+	                		bat "mvn clean package"
+	                	} else {  
+	                		input "File pom.xml is not exist, Continue ?"   
+	                	}
                 	}
 				}
 				
