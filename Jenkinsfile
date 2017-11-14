@@ -141,7 +141,7 @@ pipeline {
         
         stage('Human check') {
             steps {
-                input "Everything OK ?"
+                input "Continue transfer ETE.zip to Release Automation server ?"
             }
         }
         
@@ -189,13 +189,13 @@ pipeline {
     }
     post {
         always {
-            echo 'This will always run'
+            echo 'Thank you for using.'
         }
         success {
-            echo 'This will run only if successful'
+            echo 'Successful.'
         }
         failure {
-            echo 'This will run only if failed'
+            echo 'Fail.'
         }
         unstable {
             echo 'This will run only if the run was marked as unstable'
