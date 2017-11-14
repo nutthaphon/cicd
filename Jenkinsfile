@@ -36,9 +36,6 @@ pipeline {
 
     	stage ('Check program type') {
 
-    	when {
-                expression { params.IS_DOMAIN == true }
-            }
             steps {
             	script {
             	    
