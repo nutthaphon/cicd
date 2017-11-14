@@ -120,25 +120,25 @@ pipeline {
 					switch (params.ETE_BRANCH) {
 
 						case ~/SIT/: 
-							if (params.ETE_APP_NAME =~ /^atm/) { 
-		                        bat "if not exist $SIT_CONF_HOME2 mkdir $SIT_CONF_HOME2"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-${params.ETE_BRANCH}.properties ${SIT_CONF_HOME2}"
-		                    } else {
-		                        bat "if not exist $SIT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-${params.ETE_BRANCH}.properties ${SIT_CONF_HOME1}"
-		                    }
+							
+		                    bat "if not exist $SIT_CONF_HOME2 mkdir $SIT_CONF_HOME2"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-SIT.properties ${SIT_CONF_HOME2}"
+		                    
+		                    bat "if not exist $SIT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-SIT.properties ${SIT_CONF_HOME1}"
+
 							println "Packing VIT";
 							bat "if not exist $VIT_CONF_HOME1 mkdir $VIT_CONF_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-${params.ETE_BRANCH}.properties ${VIT_CONF_HOME1}"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-VIT.properties ${VIT_CONF_HOME1}"
 							break;
 				        case ~/UAT/: 
-					        if (params.ETE_APP_NAME =~ /^atm/) { 
-		                        bat "if not exist $UAT_CONF_HOME2 mkdir $UAT_CONF_HOME2"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-${params.ETE_BRANCH}.properties ${UAT_CONF_HOME2}"
-		                    } else {
-		                        bat "if not exist $UAT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-${params.ETE_BRANCH}.properties ${UAT_CONF_HOME1}"
-		                    }
+
+		                    bat "if not exist $UAT_CONF_HOME2 mkdir $UAT_CONF_HOME2"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-UAT.properties ${UAT_CONF_HOME2}"
+		                    
+		                    bat "if not exist $UAT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-UAT.properties ${UAT_CONF_HOME1}"
+		                    
 					        break;
 				        case ~/PRD/: 
 					        println "PRD"; 
