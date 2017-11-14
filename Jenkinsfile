@@ -29,7 +29,7 @@ pipeline {
 			        if (params.IS_DOMAIN == true) {
 			            ETE_TYPE='domains'
 			        }
-					input "Continue to build ${ETE_TYPE}?"
+					
 			    }
             }
         }
@@ -40,17 +40,15 @@ pipeline {
                 expression { params.IS_DOMAIN == true }
             }
             steps {
-            	echo "Build domain."
-            	withEnv(['MY_HOME=C:\\']) {
-				    bat '''
-				    	cd $MY_HOME
-				    	cd
-				    '''
-				}
+            	script {
+            	    
+            	    input "Continue to build ${ETE_TYPE}?"
+            	}
+
             }
         }
     	     
-        stage('Build applications') {
+        stage('Build applications or domains') {
        		environment {
                 ETE_SERVER='127.0.0.1'
             }
