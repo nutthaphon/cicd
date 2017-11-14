@@ -143,7 +143,7 @@ pipeline {
 				        case ~/PRD/: 
 					        println "PRD"; 
 					        break;
-				        default: input "Do not known your build environment !";           
+				        default: input "Do not known your build environment !";
 
 					}
 	                
