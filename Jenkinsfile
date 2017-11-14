@@ -41,22 +41,15 @@ pipeline {
         }
     	     
         stage('Build applications or domains') {
-            environment {
-				
-				SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}'
-				SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}'
-				VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}'
-				UAT_APPS_HOME1 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}'
-				UAT_APPS_HOME2 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}'
-		    }
+
             steps {
             
             	 script {
-                    if (params.ETE_BRANCH == 'SIT') {
-                        echo 'I am in SIT'
-                    } else {
-                        echo 'I am in elsewhere'
-                    }
+					SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}'
+					SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}'
+					VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}'
+					UAT_APPS_HOME1 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}'
+					UAT_APPS_HOME2 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}'
 
                 }
                 
