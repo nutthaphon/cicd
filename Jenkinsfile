@@ -9,11 +9,6 @@ pipeline {
 		
 		ETE_TYPE='apps'
 		
-		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
-		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
-		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
-		UAT_APPS_HOME1 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3\\apps'
-		UAT_APPS_HOME2 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\apps'
     }
     
     stages {
@@ -46,12 +41,14 @@ pipeline {
         }
     	     
         stage('Build applications or domains') {
-       		environment {
-                ETE_SERVER='127.0.0.1'
-            }
-            when {
-                expression { params.IS_DOMAIN == false }
-            }
+            environment {
+				
+				SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}'
+				SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}'
+				VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}'
+				UAT_APPS_HOME1 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}'
+				UAT_APPS_HOME2 = 'env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}'
+		    }
             steps {
             
             	 script {
@@ -64,12 +61,10 @@ pipeline {
                 }
                 
             	echo "Checking out source code from SVN..."
-            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}"
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
                 
-                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/apps/${params.ETE_APP_NAME}") {
-                    bat "svn status"
-                	bat "mvn --version"
-                	
+                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+
                 	bat '''
 					    IF EXIST "pom.xml" (
 						    mvn clean package
@@ -89,22 +84,22 @@ pipeline {
 						case ~/SIT/: 
 							if (params.ETE_APP_NAME =~ /^atm/) { 
 		                        bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
 		                    } else {
 		                        bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
 		                    }
 							println "Packing VIT";
 							bat "if not exist $VIT_APPS_HOME1 mkdir $VIT_APPS_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
 							break;
 				        case ~/UAT/: 
 					        if (params.ETE_APP_NAME =~ /^atm/) { 
 		                        bat "if not exist $UAT_APPS_HOME2 mkdir $UAT_APPS_HOME2"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
 		                    } else {
 		                        bat "if not exist $UAT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\apps\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
 		                    }
 					        break;
 				        case ~/PRD/: 
