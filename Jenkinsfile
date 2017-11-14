@@ -57,11 +57,9 @@ pipeline {
                 
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 					
-					bat 'if exist pom.xml then set POM_EXIST=true'
-					
-					input "File pom.xml ${env.POM_EXIST} ?"
-					
-					
+					input "Continue ?"
+					bat 'if exist pom.xml then mvn clean package'
+				
 				}
 				
 				script {
