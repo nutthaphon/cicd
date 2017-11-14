@@ -57,7 +57,7 @@ pipeline {
                 
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 
-                	if (fileExists("pom.xml")) {
+                	if (fileExists('pom.xml')) {
                 		bat "mvn clean package"
                 	} else {  
                 		input "File pom.xml is not exist, Continue ?"   
