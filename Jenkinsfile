@@ -7,6 +7,8 @@ pipeline {
 		
 		ETE_WORKSPACE='svn\\ETESystem'
 		
+		ETE_TYPE='apps'
+		
 		SIT_APPS_HOME1 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\apps'
 		SIT_APPS_HOME2 = 'env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\apps'
 		VIT_APPS_HOME1 = 'env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\apps'
@@ -23,6 +25,11 @@ pipeline {
 			            bat "IF EXIST svn rmdir /s /q svn"
 			            bat "IF EXIST env rmdir /s /q env"
 			        } 
+			        
+			        if (params.IS_DOMAIN == true) {
+			            ETE_TYPE='domains'
+			        }
+					input "Continue to build ${ETE_TYPE}?"
 			    }
             }
         }
