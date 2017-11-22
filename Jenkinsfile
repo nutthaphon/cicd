@@ -7,8 +7,6 @@ pipeline {
 		
 		ETE_WORKSPACE='svn\\ETESystem'
 		
-
-		
     }
     
     stages {
@@ -58,7 +56,7 @@ pipeline {
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 					
 					input "Continue ?"
-					bat 'if exist pom.xml then mvn clean package'
+					bat 'if exist pom.xml mvn clean package'
 				
 				}
 				

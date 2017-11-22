@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+2.  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+3.  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+4.                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+5.  <modelVersion>4.0.0</modelVersion>
+6. 
+7.  <!-- The Basics -->
+8.  <groupId>...</groupId>
+9.  <artifactId>...</artifactId>
+10.  <version>...</version>
+11.  <packaging>...</packaging>
+12.  <dependencies>...</dependencies>
+13.  <parent>...</parent>
+14.  <dependencyManagement>...</dependencyManagement>
+15.  <modules>...</modules>
+16.  <properties>...</properties>
+17. 
+18.  <!-- Build Settings -->
+19.  <build>...</build>
+20.  <reporting>...</reporting>
+21. 
+22.  <!-- More Project Information -->
+23.  <name>...</name>
+24.  <description>...</description>
+25.  <url>...</url>
+26.  <inceptionYear>...</inceptionYear>
+27.  <licenses>...</licenses>
+28.  <organization>...</organization>
+29.  <developers>...</developers>
+30.  <contributors>...</contributors>
+31. 
+32.  <!-- Environment Settings -->
+33.  <issueManagement>...</issueManagement>
+34.  <ciManagement>...</ciManagement>
+35.  <mailingLists>...</mailingLists>
+36.  <scm>...</scm>
+37.  <prerequisites>...</prerequisites>
+38.  <repositories>...</repositories>
+39.  <pluginRepositories>...</pluginRepositories>
+40.  <distributionManagement>...</distributionManagement>
+41.  <profiles>...</profiles>
+42.</project>
