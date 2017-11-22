@@ -207,11 +207,11 @@ pipeline {
 	                switch (params.ETE_BRANCH) {
 	                	case ~/SIT/:
 	                		dir ("env/SIT") {
-	                			bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps"        
+	                			bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps/SIT"        
 	                		        
 	                		}
 							dir ("env/VIT") {
-	                		    bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps"   
+	                		    bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps/VIT"   
 	                		        
 	                		}
 	                		break;
