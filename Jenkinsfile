@@ -161,22 +161,27 @@ pipeline {
 	                switch (params.ETE_BRANCH) {
 	                	case ~/SIT/:
 	                		dir ("env/SIT") {
+	                			
+								bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
 	                			bat "jar -cMf ETE.zip ETE"        
 	                		        
 	                		}
 							dir ("env/VIT") {
+								bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
 	                		    bat "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
 	                		break;
 	                	case ~/UAT/:
 	                		dir ("env/UAT") {
+	                			bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
 	                		    bat "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
 	                		break;
 	                	case ~/PRD/:
 	                		dir ("env/PRD") {
+	                			bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
 	                		    bat "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
