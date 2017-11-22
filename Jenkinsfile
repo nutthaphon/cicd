@@ -189,13 +189,7 @@ pipeline {
 			    }
             }
         }
-        
-        stage('Human check') {
-            steps {
-                input "Continue transfer ETE.zip to Release Automation server ?"
-            }
-        }
-        
+                        
         stage('Transfering') {
         	when {
                 expression { params.SEND_RA == true }
