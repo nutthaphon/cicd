@@ -81,7 +81,7 @@ pipeline {
 		                        bat "if not exist $UAT_APPS_HOME2 mkdir $UAT_APPS_HOME2"
 		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
 		                    } else {
-		                        bat "if not exist $UAT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
+		                        bat "if not exist $UAT_APPS_HOME1 mkdir $UAT_APPS_HOME1"
 		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
 		                    }
 					        break;
