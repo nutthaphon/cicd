@@ -90,7 +90,7 @@ pipeline {
                 expression { return ETE_TYPE ==~ /(apps|batches|domains)/ }
             }
             steps {
-
+				script {
 				if (params.ETE_TYPE =~ /^batches/) {
 					ETE_TYPE = 'apps'
 					IS_BATCH = true	       
@@ -107,7 +107,7 @@ pipeline {
 				
 				}
 				
-				script {
+				
 				
 					switch (params.ETE_BRANCH) {
 
