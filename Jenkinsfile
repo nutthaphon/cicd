@@ -112,7 +112,7 @@ pipeline {
 					switch (params.ETE_BRANCH) {
 
 						case ~/SIT/: 
-							if (IS_BATCH) {
+							if (IS_BATCH == true) {
 								bat "if not exist $SIT_BATCH_HOME1 mkdir $SIT_BATCH_HOME1"
 		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"	       
 								bat "if not exist $VIT_BATCH_HOME1 mkdir $VIT_BATCH_HOME1"
@@ -131,7 +131,7 @@ pipeline {
 							}
 							break;
 				        case ~/UAT/: 
-					    	if (IS_BATCH) {
+					    	if (IS_BATCH == true) {
 								bat "if not exist $UAT_BATCH_HOME1 mkdir $UAT_BATCH_HOME1"
 		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"	       
 							} else {    
