@@ -13,8 +13,11 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-            	
+            		IS_BATCH = false    
             		switch (params.ETE_TYPE) {
+			        case ~/apps/ :
+			        	ETE_TYPE='apps'
+			        	break;
 			        case ~/domains/ :
 			        	ETE_TYPE='domains'
 			        	break;
@@ -22,7 +25,8 @@ pipeline {
 			        	ETE_TYPE='conf'
 			        	break;
 			        default :          
-			            ETE_TYPE='apps'       
+			            ETE_TYPE='apps'
+			            IS_BATCH = true
 			        }
 			        
             	    SIT_APPS_HOME1  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
@@ -85,16 +89,12 @@ pipeline {
             }
         }
     	     
-        stage('Build applications, batches or domains') {
+        stage('Build applications and domains') {
 			when {
-                expression { return ETE_TYPE ==~ /(apps|batches|domains)/ }
+                expression { return ETE_TYPE ==~ /(apps|domains)/ }
             }
             steps {
-				script {
-				if (params.ETE_TYPE =~ /^batches/) {
-					ETE_TYPE = 'apps'
-					IS_BATCH = true	       
-				}
+				
 
 
             	echo "Checking out source code from SVN..."
@@ -108,41 +108,33 @@ pipeline {
 				}
 				
 				
-				
+				script {
 					switch (params.ETE_BRANCH) {
 
 						case ~/SIT/: 
-							if (IS_BATCH == true) {
-								bat "if not exist $SIT_BATCH_HOME1 mkdir $SIT_BATCH_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"	       
-								bat "if not exist $VIT_BATCH_HOME1 mkdir $VIT_BATCH_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_BATCH_HOME1}"	       
-							} else {
-								if (params.ETE_APP_NAME =~ /^atm/) { 
-		                       		bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
-		                        	bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
-		                    	} else {
-		                        	bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
-		                        	bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
-		                    	}
-								println "Packing VIT";
-								bat "if not exist $VIT_APPS_HOME1 mkdir $VIT_APPS_HOME1"
-		                    	bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
-							}
+							
+							if (params.ETE_APP_NAME =~ /^atm/) { 
+		                       	bat "if not exist $SIT_APPS_HOME2 mkdir $SIT_APPS_HOME2"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+		                    } else {
+		                        bat "if not exist $SIT_APPS_HOME1 mkdir $SIT_APPS_HOME1"
+		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
+		                    }
+							println "Packing VIT";
+							bat "if not exist $VIT_APPS_HOME1 mkdir $VIT_APPS_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
+							
 							break;
 				        case ~/UAT/: 
-					    	if (IS_BATCH == true) {
-								bat "if not exist $UAT_BATCH_HOME1 mkdir $UAT_BATCH_HOME1"
-		                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"	       
-							} else {    
-						        if (params.ETE_APP_NAME =~ /^atm/) { 
-			                        bat "if not exist $UAT_APPS_HOME2 mkdir $UAT_APPS_HOME2"
-			                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
-			                    } else {
-			                        bat "if not exist $UAT_APPS_HOME1 mkdir $UAT_APPS_HOME1"
-			                        bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
-			                    }
-		                    }
+					    	    
+						    if (params.ETE_APP_NAME =~ /^atm/) { 
+			                    bat "if not exist $UAT_APPS_HOME2 mkdir $UAT_APPS_HOME2"
+			                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
+			                } else {
+			                    bat "if not exist $UAT_APPS_HOME1 mkdir $UAT_APPS_HOME1"
+			                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
+			                }
+		                    
 					        break;
 				        case ~/PRD/: 
 					        println "PRD"; 
@@ -155,6 +147,54 @@ pipeline {
 				
             }
         } 
+        
+        stage('Build batches') {
+			when {
+                expression { return IS_BATCH == true }
+            }
+            steps {
+				
+
+
+            	echo "Checking out source code from SVN..."
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+                
+                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+					
+					input "Continue ?"
+					bat 'if exist pom.xml mvn clean package'
+				
+				}
+				
+				
+				script {
+					switch (params.ETE_BRANCH) {
+
+						case ~/SIT/: 
+							
+							bat "if not exist $SIT_BATCH_HOME1 mkdir $SIT_BATCH_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"	       
+							bat "if not exist $VIT_BATCH_HOME1 mkdir $VIT_BATCH_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_BATCH_HOME1}"	       
+							
+							break;
+				        case ~/UAT/: 
+					    	
+							bat "if not exist $UAT_BATCH_HOME1 mkdir $UAT_BATCH_HOME1"
+		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"	       
+							
+					        break;
+				        case ~/PRD/: 
+					        println "PRD"; 
+					        break;
+				        default: input "Do not known your build environment !";           
+
+					}
+ 
+                }
+				
+            }
+        }
         
         stage('Copy configuration and SQL files') {
             when {
