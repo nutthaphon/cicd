@@ -13,13 +13,8 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-	                if (params.DELETE_DIR == true) {
-	                	echo "Clean temporary directory."
-			            bat "IF EXIST svn rmdir /s /q svn"
-			            bat "IF EXIST env rmdir /s /q env"
-			        } 
-			        
-			        switch (params.ETE_TYPE) {
+            	
+            		switch (params.ETE_TYPE) {
 			        case ~/domains/ :
 			        	ETE_TYPE='domains'
 			        	break;
@@ -29,6 +24,61 @@ pipeline {
 			        default :          
 			            ETE_TYPE='apps'       
 			        }
+			        
+            	    SIT_APPS_HOME1  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
+					SIT_APPS_HOME2  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
+					VIT_APPS_HOME1  = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
+					UAT_APPS_HOME1  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
+					UAT_APPS_HOME2  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
+
+					SIT_CONF_HOME1  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
+					SIT_CONF_HOME2  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
+					VIT_CONF_HOME1  = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
+					UAT_CONF_HOME1  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
+					UAT_CONF_HOME2  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
+					
+                    SIT_BATCH_HOME1 = "env\\SIT\\ETE\\Batch\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
+					VIT_BATCH_HOME1 = "env\\VIT\\ETE\\Batch\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
+					UAT_BATCH_HOME1 = "env\\UAT\\ETE\\Batch\\mule-esb-3.7.3\\${ETE_TYPE}"
+					
+					SIT_RESULT_HOME1= "env\\SIT\\ETE\\Result\\ETEAPP"
+					VIT_RESULT_HOME1= "env\\VIT\\ETE\\Result\\ETEAPP"
+					UAT_RESULT_HOME1= "env\\UAT\\ETE\\Result\\ETEAPP"
+					
+					SIT_SQL_HOME1   = "env\\SIT\\ETE\\SQL\\ETEAPP"
+					VIT_SQL_HOME1   = "env\\VIT\\ETE\\SQL\\ETEAPP"
+					UAT_SQL_HOME1   = "env\\UAT\\ETE\\SQL\\ETEAPP"
+					
+	                if (params.DELETE_DIR == true) {
+	                
+	                	echo "Clean temporary directory."
+	                	
+			            bat "IF EXIST svn rmdir /s /q svn"
+			            bat "IF EXIST env rmdir /s /q env"
+			            
+			            echo "Create required directory for supporting RA"
+			            
+			            switch (params.ETE_BRANCH) {
+
+						case ~/SIT/: 
+							bat "mkdir $SIT_RESULT_HOME1"
+			            	bat "mkdir $SIT_SQL_HOME1"
+			            	bat "mkdir $VIT_RESULT_HOME1"
+			            	bat "mkdir $VIT_SQL_HOME1"
+							break;
+				        case ~/UAT/: 
+							bat "mkdir $UAT_RESULT_HOME1"
+			            	bat "mkdir $UAT_SQL_HOME1"
+					        break;
+				        case ~/PRD/: 
+
+					        break;
+				        default: input "Do not known your build environment !";
+
+					}
+			        } 
+			        
+			        
 
 			        
 			    }
@@ -40,16 +90,7 @@ pipeline {
                 expression { return ETE_TYPE ==~ /(apps|domain)/  }
             }
             steps {
-            
-            	 script {
-					SIT_APPS_HOME1 = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
-					SIT_APPS_HOME2 = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
-					VIT_APPS_HOME1 = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
-					UAT_APPS_HOME1 = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
-					UAT_APPS_HOME2 = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
 
-                }
-                
             	echo "Checking out source code from SVN..."
             	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
                 
@@ -109,11 +150,7 @@ pipeline {
             	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}"
 
                 script {
-	                SIT_CONF_HOME1 = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
-					SIT_CONF_HOME2 = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
-					VIT_CONF_HOME1 = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
-					UAT_CONF_HOME1 = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
-					UAT_CONF_HOME2 = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
+	                
  
 					switch (params.ETE_BRANCH) {
 
