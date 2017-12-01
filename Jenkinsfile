@@ -56,10 +56,14 @@ pipeline {
 	                if (params.DELETE_DIR == true) {
 	                
 	                	echo "Clean temporary directory."
-	                	
-	                	sh "date"
-	                	sh "[ -d env ] && echo exist"
-	                	sh "date"
+	                	sh '''
+	                	if [ -d "svn" ]
+						then
+							echo "svn directory  exists!"
+						else
+							echo "svn directory not found!"
+						fi
+						'''
 			            //bat "IF EXIST svn rmdir /s /q svn"
 			            //bat "IF EXIST env rmdir /s /q env"
 			            
