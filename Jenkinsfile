@@ -106,37 +106,37 @@ pipeline {
             }
             steps {
             	echo "Checking out source code from SVN..."
-            	
-            	if (params.ETE_BRANCH =~ /DEV/) {
-            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}"
-                
-	                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}") {
-						
-						input "Continue ?"
-						sh '''
-							if [ -f "pom.xml" ]
-							then
-								mvn clean package"
-							fi
-						'''
-					}               	       
-            	} else {
-            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
-                
-	                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
-						
-						input "Continue ?"
-						sh '''
-							if [ -f "pom.xml" ]
-							then
-								mvn clean package"
-							fi
-						'''
-					}
-  	
-            	}
+            	script {
+	            	if (params.ETE_BRANCH =~ /DEV/) {
+	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}"
+	                
+		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+							
+							input "Continue ?"
+							sh '''
+								if [ -f "pom.xml" ]
+								then
+									mvn clean package"
+								fi
+							'''
+						}               	       
+	            	} else {
+	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+	                
+		                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+							
+							input "Continue ?"
+							sh '''
+								if [ -f "pom.xml" ]
+								then
+									mvn clean package"
+								fi
+							'''
+						}
+	  	
+	            	}
 
-				script {
+				
 					switch (params.ETE_BRANCH) {
 						case ~/DEV/:
 							println "Wrapping DEV";
