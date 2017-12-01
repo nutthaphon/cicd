@@ -129,7 +129,7 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									mvn clean package"
+									mvn clean package
 								fi
 							'''
 						}
