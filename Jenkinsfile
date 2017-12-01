@@ -141,72 +141,31 @@ pipeline {
 					switch (params.ETE_BRANCH) {
 						case ~/DEV/:
 							println "Wrapping DEV";
-							sh '''
-								if [ ! -d $DEV_APPS_HOME1 ]
-								then
-									mkdir -p $DEV_APPS_HOME1
-								fi
-							'''
-							sh '''
-		                    	bat "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${DEV_APPS_HOME1}"
-							'''
+							sh "mkdir -p $DEV_APPS_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${DEV_APPS_HOME1}"					
 							break;
 						case ~/SIT/: 
 							println "Wrapping SIT";
 							if (params.ETE_APP_NAME =~ /^atm/) { 
-								sh '''
-									if [ ! -d $SIT_APPS_HOME2 ]
-									then
-										mkdir -p $SIT_APPS_HOME2
-									fi
-								'''
-								sh '''
-			                    	bat "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
-								'''
+								sh "mkdir -p $SIT_APPS_HOME2"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
+					
 		                    } else {
-		                    	sh '''
-									if [ ! -d $SIT_APPS_HOME1 ]
-									then
-										mkdir -p $SIT_APPS_HOME1
-									fi
-								'''
-								sh '''
-			                    	bat "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
-								'''
+		                    	sh "mkdir -p $SIT_APPS_HOME1"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
 		                    }
 							println "Wrapping VIT";
-							sh '''
-								if [ ! -d $VIT_APPS_HOME1 ]
-								then
-									mkdir -p $VIT_APPS_HOME1
-								fi
-							'''
-							sh '''
-			                    bat "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
-							'''
+							sh "mkdir -p $VIT_APPS_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
 							break;
 				        case ~/UAT/: 
 					    	println "Wrapping UAT";    
 						    if (params.ETE_APP_NAME =~ /^atm/) { 
-						    	sh '''
-									if [ ! -d $UAT_APPS_HOME2 ]
-									then
-										mkdir -p $UAT_APPS_HOME2
-									fi
-								'''
-								sh '''
-			                    	bat "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
-								'''
+						    	sh "mkdir -p $UAT_APPS_HOME2"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
 			                } else {
-			                	sh '''
-									if [ ! -d $UAT_APPS_HOME1 ]
-									then
-										mkdir -p $UAT_APPS_HOME1
-									fi
-								'''
-								sh '''
-			                    	bat "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
-								'''
+			                	sh "mkdir -p $UAT_APPS_HOME1"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
 			                }
 		                    
 					        break;
