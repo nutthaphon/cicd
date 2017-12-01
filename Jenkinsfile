@@ -64,14 +64,14 @@ pipeline {
 							if [ -d "env" ]
 							then
 								echo "Delete env directory."
-								rm -rf env"
+								rm -rf env
 							fi
 						'''
 						sh '''
 		                	if [ -d "svn" ]
 							then
 								echo "Delete svn directory."
-								rm -rf svn"
+								rm -rf svn
 							fi
 						'''
 			            echo "Create required directory for supporting RA"
