@@ -57,14 +57,14 @@ pipeline {
 	                
 	                	echo "Clean temporary directory."
 	                	sh '''
-	                	if [ -d "svn" ]
-						then
-							rm -rf svn"
-						fi
-						if [ -d "env" ]
-						then
-							rm -rf env"
-						fi
+		                	if [ -d "svn" ]
+							then
+								rm -rf svn"
+							fi
+							if [ -d "env" ]
+							then
+								rm -rf env"
+							fi
 						'''
 			            //bat "IF EXIST svn rmdir /s /q svn"
 			            //bat "IF EXIST env rmdir /s /q env"
@@ -110,7 +110,7 @@ pipeline {
 					
 					input "Continue ?"
 					sh '''
-					if [ -f "pom.xml" ]
+						if [ -f "pom.xml" ]
 						then
 							mvn clean package"
 						fi
