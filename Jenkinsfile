@@ -84,16 +84,12 @@ pipeline {
 			            	sh "mkdir -p $UAT_SQL_HOME1"
 					        break;
 				        case ~/PRD/: 
-
 					        break;
-				        default: input "Do not known your build environment !";
-
-					}
+				        default: 
+				        	input "Do not known your build environment !";
+						}
 			        } 
-			        
-			        
 
-			        
 			    }
             }
         }
