@@ -61,15 +61,17 @@ pipeline {
 	                if (params.DELETE_DIR == true) {
 	                
 	                	sh '''
-		                	if [ -d "svn" ]
-							then
-								echo "Delete svn directory."
-								rm -rf svn"
-							fi
 							if [ -d "env" ]
 							then
 								echo "Delete env directory."
 								rm -rf env"
+							fi
+						'''
+						sh '''
+		                	if [ -d "svn" ]
+							then
+								echo "Delete svn directory."
+								rm -rf svn"
 							fi
 						'''
 			            echo "Create required directory for supporting RA"
