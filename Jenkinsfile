@@ -112,11 +112,10 @@ pipeline {
 	                
 		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 							
-							input "Continue ?"
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									mvn clean package"
+									mvn clean package
 								fi
 							'''
 						}               	       
@@ -125,7 +124,6 @@ pipeline {
 	                
 		                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 							
-							input "Continue ?"
 							sh '''
 								if [ -f "pom.xml" ]
 								then
