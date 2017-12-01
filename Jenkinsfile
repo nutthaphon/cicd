@@ -60,14 +60,15 @@ pipeline {
 					
 	                if (params.DELETE_DIR == true) {
 	                
-	                	echo "Clean temporary directory."
 	                	sh '''
 		                	if [ -d "svn" ]
 							then
+								echo "Delete svn directory."
 								rm -rf svn"
 							fi
 							if [ -d "env" ]
 							then
+								echo "Delete env directory."
 								rm -rf env"
 							fi
 						'''
