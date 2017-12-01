@@ -29,26 +29,31 @@ pipeline {
 			            IS_BATCH = true
 			        }
 			        
+			        DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
             	    SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
 					VIT_APPS_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_APPS_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
 					UAT_APPS_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
 
+					DEV_CONF_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					SIT_CONF_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_CONF_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
 					VIT_CONF_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_CONF_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
 					UAT_CONF_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
 					
+					DEV_BATCH_HOME1 = "env/DEV/ETE/Batch/mule-esb-3.7.3-DEV/${ETE_TYPE}"
                     SIT_BATCH_HOME1 = "env/SIT/ETE/Batch/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					VIT_BATCH_HOME1 = "env/VIT/ETE/Batch/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_BATCH_HOME1 = "env/UAT/ETE/Batch/mule-esb-3.7.3/${ETE_TYPE}"
 					
+					DEV_RESULT_HOME1= "env/DEV/ETE/Result/ETEAPP"
 					SIT_RESULT_HOME1= "env/SIT/ETE/Result/ETEAPP"
 					VIT_RESULT_HOME1= "env/VIT/ETE/Result/ETEAPP"
 					UAT_RESULT_HOME1= "env/UAT/ETE/Result/ETEAPP"
 					
+					DEV_SQL_HOME1   = "env/DEV/ETE/SQL/ETEAPP"
 					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
@@ -66,13 +71,14 @@ pipeline {
 								rm -rf env"
 							fi
 						'''
-			            //bat "IF EXIST svn rmdir /s /q svn"
-			            //bat "IF EXIST env rmdir /s /q env"
-			            
 			            echo "Create required directory for supporting RA"
 			            
 			            switch (params.ETE_BRANCH) {
 
+						case ~/trunk/: 
+							sh "mkdir -p $DEV_RESULT_HOME1"
+			            	sh "mkdir -p $DEV_SQL_HOME1"
+							break;
 						case ~/SIT/: 
 							sh "mkdir -p $SIT_RESULT_HOME1"
 			            	sh "mkdir -p $SIT_SQL_HOME1"
