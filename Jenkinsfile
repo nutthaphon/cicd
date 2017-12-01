@@ -57,8 +57,10 @@ pipeline {
 	                
 	                	echo "Clean temporary directory."
 	                	
-			            bat "IF EXIST svn rmdir /s /q svn"
-			            bat "IF EXIST env rmdir /s /q env"
+	                	sh "[ -d 'svn' ] && rm -rf svn"
+	                	sh "[ -d 'env' ] && rm -rf env"
+			            //bat "IF EXIST svn rmdir /s /q svn"
+			            //bat "IF EXIST env rmdir /s /q env"
 			            
 			            echo "Create required directory for supporting RA"
 			            
