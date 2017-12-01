@@ -29,29 +29,29 @@ pipeline {
 			            IS_BATCH = true
 			        }
 			        
-            	    SIT_APPS_HOME1  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
-					SIT_APPS_HOME2  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
-					VIT_APPS_HOME1  = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
-					UAT_APPS_HOME1  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
-					UAT_APPS_HOME2  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
+            	    SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
+					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
+					VIT_APPS_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
+					UAT_APPS_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
+					UAT_APPS_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
 
-					SIT_CONF_HOME1  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
-					SIT_CONF_HOME2  = "env\\SIT\\ETE\\App\\mule-esb-3.7.3-SIT-ATM\\${ETE_TYPE}"
-					VIT_CONF_HOME1  = "env\\VIT\\ETE\\App\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
-					UAT_CONF_HOME1  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3\\${ETE_TYPE}"
-					UAT_CONF_HOME2  = "env\\UAT\\ETE\\App\\mule-esb-3.7.3-ATM\\${ETE_TYPE}"
+					SIT_CONF_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
+					SIT_CONF_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
+					VIT_CONF_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
+					UAT_CONF_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
+					UAT_CONF_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
 					
-                    SIT_BATCH_HOME1 = "env\\SIT\\ETE\\Batch\\mule-esb-3.7.3-SIT\\${ETE_TYPE}"
-					VIT_BATCH_HOME1 = "env\\VIT\\ETE\\Batch\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
-					UAT_BATCH_HOME1 = "env\\UAT\\ETE\\Batch\\mule-esb-3.7.3\\${ETE_TYPE}"
+                    SIT_BATCH_HOME1 = "env/SIT/ETE/Batch/mule-esb-3.7.3-SIT/${ETE_TYPE}"
+					VIT_BATCH_HOME1 = "env/VIT/ETE/Batch/mule-esb-3.7.3-VIT/${ETE_TYPE}"
+					UAT_BATCH_HOME1 = "env/UAT/ETE/Batch/mule-esb-3.7.3/${ETE_TYPE}"
 					
 					SIT_RESULT_HOME1= "env/SIT/ETE/Result/ETEAPP"
-					VIT_RESULT_HOME1= "env\\VIT\\ETE\\Result\\ETEAPP"
-					UAT_RESULT_HOME1= "env\\UAT\\ETE\\Result\\ETEAPP"
+					VIT_RESULT_HOME1= "env/VIT/ETE/Result/ETEAPP"
+					UAT_RESULT_HOME1= "env/UAT/ETE/Result/ETEAPP"
 					
-					SIT_SQL_HOME1   = "env\\SIT\\ETE\\SQL\\ETEAPP"
-					VIT_SQL_HOME1   = "env\\VIT\\ETE\\SQL\\ETEAPP"
-					UAT_SQL_HOME1   = "env\\UAT\\ETE\\SQL\\ETEAPP"
+					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
+					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
+					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
 					
 	                if (params.DELETE_DIR == true) {
 	                
@@ -74,14 +74,14 @@ pipeline {
 			            switch (params.ETE_BRANCH) {
 
 						case ~/SIT/: 
-							sh "mkdir $SIT_RESULT_HOME1"
-			            	sh "mkdir $SIT_SQL_HOME1"
-			            	sh "mkdir $VIT_RESULT_HOME1"
-			            	sh "mkdir $VIT_SQL_HOME1"
+							sh "mkdir -p $SIT_RESULT_HOME1"
+			            	sh "mkdir -p $SIT_SQL_HOME1"
+			            	sh "mkdir -p $VIT_RESULT_HOME1"
+			            	sh "mkdir -p $VIT_SQL_HOME1"
 							break;
 				        case ~/UAT/: 
-							sh "mkdir $UAT_RESULT_HOME1"
-			            	sh "mkdir $UAT_SQL_HOME1"
+							sh "mkdir -p $UAT_RESULT_HOME1"
+			            	sh "mkdir -p $UAT_SQL_HOME1"
 					        break;
 				        case ~/PRD/: 
 
@@ -109,7 +109,13 @@ pipeline {
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 					
 					input "Continue ?"
-					sh "[ -f 'pom.xml' ] && mvn clean package"
+					sh '''
+					if [ -f "pom.xml" ]
+						then
+							mvn clean package"
+						fi
+					'''
+
 					//bat 'if exist pom.xml mvn clean package'
 				
 				}
