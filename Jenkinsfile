@@ -5,7 +5,7 @@ pipeline {
     	ETE_SVN_HOST='http://10.175.230.180:8080'
 		ETE_REPO='svn/ETESystem'
 		
-		ETE_WORKSPACE='svn\\ETESystem'
+		ETE_WORKSPACE='svn/ETESystem'
 		
     }
     
@@ -45,7 +45,7 @@ pipeline {
 					VIT_BATCH_HOME1 = "env\\VIT\\ETE\\Batch\\mule-esb-3.7.3-VIT\\${ETE_TYPE}"
 					UAT_BATCH_HOME1 = "env\\UAT\\ETE\\Batch\\mule-esb-3.7.3\\${ETE_TYPE}"
 					
-					SIT_RESULT_HOME1= "env\\SIT\\ETE\\Result\\ETEAPP"
+					SIT_RESULT_HOME1= "env/SIT/ETE/Result/ETEAPP"
 					VIT_RESULT_HOME1= "env\\VIT\\ETE\\Result\\ETEAPP"
 					UAT_RESULT_HOME1= "env\\UAT\\ETE\\Result\\ETEAPP"
 					
@@ -59,9 +59,11 @@ pipeline {
 	                	sh '''
 	                	if [ -d "svn" ]
 						then
-							echo "svn directory  exists!"
-						else
-							echo "svn directory not found!"
+							rm -rf svn"
+						fi
+						if [ -d "env" ]
+						then
+							rm -rf env"
 						fi
 						'''
 			            //bat "IF EXIST svn rmdir /s /q svn"
