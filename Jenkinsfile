@@ -58,7 +58,8 @@ pipeline {
 	                	echo "Clean temporary directory."
 	                	
 	                	sh "date"
-	                	sh "[ -d 'env' ] && echo 'exist'"
+	                	sh "[ -d env ] && echo exist"
+	                	sh "date"
 			            //bat "IF EXIST svn rmdir /s /q svn"
 			            //bat "IF EXIST env rmdir /s /q env"
 			            
