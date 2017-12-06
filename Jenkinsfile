@@ -195,7 +195,7 @@ pipeline {
                 dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
 					
 					input "Continue ?"
-					bat 'if exist pom.xml mvn clean package'
+					bat 'if exist pom.xml mvn clean package -o'
 				
 				}
 				
@@ -284,30 +284,36 @@ pipeline {
             	script {
 	                
 	                switch (params.ETE_BRANCH) {
+	                	case ~/DEV/:
+	                		dir ("env/DEV") {
+								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
+	                			sh "jar -cMf ETE.zip ETE"           
+	                		}
+	                		break;
 	                	case ~/SIT/:
 	                		dir ("env/SIT") {
 	                			
-								bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                			bat "jar -cMf ETE.zip ETE"        
+								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
+	                			sh "jar -cMf ETE.zip ETE"        
 	                		        
 	                		}
 							dir ("env/VIT") {
-								bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    bat "jar -cMf ETE.zip ETE"   
+								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
+	                		    sh "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
 	                		break;
 	                	case ~/UAT/:
 	                		dir ("env/UAT") {
-	                			bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    bat "jar -cMf ETE.zip ETE"   
+	                			sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
+	                		    sh "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
 	                		break;
 	                	case ~/PRD/:
 	                		dir ("env/PRD") {
-	                			bat "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    bat "jar -cMf ETE.zip ETE"   
+	                			sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
+	                		    sh "jar -cMf ETE.zip ETE"   
 	                		        
 	                		}
 	                		break;
