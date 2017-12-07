@@ -4,7 +4,6 @@ pipeline {
     environment {
     	ETE_SVN_HOST='http://10.175.230.180:8080'
 		ETE_REPO='svn/ETESystem'
-		
 		ETE_WORKSPACE='svn/ETESystem'
 		
     }
@@ -13,21 +12,17 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-            		IS_BATCH = false    
-            		switch (params.ETE_TYPE) {
-			        case ~/apps/ :
-			        	ETE_TYPE='apps'
-			        	break;
-			        case ~/domains/ :
-			        	ETE_TYPE='domains'
-			        	break;
-			        case ~/conf/ :
-			        	ETE_TYPE='conf'
-			        	break;
-			        default :          
-			            ETE_TYPE='apps'
-			            IS_BATCH = true
-			        }
+            		IS_BATCH = false
+				    if(params.ETE_APP_NAME != '') { 
+				        ETE_TYPE = 'apps'
+				    } else if (params.ETE_BATCH_NAME != '') { 
+				        ETE_TYPE = 'apps'
+				        IS_BATCH = true
+				    } else if (params.ETE_DOMAIN_NAME != '') {
+				        ETE_TYPE = 'domains'
+				    } else {
+				        echo "Nothing to do."
+				    }
 			        
 			        DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
             	    SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
@@ -103,9 +98,9 @@ pipeline {
             }
         }
     	     
-        stage('Build applications and domains') {
+        stage('Build applications or domains') {
 			when {
-                expression { return ETE_TYPE ==~ /(apps|domains)/ }
+                expression { return ((ETE_TYPE ==~ /(apps|domains)/) & (!IS_BATCH)) }
             }
             steps {
             	echo "Checking out source code from SVN..."
