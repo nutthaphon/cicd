@@ -13,24 +13,26 @@ pipeline {
             steps {
             	script {
             		IS_BATCH = false
-				    if(params.ETE_APP_NAME != '') { 
+				    if(ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
 				        echo "This is applcation"
-				    } else if (params.ETE_BATCH_NAME != '') { 
+				    } else if (ETE_BATCH_NAME != '') { 
 				        ETE_TYPE = 'apps'
-				        ETE_APP_NAME = params.ETE_BATCH_NAME
+				        ETE_APP_NAME = ETE_BATCH_NAME
 				        IS_BATCH = true
 				        echo "This is batch job"
-				    } else if (params.ETE_DOMAIN_NAME != '') {
+				    } else if (ETE_DOMAIN_NAME != '') {
 				        ETE_TYPE = 'domains'
-				        ETE_APP_NAME = params.ETE_DOMAIN_NAME
+				        ETE_APP_NAME = ETE_DOMAIN_NAME
 				        echo "This is domain"
+				    } else if (params.ETE_CONF_FILE != '') {
+    					ETE_TYPE = 'conf'
 				    } else {
 				        echo "Nothing to do."
 				    }
 			        
-			        DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
-            	    SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
+					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
+					SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
 					VIT_APPS_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_APPS_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
@@ -114,7 +116,7 @@ pipeline {
             steps {
             	echo "Checking out source code from SVN..."
             	script {
-	            	if (params.ETE_BRANCH =~ /DEV/) {
+	            	if (ETE_BRANCH =~ /DEV/) {
 	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
 	                
 		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}") {
@@ -264,39 +266,44 @@ pipeline {
             }
         }
         
-        stage('Copy configuration and SQL files') {
+        stage('Place configuration files') {
             when {
-                expression { return ETE_TYPE ==~ /(conf)/  }
+                allOf { 
+                    expression { return ETE_TYPE ==~ /(conf)/ };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
             }
             steps{
             	echo "Checking out source code from SVN..."
-            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}"
-
+            	
                 script {
 	                
+ 					if (params.ETE_BRANCH =~ /DEV/) {
+	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE} ${ETE_REPO}/trunk/${ETE_TYPE}"
+	                } else {
+	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}"
+	                }
+ 
  
 					switch (params.ETE_BRANCH) {
-
+						case ~/DEV/: 
+							sh "mkdir -p $DEV_CONF_HOME1"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties"
+					        break;
 						case ~/SIT/: 
-							
-		                    bat "if not exist $SIT_CONF_HOME2 mkdir $SIT_CONF_HOME2"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-SIT.properties ${SIT_CONF_HOME2}"
-		                    
-		                    bat "if not exist $SIT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-SIT.properties ${SIT_CONF_HOME1}"
-
-							println "Packing VIT";
-							bat "if not exist $VIT_CONF_HOME1 mkdir $VIT_CONF_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-VIT.properties ${VIT_CONF_HOME1}"
+							sh "mkdir -p $SIT_CONF_HOME2"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties"		                    
+		                    sh "mkdir -p $SIT_CONF_HOME1"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties"
+							sh "mkdir -p $VIT_CONF_HOME1"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties"
 							break;
 				        case ~/UAT/: 
+							sh "mkdir -p $UAT_CONF_HOME2"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties"		                    
+		                    sh "mkdir -p $UAT_CONF_HOME1"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties"		                    
 
-		                    bat "if not exist $UAT_CONF_HOME2 mkdir $UAT_CONF_HOME2"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-UAT.properties ${UAT_CONF_HOME2}"
-		                    
-		                    bat "if not exist $UAT_CONF_HOME1 mkdir $SIT_CONF_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\src\\mule-app-global-UAT.properties ${UAT_CONF_HOME1}"
-		                    
 					        break;
 				        case ~/PRD/: 
 					        println "PRD"; 
