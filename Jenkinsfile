@@ -32,6 +32,8 @@ pipeline {
 				    }
 			        
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
+					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
+					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
 					SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
 					SIT_APPS_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
@@ -41,6 +43,8 @@ pipeline {
 					UAT_APPS_HOME3  = "env/UAT/ETE/App/mule-esb-3.7.3-PP/${ETE_TYPE}"
 
 					DEV_CONF_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
+					DEV_CONF_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
+					DEV_CONF_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
 					SIT_CONF_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_CONF_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
 					SIT_CONF_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
@@ -158,7 +162,20 @@ pipeline {
 						case ~/DEV/:
 							println "Wrapping DEV";
 							sh "mkdir -p $DEV_APPS_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"					
+							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"
+							if (ETE_APP_NAME =~ /^atm/) { 
+								sh "mkdir -p $DEV_APPS_HOME2"
+								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME2}"
+					
+		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
+								sh "mkdir -p $DEV_APPS_HOME3"
+								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME3}"
+
+		                    } else {
+		                    	sh "mkdir -p $DEV_APPS_HOME1"
+								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"
+		                    
+		                    }				
 							break;
 						case ~/SIT/: 
 							println "Wrapping SIT";
@@ -302,10 +319,17 @@ pipeline {
  
 					switch (params.ETE_BRANCH) {
 						case ~/DEV/: 
-							sh "mkdir -p $DEV_CONF_HOME1"
+							sh "mkdir -p $DEV_CONF_HOME3"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties"
+		                    sh "mkdir -p $DEV_CONF_HOME2"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties"
+		                    sh "mkdir -p $DEV_CONF_HOME1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties"
 					        break;
+					        
 						case ~/SIT/: 
+							sh "mkdir -p $SIT_CONF_HOME3"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties"		                    
 							sh "mkdir -p $SIT_CONF_HOME2"
 		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties"		                    
 		                    sh "mkdir -p $SIT_CONF_HOME1"
@@ -313,16 +337,20 @@ pipeline {
 							sh "mkdir -p $VIT_CONF_HOME1"
 							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties"
 							break;
+							
 				        case ~/UAT/: 
+				        	sh "mkdir -p $UAT_CONF_HOME3"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties"		                    
 							sh "mkdir -p $UAT_CONF_HOME2"
 		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties"		                    
 		                    sh "mkdir -p $UAT_CONF_HOME1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties"		                    
-
 					        break;
+					        
 				        case ~/PRD/: 
 					        println "PRD"; 
 					        break;
+					        
 				        default: input "Do not known your build environment !";
 
 					}
