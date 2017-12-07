@@ -15,11 +15,14 @@ pipeline {
             		IS_BATCH = false
 				    if(params.ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
+				        echo "This is applcation"
 				    } else if (params.ETE_BATCH_NAME != '') { 
 				        ETE_TYPE = 'apps'
 				        IS_BATCH = true
+				        echo "This is batch job"
 				    } else if (params.ETE_DOMAIN_NAME != '') {
 				        ETE_TYPE = 'domains'
+				        echo "This is domain"
 				    } else {
 				        echo "Nothing to do."
 				    }
