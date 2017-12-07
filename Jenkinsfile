@@ -103,7 +103,10 @@ pipeline {
     	     
         stage('Build applications or domains') {
 			when {
-                expression { return ((ETE_TYPE ==~ /(apps|domains)/) & (!IS_BATCH)) }
+                allOf { 
+                    expression { return ETE_TYPE ==~ /(apps|domains)/ };
+                    expression { return (!IS_BATCH) } 
+                } 
             }
             steps {
             	echo "Checking out source code from SVN..."
