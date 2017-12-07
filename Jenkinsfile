@@ -29,6 +29,12 @@ pipeline {
 			            IS_BATCH = true
 			        }
 			        
+			        sh '''
+			        	export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
+						export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
+						export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+			        '''
+			        
 			        DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
             	    SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
