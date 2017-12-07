@@ -34,16 +34,20 @@ pipeline {
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
+					SIT_APPS_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
 					VIT_APPS_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_APPS_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
 					UAT_APPS_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
+					UAT_APPS_HOME3  = "env/UAT/ETE/App/mule-esb-3.7.3-PP/${ETE_TYPE}"
 
 					DEV_CONF_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					SIT_CONF_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
 					SIT_CONF_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
+					SIT_CONF_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
 					VIT_CONF_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
 					UAT_CONF_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
 					UAT_CONF_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
+					UAT_CONF_HOME3  = "env/UAT/ETE/App/mule-esb-3.7.3-PP/${ETE_TYPE}"
 					
 					DEV_BATCH_HOME1 = "env/DEV/ETE/Batch/mule-esb-3.7.3-DEV/${ETE_TYPE}"
                     SIT_BATCH_HOME1 = "env/SIT/ETE/Batch/mule-esb-3.7.3-SIT/${ETE_TYPE}"
@@ -158,13 +162,18 @@ pipeline {
 							break;
 						case ~/SIT/: 
 							println "Wrapping SIT";
-							if (params.ETE_APP_NAME =~ /^atm/) { 
+							if (ETE_APP_NAME =~ /^atm/) { 
 								sh "mkdir -p $SIT_APPS_HOME2"
 								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME2}"
 					
+		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
+								sh "mkdir -p $SIT_APPS_HOME3"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME3}"
+
 		                    } else {
 		                    	sh "mkdir -p $SIT_APPS_HOME1"
 								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME1}"
+		                    
 		                    }
 							println "Wrapping VIT";
 							sh "mkdir -p $VIT_APPS_HOME1"
@@ -175,9 +184,15 @@ pipeline {
 						    if (params.ETE_APP_NAME =~ /^atm/) { 
 						    	sh "mkdir -p $UAT_APPS_HOME2"
 								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME2}"
+			                
+			                } else if (ETE_APP_NAME =~ /^promptpay/) {
+			                    sh "mkdir -p $UAT_APPS_HOME3"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME3}"
+			                     
 			                } else {
 			                	sh "mkdir -p $UAT_APPS_HOME1"
 								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME1}"
+			                
 			                }
 		                    
 					        break;
@@ -319,8 +334,11 @@ pipeline {
         }
 
         stage('Packaging') {
-        	when {
-                expression { params.SEND_RA == true }
+            when {
+                allOf { 
+                    expression { return (SEND_RA) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
             }
             steps {
             	script {
@@ -370,13 +388,21 @@ pipeline {
                         
         stage('Transfering') {
         	when {
-                expression { params.SEND_RA == true }
+                allOf { 
+                    expression { return (SEND_RA) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
             }
             steps {
                 
                 script {
 	                
 	                switch (params.ETE_BRANCH) {
+	                	case ~/DEV/:
+	                		dir ("env/DEV") {
+	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/DEV"  
+	                		}
+	                		break;
 	                	case ~/SIT/:
 	                		dir ("env/SIT") {      
 	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/SIT"    
