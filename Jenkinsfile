@@ -364,7 +364,7 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (SEND_RA) };
+                    expression { return (SEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -417,7 +417,7 @@ pipeline {
         stage('Transfering') {
         	when {
                 allOf { 
-                    expression { return (SEND_RA) };
+                    expression { return (SEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
