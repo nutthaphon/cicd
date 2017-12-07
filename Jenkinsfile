@@ -105,7 +105,8 @@ pipeline {
 			when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
-                    expression { return (!IS_BATCH) } 
+                    expression { return (!IS_BATCH) }
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
