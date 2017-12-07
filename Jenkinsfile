@@ -371,13 +371,11 @@ pipeline {
 	                
 	                switch (params.ETE_BRANCH) {
 	                	case ~/SIT/:
-	                		dir ("env/SIT") {
-	                			bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps/SIT"        
-	                		        
+	                		dir ("env/SIT") {      
+	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/SIT"    
 	                		}
-							dir ("env/VIT") {
-	                		    bat "pscp -pw P@ssete17 ETE.zip root@10.200.115.196:/app/DevOps/VIT"   
-	                		        
+							dir ("env/VIT") { 
+	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/VIT"   
 	                		}
 	                		break;
 	                	case ~/UAT/:
