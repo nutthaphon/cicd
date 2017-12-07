@@ -103,7 +103,7 @@ pipeline {
             }
         }
     	     
-        stage('Build applications or domains') {
+        stage('Build applications or domains.') {
 			when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
@@ -191,44 +191,48 @@ pipeline {
             }
         } 
         
-        
-        
-        
-        stage('Build batches') {
+        stage('Build batches.') {
 			when {
-                expression { return IS_BATCH == true }
+                allOf { 
+                    expression { return (IS_BATCH) }
+                    expression { return (ETE_BRANCH != '') } 
+                } 
             }
             steps {
-				
-
 
             	echo "Checking out source code from SVN..."
-            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+            	bat "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
                 
-                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+                dir ("${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}") {
 					
-					input "Continue ?"
-					bat 'if exist pom.xml mvn clean package -o'
+					sh '''
+								if [ -f "pom.xml" ]
+								then
+									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
+									export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
+									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+									mvn clean package -o
+								fi
+							'''
 				
 				}
 				
 				
 				script {
-					switch (params.ETE_BRANCH) {
-
+					switch (ETE_BRANCH) {
+						case ~/DEV/:
+							sh "mkdir -p $DEV_BATCH_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_BATCH_HOME1}"					
+							break;
 						case ~/SIT/: 
-							
-							bat "if not exist $SIT_BATCH_HOME1 mkdir $SIT_BATCH_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"	       
-							bat "if not exist $VIT_BATCH_HOME1 mkdir $VIT_BATCH_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${VIT_BATCH_HOME1}"	       
-							
+							sh "mkdir -p $SIT_BATCH_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_BATCH_HOME1}"
+							sh "mkdir -p $VIT_BATCH_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${VIT_BATCH_HOME1}"
 							break;
 				        case ~/UAT/: 
-					    	
-							bat "if not exist $UAT_BATCH_HOME1 mkdir $UAT_BATCH_HOME1"
-		                    bat "copy /y ${ETE_WORKSPACE}\\branches\\${params.ETE_BRANCH}\\${ETE_TYPE}\\${params.ETE_APP_NAME}\\target\\${params.ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"	       
-							
+					    	sh "mkdir -p $UAT_BATCH_HOME1"
+							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_BATCH_HOME1}"
 					        break;
 				        case ~/PRD/: 
 					        println "PRD"; 
