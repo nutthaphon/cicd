@@ -201,11 +201,15 @@ pipeline {
             steps {
 
             	echo "Checking out source code from SVN..."
-            	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
-                
-                dir ("${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}") {
-					
-					sh '''
+
+				script {
+				
+					if (params.ETE_BRANCH =~ /DEV/) {
+	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
+	                
+		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}") {
+							
+							sh '''
 								if [ -f "pom.xml" ]
 								then
 									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
@@ -214,11 +218,25 @@ pipeline {
 									mvn clean package -o
 								fi
 							'''
-				
-				}
-				
-				
-				script {
+						}               	       
+	            	} else {
+	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
+	                
+		                dir ("${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}") {
+							
+							sh '''
+								if [ -f "pom.xml" ]
+								then
+									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
+									export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
+									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+									mvn clean package -o
+								fi
+							'''
+						}
+	  	
+	            	}
+					
 					switch (ETE_BRANCH) {
 						case ~/DEV/:
 							sh "mkdir -p $DEV_BATCH_HOME1"
