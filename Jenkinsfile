@@ -363,7 +363,7 @@ pipeline {
 	                		        
 	                		}
 	                		break;
-	                	default: input "Do not known your build environment !";             
+	                	default: echo "Leave it in workspace.";             
 	                           
 	                }
 
