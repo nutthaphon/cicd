@@ -18,10 +18,12 @@ pipeline {
 				        echo "This is applcation"
 				    } else if (params.ETE_BATCH_NAME != '') { 
 				        ETE_TYPE = 'apps'
+				        ETE_APP_NAME = params.ETE_BATCH_NAME
 				        IS_BATCH = true
 				        echo "This is batch job"
 				    } else if (params.ETE_DOMAIN_NAME != '') {
 				        ETE_TYPE = 'domains'
+				        ETE_APP_NAME = params.ETE_DOMAIN_NAME
 				        echo "This is domain"
 				    } else {
 				        echo "Nothing to do."
@@ -113,9 +115,9 @@ pipeline {
             	echo "Checking out source code from SVN..."
             	script {
 	            	if (params.ETE_BRANCH =~ /DEV/) {
-	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}"
+	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
 	                
-		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}") {
 							
 							sh '''
 								if [ -f "pom.xml" ]
@@ -128,9 +130,9 @@ pipeline {
 							'''
 						}               	       
 	            	} else {
-	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME} ${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}"
+	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
 	                
-		                dir ("${ETE_REPO}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}") {
+		                dir ("${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}") {
 							
 							sh '''
 								if [ -f "pom.xml" ]
@@ -146,34 +148,34 @@ pipeline {
 	            	}
 
 				
-					switch (params.ETE_BRANCH) {
+					switch (ETE_BRANCH) {
 						case ~/DEV/:
 							println "Wrapping DEV";
 							sh "mkdir -p $DEV_APPS_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${DEV_APPS_HOME1}"					
+							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"					
 							break;
 						case ~/SIT/: 
 							println "Wrapping SIT";
 							if (params.ETE_APP_NAME =~ /^atm/) { 
 								sh "mkdir -p $SIT_APPS_HOME2"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${SIT_APPS_HOME2}"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME2}"
 					
 		                    } else {
 		                    	sh "mkdir -p $SIT_APPS_HOME1"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${SIT_APPS_HOME1}"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME1}"
 		                    }
 							println "Wrapping VIT";
 							sh "mkdir -p $VIT_APPS_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${VIT_APPS_HOME1}"
+							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${VIT_APPS_HOME1}"
 							break;
 				        case ~/UAT/: 
 					    	println "Wrapping UAT";    
 						    if (params.ETE_APP_NAME =~ /^atm/) { 
 						    	sh "mkdir -p $UAT_APPS_HOME2"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${UAT_APPS_HOME2}"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME2}"
 			                } else {
 			                	sh "mkdir -p $UAT_APPS_HOME1"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${params.ETE_BRANCH}/${ETE_TYPE}/${params.ETE_APP_NAME}/target/${params.ETE_APP_NAME}.* ${UAT_APPS_HOME1}"
+								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME1}"
 			                }
 		                    
 					        break;
@@ -188,6 +190,9 @@ pipeline {
 				
             }
         } 
+        
+        
+        
         
         stage('Build batches') {
 			when {
