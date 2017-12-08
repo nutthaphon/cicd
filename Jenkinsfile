@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-    	ETE_SVN_HOST='http://10.175.230.180:8080'
-		ETE_REPO='svn/ETESystem'
-		ETE_WORKSPACE='svn/ETESystem'
+    	ETE_SVN_HOST	= 'http://10.175.230.180:8080'
+		ETE_REPO		= 'svn/ETESystem'
+		ETE_WORKSPACE	= 'svn/ETESystem'
 		
     }
     
@@ -12,23 +12,35 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-            		IS_BATCH = false
+            	
+            		IS_BATCH		= false
+            		DELETE_DIR		= params.DELETE_DIR
+            		SEND_RA			= params.SEND_RA
+            		ETE_BRANCH		= params.ETE_BRANCH
+            		ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
+            		ETE_APP_NAME	= params.ETE_APP_NAME
+            		ETE_BATCH_NAME	= params.ETE_BATCH_NAME
+            		ETE_CONF_FILE	= params.ETE_CONF_FILE
+            		ETE_PP			= params.ETE_PP
+            		
 				    if(ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
-				        echo "This is applcation"
+
 				    } else if (ETE_BATCH_NAME != '') { 
 				        ETE_TYPE = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
 				        IS_BATCH = true
-				        echo "This is batch job"
+
 				    } else if (ETE_DOMAIN_NAME != '') {
 				        ETE_TYPE = 'domains'
 				        ETE_APP_NAME = ETE_DOMAIN_NAME
-				        echo "This is domain"
-				    } else if (params.ETE_CONF_FILE != '') {
+
+				    } else if (ETE_CONF_FILE != '') {
     					ETE_TYPE = 'conf'
+    					
 				    } else {
 				        echo "Nothing to do."
+				        
 				    }
 			        
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
@@ -68,7 +80,7 @@ pipeline {
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
 					
-	                if (params.DELETE_DIR == true) {
+	                if (DELETE_DIR == true) {
 	                
 	                	sh '''
 							if [ -d "env" ]
@@ -86,7 +98,7 @@ pipeline {
 						'''
 			            echo "Create required directory for supporting RA"
 			            
-			            switch (params.ETE_BRANCH) {
+			            switch (ETE_BRANCH) {
 
 						case ~/DEV/: 
 							sh "mkdir -p $DEV_RESULT_HOME1"
@@ -118,7 +130,7 @@ pipeline {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
                     expression { return (!IS_BATCH) }
-                    expression { return (params.ETE_BRANCH != '') } 
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -196,7 +208,7 @@ pipeline {
 							break;
 				        case ~/UAT/: 
 					    	println "Wrapping UAT";    
-						    if (params.ETE_APP_NAME =~ /^atm/) { 
+						    if (ETE_APP_NAME =~ /^atm/) { 
 						    	sh "mkdir -p $UAT_APPS_HOME2"
 								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME2}"
 			                
@@ -227,7 +239,7 @@ pipeline {
 			when {
                 allOf { 
                     expression { return (IS_BATCH) }
-                    expression { return (params.ETE_BRANCH != '') } 
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -236,7 +248,7 @@ pipeline {
 
 				script {
 				
-					if (params.ETE_BRANCH =~ /DEV/) {
+					if (ETE_BRANCH =~ /DEV/) {
 	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
 	                
 		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}") {
@@ -300,7 +312,7 @@ pipeline {
             when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(conf)/ };
-                    expression { return (params.ETE_BRANCH != '') } 
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps{
@@ -308,14 +320,14 @@ pipeline {
             	
                 script {
 	                
- 					if (params.ETE_BRANCH =~ /DEV/) {
+ 					if (ETE_BRANCH =~ /DEV/) {
 	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE} ${ETE_REPO}/trunk/${ETE_TYPE}"
 	                } else {
 	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}"
 	                }
  
  
-					switch (params.ETE_BRANCH) {
+					switch (ETE_BRANCH) {
 						case ~/DEV/: 
 							sh "mkdir -p $DEV_CONF_HOME3"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties"
@@ -362,14 +374,14 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (params.SEND_RA) };
-                    expression { return (params.ETE_BRANCH != '') } 
+                    expression { return (SEND_RA) };
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
             	script {
 	                
-	                switch (params.ETE_BRANCH) {
+	                switch (ETE_BRANCH) {
 	                	case ~/DEV/:
 	                		dir ("env/DEV") {
 								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
@@ -415,7 +427,7 @@ pipeline {
         stage('Transfering') {
         	when {
                 allOf { 
-                    expression { return (params.SEND_RA) };
+                    expression { return (SEND_RA) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -423,7 +435,7 @@ pipeline {
                 
                 script {
 	                
-	                switch (params.ETE_BRANCH) {
+	                switch (ETE_BRANCH) {
 	                	case ~/DEV/:
 	                		dir ("env/DEV") {
 	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/DEV"  
