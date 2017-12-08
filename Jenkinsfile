@@ -38,6 +38,12 @@ pipeline {
 				    } else if (ETE_CONF_FILE != '') {
     					ETE_TYPE = 'conf'
     					
+				    } else if (ETE_SQL_FILE != '') {
+				        ETE_TYPE = 'sql'
+				        b = ETE_SQL_FILE.tokenize('\n')
+						b.each {
+						     println "SQL= ${it}" 
+						}          
 				    } else {
 				        echo "Nothing to do."
 				        
@@ -308,7 +314,7 @@ pipeline {
             }
         }
         
-        stage('Place configuration files') {
+        stage('Pick configuration files') {
             when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(conf)/ };
@@ -355,23 +361,58 @@ pipeline {
 					        break;
 					        
 						case ~/SIT/: 
-							sh "mkdir -p $SIT_CONF_HOME3"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"		                    
-							sh "mkdir -p $SIT_CONF_HOME2"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"		                    
-		                    sh "mkdir -p $SIT_CONF_HOME1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
-							sh "mkdir -p $VIT_CONF_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
+							sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME3) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME2) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties
+		                    	fi
+		                    """
+		                    sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $VIT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $VIT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
 							break;
 							
 				        case ~/UAT/: 
-				        	sh "mkdir -p $UAT_CONF_HOME3"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"		                    
-							sh "mkdir -p $UAT_CONF_HOME2"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"		                    
-		                    sh "mkdir -p $UAT_CONF_HOME1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"		                    
+				        	sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME3) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME2) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties
+		                    	fi
+		                    """
+		                    sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
 					        break;
 					        
 				        case ~/PRD/: 
@@ -387,7 +428,122 @@ pipeline {
             }
 
         }
+		
+		stage('Pick SQL files') {
+            when {
+                allOf { 
+                    expression { return ETE_TYPE ==~ /(sql)/ };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps{
+            	echo "Checking out source code from SVN..."
+            	
+                script {
+	                
+ 					if (ETE_BRANCH =~ /DEV/) {
+	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE} ${ETE_REPO}/trunk/${ETE_TYPE}"
+	                } else {
+	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}"
+	                }
+ 
+ 
+					switch (ETE_BRANCH) {
+						case ~/DEV/: 
+						
+		                    sh """
+		                    	if [ -d \$(dirname $DEV_CONF_HOME3) ]
+		                    	then
+		                    		mkdir $DEV_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $DEV_CONF_HOME2) ]
+		                    	then
+		                    		mkdir $DEV_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $DEV_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $DEV_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
+		                    
+					        break;
+					        
+						case ~/SIT/: 
+							sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME3) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME2) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties
+		                    	fi
+		                    """
+		                    sh """
+		                    	if [ -d \$(dirname $SIT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $SIT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $VIT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $VIT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
+							break;
+							
+				        case ~/UAT/: 
+				        	sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME3) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties
+		                    	fi
+		                    """
+							sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME2) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties
+		                    	fi
+		                    """
+		                    sh """
+		                    	if [ -d \$(dirname $UAT_CONF_HOME1) ]
+		                    	then
+		                    		mkdir $UAT_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties
+		                    	fi
+		                    """
+					        break;
+					        
+				        case ~/PRD/: 
+					        println "PRD"; 
+					        break;
+					        
+				        default: input "Do not known your build environment !";
 
+					}
+	                
+			    }
+                
+            }
+
+        }
+		
         stage('Packaging') {
             when {
                 allOf { 
