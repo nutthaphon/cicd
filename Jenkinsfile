@@ -329,20 +329,9 @@ pipeline {
  
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
-							sh '''
-								if [ -d ${DEV_APP_HOME1} ] 
-								then
-									mkdir -p $DEV_CONF_HOME1
-								fi
-								if [ -d ${DEV_APP_HOME2} ] 
-								then
-									mkdir -p $DEV_CONF_HOME2
-								fi
-								if [ -d ${DEV_APP_HOME3} ] 
-								then
-									mkdir -p $DEV_CONF_HOME3
-								fi
-							'''
+		                    sh "[ -d ${DEV_APP_HOME1} ] && echo Directory ${DEV_APP_HOME1} exists."
+		                    sh "[ -d ${DEV_APP_HOME2} ] && echo Directory ${DEV_APP_HOME2} exists."
+		                    sh "[ -d ${DEV_APP_HOME3} ] && echo Directory ${DEV_APP_HOME3} exists."
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
