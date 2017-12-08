@@ -118,7 +118,7 @@ pipeline {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
                     expression { return (!IS_BATCH) }
-                    expression { return (ETE_BRANCH != '') } 
+                    expression { return (params.ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -227,7 +227,7 @@ pipeline {
 			when {
                 allOf { 
                     expression { return (IS_BATCH) }
-                    expression { return (ETE_BRANCH != '') } 
+                    expression { return (params.ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -300,7 +300,7 @@ pipeline {
             when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(conf)/ };
-                    expression { return (ETE_BRANCH != '') } 
+                    expression { return (params.ETE_BRANCH != '') } 
                 } 
             }
             steps{
@@ -362,8 +362,8 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (SEND_RA == true) };
-                    expression { return (ETE_BRANCH != '') } 
+                    expression { return (params.SEND_RA) };
+                    expression { return (params.ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -415,7 +415,7 @@ pipeline {
         stage('Transfering') {
         	when {
                 allOf { 
-                    expression { return (SEND_RA == true) };
+                    expression { return (params.SEND_RA) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
