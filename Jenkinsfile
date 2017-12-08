@@ -330,15 +330,15 @@ pipeline {
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
 							sh '''
-								if [ -d "${DEV_APP_HOME1}" ] 
+								if [ -d ${DEV_APP_HOME1} ] 
 								then
 									mkdir -p $DEV_CONF_HOME1
 								fi
-								if [ -d "${DEV_APP_HOME2}" ] 
+								if [ -d ${DEV_APP_HOME2} ] 
 								then
 									mkdir -p $DEV_CONF_HOME2
 								fi
-								if [ -d "${DEV_APP_HOME3}" ] 
+								if [ -d ${DEV_APP_HOME3} ] 
 								then
 									mkdir -p $DEV_CONF_HOME3
 								fi
