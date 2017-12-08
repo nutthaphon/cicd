@@ -329,9 +329,9 @@ pipeline {
  
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
-		                    def output = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME3"
-		                    def output = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME2"
-		                    def output = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME1"
+		                    def res3 = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME3"
+		                    def res2 = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME2"
+		                    def res1 = sh returnStatus: true, script: "mkdir $DEV_CONF_HOME1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
