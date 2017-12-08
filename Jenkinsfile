@@ -334,23 +334,24 @@ pipeline {
 		                    	if [ -d \$(dirname $DEV_CONF_HOME3) ]
 		                    	then
 		                    		mkdir $DEV_CONF_HOME3
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME2) ]
 		                    	then
 		                    		mkdir $DEV_CONF_HOME2
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME1) ]
 		                    	then
 		                    		mkdir $DEV_CONF_HOME1
+		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties
 		                    	fi
 		                    """
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
+		                    
 					        break;
 					        
 						case ~/SIT/: 
