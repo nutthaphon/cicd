@@ -329,12 +329,9 @@ pipeline {
  
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
-		                    sh '''
-								if [ -d $(dirname $DEV_CONF_HOME3) ]
-								then
-									mkdir $DEV_CONF_HOME3	
-								fi
-							'''
+						
+		                    sh "[ -d \$(dirname $DEV_CONF_HOME3) ] && mkdir $DEV_CONF_HOME3"
+
 							sh '''
 								if [ -d $(dirname $DEV_CONF_HOME2) ]
 								then
