@@ -43,7 +43,6 @@ pipeline {
 				        spufi = ETE_SQL_FILE.tokenize('\n')         
 				    } else {
 				        echo "Nothing to do."
-				        
 				    }
 			        
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
@@ -352,28 +351,28 @@ pipeline {
 							sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME4) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME4
+		                    		mkdir -p $DEV_CONF_HOME4
 		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME4}/${FILE_NAME2}
 		                    	fi
 		                    """
 		                    sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME3) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME3
+		                    		mkdir -p $DEV_CONF_HOME3
 		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME3}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME2) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME2
+		                    		mkdir -p $DEV_CONF_HOME2
 		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME2}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $DEV_CONF_HOME1) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME1
+		                    		mkdir -p $DEV_CONF_HOME1
 		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME1}/${FILE_NAME2}
 		                    	fi
 		                    """
@@ -383,42 +382,42 @@ pipeline {
 							sh """
 		                    	if [ -d \$(dirname $SIT_CONF_HOME4) ]
 		                    	then
-		                    		mkdir $SIT_CONF_HOME4
+		                    		mkdir -p $SIT_CONF_HOME4
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME4}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $SIT_CONF_HOME3) ]
 		                    	then
-		                    		mkdir $SIT_CONF_HOME3
+		                    		mkdir -p $SIT_CONF_HOME3
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME3}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $SIT_CONF_HOME2) ]
 		                    	then
-		                    		mkdir $SIT_CONF_HOME2
+		                    		mkdir -p $SIT_CONF_HOME2
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME2}/${FILE_NAME2}
 		                    	fi
 		                    """
 		                    sh """
 		                    	if [ -d \$(dirname $SIT_CONF_HOME1) ]
 		                    	then
-		                    		mkdir $SIT_CONF_HOME1
+		                    		mkdir -p $SIT_CONF_HOME1
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME1}/${FILE_NAME2}
 		                    	fi
 		                    """
 		                    sh """
 		                    	if [ -d \$(dirname $VIT_CONF_HOME2) ]
 		                    	then
-		                    		mkdir $VIT_CONF_HOME2
+		                    		mkdir -p $VIT_CONF_HOME2
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${VIT_CONF_HOME2}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $VIT_CONF_HOME1) ]
 		                    	then
-		                    		mkdir $VIT_CONF_HOME1
+		                    		mkdir -p $VIT_CONF_HOME1
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${VIT_CONF_HOME1}/${FILE_NAME2}
 		                    	fi
 		                    """
@@ -428,28 +427,28 @@ pipeline {
 				        	sh """
 		                    	if [ -d \$(dirname $UAT_CONF_HOME4) ]
 		                    	then
-		                    		mkdir $UAT_CONF_HOME4
+		                    		mkdir -p $UAT_CONF_HOME4
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME4}/${FILE_NAME2}
 		                    	fi
 		                    """
 				        	sh """
 		                    	if [ -d \$(dirname $UAT_CONF_HOME3) ]
 		                    	then
-		                    		mkdir $UAT_CONF_HOME3
+		                    		mkdir -p $UAT_CONF_HOME3
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME3}/${FILE_NAME2}
 		                    	fi
 		                    """
 							sh """
 		                    	if [ -d \$(dirname $UAT_CONF_HOME2) ]
 		                    	then
-		                    		mkdir $UAT_CONF_HOME2
+		                    		mkdir -p $UAT_CONF_HOME2
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME2}/${FILE_NAME2}
 		                    	fi
 		                    """
 		                    sh """
 		                    	if [ -d \$(dirname $UAT_CONF_HOME1) ]
 		                    	then
-		                    		mkdir $UAT_CONF_HOME1
+		                    		mkdir -p $UAT_CONF_HOME1
 		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME1}/${FILE_NAME2}
 		                    	fi
 		                    """
