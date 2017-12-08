@@ -333,19 +333,19 @@ pipeline {
 		                    sh '''
 		                    	if [ -d \$(dirname $DEV_CONF_HOME3) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME3"
+		                    		mkdir $DEV_CONF_HOME3
 		                    	fi
 		                    '''
 							sh '''
 		                    	if [ -d \$(dirname $DEV_CONF_HOME2) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME2"
+		                    		mkdir $DEV_CONF_HOME2
 		                    	fi
 		                    '''
 							sh '''
 		                    	if [ -d \$(dirname $DEV_CONF_HOME1) ]
 		                    	then
-		                    		mkdir $DEV_CONF_HOME1"
+		                    		mkdir $DEV_CONF_HOME1
 		                    	fi
 		                    '''
 		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"
