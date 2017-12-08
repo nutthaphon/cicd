@@ -42,7 +42,7 @@ pipeline {
 				        ETE_TYPE = 'sql'
 				        b = ETE_SQL_FILE.tokenize('\n')
 						b.each {
-						     println "SQL= ${it}" 
+						     echo "SQL= ${it}" 
 						}          
 				    } else {
 				        echo "Nothing to do."
