@@ -175,15 +175,15 @@ pipeline {
 							println "Wrapping DEV";
 							if (ETE_APP_NAME =~ /^atm/) { 
 								sh "mkdir -p $DEV_APPS_HOME2"
-								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME2}"
+								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
 					
 		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
 								sh "mkdir -p $DEV_APPS_HOME3"
-								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME3}"
+								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME3}"
 
 		                    } else {
 		                    	sh "mkdir -p $DEV_APPS_HOME1"
-								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"
+								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME1}"
 		                    
 		                    }				
 							break;
@@ -191,34 +191,34 @@ pipeline {
 							println "Wrapping SIT";
 							if (ETE_APP_NAME =~ /^atm/) { 
 								sh "mkdir -p $SIT_APPS_HOME2"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME2}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
 					
 		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
 								sh "mkdir -p $SIT_APPS_HOME3"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME3}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME3}"
 
 		                    } else {
 		                    	sh "mkdir -p $SIT_APPS_HOME1"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_APPS_HOME1}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
 		                    
 		                    }
 							println "Wrapping VIT";
 							sh "mkdir -p $VIT_APPS_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${VIT_APPS_HOME1}"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
 							break;
 				        case ~/UAT/: 
 					    	println "Wrapping UAT";    
 						    if (ETE_APP_NAME =~ /^atm/) { 
 						    	sh "mkdir -p $UAT_APPS_HOME2"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME2}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
 			                
 			                } else if (ETE_APP_NAME =~ /^promptpay/) {
 			                    sh "mkdir -p $UAT_APPS_HOME3"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME3}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME3}"
 			                     
 			                } else {
 			                	sh "mkdir -p $UAT_APPS_HOME1"
-								sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_APPS_HOME1}"
+								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
 			                
 			                }
 		                    
@@ -284,17 +284,17 @@ pipeline {
 					switch (ETE_BRANCH) {
 						case ~/DEV/:
 							sh "mkdir -p $DEV_BATCH_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_BATCH_HOME1}"					
+							sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_BATCH_HOME1}"					
 							break;
 						case ~/SIT/: 
 							sh "mkdir -p $SIT_BATCH_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${SIT_BATCH_HOME1}"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"
 							sh "mkdir -p $VIT_BATCH_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${VIT_BATCH_HOME1}"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${VIT_BATCH_HOME1}"
 							break;
 				        case ~/UAT/: 
 					    	sh "mkdir -p $UAT_BATCH_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${UAT_BATCH_HOME1}"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"
 					        break;
 				        case ~/PRD/: 
 					        println "PRD"; 
@@ -330,31 +330,31 @@ pipeline {
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
 							sh "mkdir -p $DEV_CONF_HOME3"
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "mkdir -p $DEV_CONF_HOME2"
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"
 		                    sh "mkdir -p $DEV_CONF_HOME1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties"
+		                    sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/mule-app-global.properties ${DEV_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
 					        break;
 					        
 						case ~/SIT/: 
 							sh "mkdir -p $SIT_CONF_HOME3"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties"		                    
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"		                    
 							sh "mkdir -p $SIT_CONF_HOME2"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties"		                    
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"		                    
 		                    sh "mkdir -p $SIT_CONF_HOME1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties"
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-SIT.properties ${SIT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
 							sh "mkdir -p $VIT_CONF_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties"
+							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-VIT.properties ${VIT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"
 							break;
 							
 				        case ~/UAT/: 
 				        	sh "mkdir -p $UAT_CONF_HOME3"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties"		                    
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME3}/mule-app-global.properties >/dev/null 2>&1"		                    
 							sh "mkdir -p $UAT_CONF_HOME2"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties"		                    
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME2}/mule-app-global.properties >/dev/null 2>&1"		                    
 		                    sh "mkdir -p $UAT_CONF_HOME1"
-		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties"		                    
+		                    sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/mule-app-global-UAT.properties ${UAT_CONF_HOME1}/mule-app-global.properties >/dev/null 2>&1"		                    
 					        break;
 					        
 				        case ~/PRD/: 
