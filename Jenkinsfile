@@ -161,8 +161,6 @@ pipeline {
 					switch (ETE_BRANCH) {
 						case ~/DEV/:
 							println "Wrapping DEV";
-							sh "mkdir -p $DEV_APPS_HOME1"
-							sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME1}"
 							if (ETE_APP_NAME =~ /^atm/) { 
 								sh "mkdir -p $DEV_APPS_HOME2"
 								sh "cp -rf ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.* ${DEV_APPS_HOME2}"
