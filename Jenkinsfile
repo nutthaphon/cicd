@@ -155,7 +155,7 @@ pipeline {
 	                	
 	            	}
 
-					dir ($CURRENT_DIR) {
+					dir (CURRENT_DIR) {
 							
 							sh '''
 								if [ -f "pom.xml" ]
