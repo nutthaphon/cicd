@@ -53,6 +53,7 @@ pipeline {
 			        UAT_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
                     PPRD_APPS_HOME = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
                     PRD_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    RA_DIR		   = ['Result', 'SQL']
                     RESULT_HOME    = ['ETEAPP']
                     SQL_HOME	   = ['ETEAPP']
 
@@ -117,11 +118,17 @@ pipeline {
 			            echo "Create required directory for supporting RA"
 			            
 			            
-			            ['Result', 'SQL'].each { 
+			            RA_DIR.each { 
 			            	println it 
 			            	
 			            }
+			            
+			            
 			            input 
+			            
+			            
+			            
+			            
 			            switch (ETE_BRANCH) {
 
 						case ~/DEV/: 
