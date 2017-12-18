@@ -5,14 +5,13 @@ pipeline {
     	ETE_SVN_HOST	= 'http://10.175.230.180:8080'
 		ETE_REPO		= 'svn/ETESystem'
 		ETE_WORKSPACE	= 'svn/ETESystem'
-		
     }
     
     stages {
     	stage('Preparation') {
             steps {
             	script {
-
+					
             		IS_BATCH		= false
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
@@ -45,6 +44,18 @@ pipeline {
 				        echo "Nothing to do."
 				    }
 			        
+			        APPS_BASE	   = 'env/${ETE_BRANCH}/ETE/App/'
+			        BATCH_BASE	   = 'env/${ETE_BRANCH}/ETE/Batch/'
+			       	
+			        DEV_APPS_HOME  = ['mule-esb-3.7.3-DEV']
+			        VIT_APPS_HOME  = ['mule-esb-3.7.3-VIT']
+			        SIT_APPS_HOME  = ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM','mule-esb-3.7.3-SIT-PP']
+			        UAT_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    PPRD_APPS_HOME = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    PRD_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    RESULT_HOME    = ['ETEAPP']
+                    SQL_HOME	   = ['ETEAPP']
+
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
 					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
@@ -105,6 +116,12 @@ pipeline {
 						'''
 			            echo "Create required directory for supporting RA"
 			            
+			            
+			            ['Result', 'SQL'].each { 
+			            	println it 
+			            	
+			            }
+			            input 
 			            switch (ETE_BRANCH) {
 
 						case ~/DEV/: 
@@ -126,6 +143,8 @@ pipeline {
 				        default: 
 				        	input "Do not known your build environment !";
 						}
+						
+						
 			        } 
 
 			    }
