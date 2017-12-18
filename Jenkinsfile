@@ -98,7 +98,7 @@ pipeline {
 					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
-					
+					 
 	                if (DELETE_DIR) {
 	                
 	                	sh '''
