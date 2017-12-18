@@ -118,15 +118,8 @@ pipeline {
 			            echo "Create required directory for supporting RA"
 			            
 			            
-			            RA_DIR.each { 
-			            	println it 
-			            	
-			            }
 			            
-			            
-			            input 
-			            
-			            
+
 			            
 			            
 			            switch (ETE_BRANCH) {
