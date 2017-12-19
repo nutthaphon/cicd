@@ -22,7 +22,14 @@ pipeline {
             		ETE_CONF_FILE	= params.ETE_CONF_FILE
             		ETE_PP			= params.ETE_PP
             		
-				    if(ETE_APP_NAME != '') { 
+            		if (ETE_BRANCH != '') {
+            			if (ETE_BRANCH =~ /DEV/) {
+            				SVN_BRANCH_PATH = 'trunk/'
+            			} else {
+							SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"
+            			}
+            			
+            		} else if(ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
 						RA_PATH	 = 'App/'
 						
@@ -46,9 +53,7 @@ pipeline {
 				        spufi = ETE_SQL_FILE.tokenize('\n') 
 				        RA_PATH	 = 'SQL/'        
 				        
-				    } else {
-				        echo "Nothing to do."
-				    }
+				    } 
 			        
 			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
 			       	
@@ -103,7 +108,9 @@ pipeline {
 					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
-					 
+					
+					input "${SIT_APPS_DIR[1]}"
+					
 	                if (DELETE_DIR) {
 	                
 	                	sh '''
@@ -126,37 +133,8 @@ pipeline {
 			            	RA_REQ_DIR.eachWithIndex { name, index ->
     							sh "mkdir -p ${name}"
 							}     
-			            }
-
-			            
-
-			            input "cont ?"
-			            
-			            switch (ETE_BRANCH) {
-
-						case ~/DEV/: 
-							sh "mkdir -p $DEV_RESULT_HOME1"
-			            	sh "mkdir -p $DEV_SQL_HOME1"
-							break;
-						case ~/SIT/: 
-							sh "mkdir -p $SIT_RESULT_HOME1"
-			            	sh "mkdir -p $SIT_SQL_HOME1"
-			            	sh "mkdir -p $VIT_RESULT_HOME1"
-			            	sh "mkdir -p $VIT_SQL_HOME1"
-							break;
-				        case ~/UAT/: 
-							sh "mkdir -p $UAT_RESULT_HOME1"
-			            	sh "mkdir -p $UAT_SQL_HOME1"
-					        break;
-				        case ~/PRD/: 
-					        break;
-				        default: 
-				        	input "Do not known your build environment !";
-						}
-						
-						
+			            }   
 			        } 
-
 			    }
             }
         }
@@ -172,18 +150,10 @@ pipeline {
             steps {
             	echo "Checking out source code from SVN..."
             	script {
-	            	if (ETE_BRANCH =~ /DEV/) {
-	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
-	                	
-	                	CURRENT_DIR = "${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
-	                	            	       
-	            	} else {
-	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
-	                	
-	                	CURRENT_DIR = "${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
-	                	
-	            	}
 
+					sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
+	                CURRENT_DIR = "${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
+					
 					dir (CURRENT_DIR) {
 							
 							sh '''
@@ -196,7 +166,21 @@ pipeline {
 								fi
 							'''
 					}
-				
+					
+					switch (ETE_APP_NAME) {
+					case ~/^atm/:
+						sh "mkdir -p $DEV_APPS_HOME2"
+						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
+						break;
+					case ~/^promptpay/:
+						sh "mkdir -p $DEV_APPS_HOME2"
+						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
+						break;
+					default:
+						sh "mkdir -p $DEV_APPS_HOME2"
+						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
+					}
+					
 					switch (ETE_BRANCH) {
 						case ~/DEV/:
 							println "Wrapping DEV";
