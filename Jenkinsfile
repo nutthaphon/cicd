@@ -48,7 +48,7 @@ pipeline {
 				    } else if (ETE_CONF_FILE != '') {
     					ETE_TYPE	 = 'conf'
     					
-    					if (ETE_CONF_FILE == 'mule-app-global.properties') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
+    					if (ETE_CONF_FILE == 'Application') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
 
     					
 				    } else if (ETE_SQL_FILE != '') {
@@ -179,10 +179,7 @@ pipeline {
  					dir (RA_BASE_PATH) {
  					
  						if (RA_PATH == 'App') {
- 							${ENV_APPS_DIR[ETE_BRANCH]}.eachWithIndex { name, index ->
-    							sh "mkdir -p ${RA_PATH}${name}/${ETE_TYPE}"
-    							sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_CONF_NAME[ETE_BRANCH][0]} ${RA_BASE_PATH}${RA_PATH}${name}/${ETE_TYPE}/${ETE_CONF_FILE}"
-							} 
+
  						       
  						} else {
  						    ${ENV_BATCH_INFO[ETE_BRANCH]['dir']}.eachWithIndex { name, index ->
