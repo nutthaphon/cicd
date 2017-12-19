@@ -72,7 +72,7 @@ pipeline {
 					        PRD	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']
 					]
 					
-					input "${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][1]}${ETE_TYPE}  ?"
+					echo "${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][1]}/${ETE_TYPE}"
 					
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
@@ -174,18 +174,14 @@ pipeline {
 					}
 					
 					switch (ETE_APP_NAME) {
-					case ~/^atm/:
-						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${DEV_APPS_DIR[1]}${ETE_TYPE}"
-						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
-						break;
-					case ~/^promptpay/:
-						sh "mkdir -p $DEV_APPS_HOME2"
-						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
-						break;
-					default:
-						sh "mkdir -p $DEV_APPS_HOME2"
-						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
+						case ~/^atm/		: DIR_IDX = 1; break;
+						case ~/^promptpay/	: DIR_IDX = 2; break;
+						default				: DIR_IDX = 0; break;
 					}
+					echo "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
+					echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
+					
+					input "cont ?"
 					
 					switch (ETE_BRANCH) {
 						case ~/DEV/:
