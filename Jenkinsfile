@@ -182,7 +182,7 @@ pipeline {
 
  						       
  						} else {
- 						    ${ENV_BATCH_INFO[ETE_BRANCH]['dir']}.eachWithIndex { name, index ->
+ 						    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
     							echo "mkdir -p ${RA_PATH}${name}/conf"
     							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_CONF_NAME[ETE_BRANCH][0]} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${ENV_BATCH_INFO[ETE_BRANCH]['conf']}"
 							}	     
