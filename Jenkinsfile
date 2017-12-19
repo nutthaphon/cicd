@@ -58,24 +58,22 @@ pipeline {
 			        
 			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
 			       	
-			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV']
-			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT']
-			        SIT_APPS_DIR  = ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM','mule-esb-3.7.3-SIT-PP']
-			        UAT_APPS_DIR  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
-                    PPRD_APPS_DIR = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
-                    PRD_APPS_DIR  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
                     RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
                     RESULT_DIR	  = ['ETEAPP']
                     SQL_DIR		  = ['ETEAPP']
 					
 					
-					APPS_DIR = [
-					        DEV : ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV'],
-					        VIT : ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT']
+					ENV_APPS_DIR = [
+					        DEV	 : ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV'],
+					        VIT	 : ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT'],
+					        SIT	 : ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP'],
+					        UAT	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'],
+					        PPRD : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'],
+					        PRD	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']
 					]
 					
-					input "${APPS_DIR['DEV'][1]} cont ?"
-					//${RA_BASE_PATH}${RA_PATH}${DEV_APPS_DIR}${ETE_TYPE}
+					input "${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][1]}${ETE_TYPE}  ?"
+					
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
 					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
