@@ -109,7 +109,8 @@ pipeline {
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
 					
-					input "${SIT_APPS_DIR[1]} ?"
+					echo "${SIT_APPS_DIR[1]}"
+					input "cont ?"
 					
 	                if (DELETE_DIR) {
 	                
