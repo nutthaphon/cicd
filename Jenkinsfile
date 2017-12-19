@@ -12,7 +12,7 @@ pipeline {
             steps {
             	script {
 					
-            		IS_BATCH		= false
+            		//IS_BATCH		= false
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
             		ETE_BRANCH		= params.ETE_BRANCH
@@ -31,13 +31,13 @@ pipeline {
             		}
             			
             		if(ETE_APP_NAME != '') { 
-				        ETE_TYPE = 'apps'
-						RA_PATH	 = 'App/'
+				        ETE_TYPE	 = 'apps'
+						RA_PATH		 = 'App/'
 						
 				    } else if (ETE_BATCH_NAME != '') { 
 				        ETE_TYPE	 = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
-				        IS_BATCH	 = true
+				        //IS_BATCH	 = true
 				        RA_PATH		 = 'Batch/'
 
 				    } else if (ETE_DOMAIN_NAME != '') {
@@ -46,22 +46,32 @@ pipeline {
 				        RA_PATH		 = 'App/'
 
 				    } else if (ETE_CONF_FILE != '') {
-    					ETE_TYPE = 'conf'
-    					RA_PATH	 = 'App/'
+    					ETE_TYPE	 = 'conf'
+    					
+    					if (ETE_CONF_FILE == 'mule-app-global.properties') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
+
     					
 				    } else if (ETE_SQL_FILE != '') {
-				        ETE_TYPE = 'spufi'
-				        spufi = ETE_SQL_FILE.tokenize('\n') 
-				        RA_PATH	 = 'SQL/'        
+				        ETE_TYPE	 = 'spufi'
+				        spufi		 = ETE_SQL_FILE.tokenize('\n') 
+				        RA_PATH		 = 'SQL/'        
 				        
 				    } 
 			        
-			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
+			        RA_BASE_PATH	 = "env/${ETE_BRANCH}/ETE/"
 			       	
                     RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
                     RESULT_DIR	  = ['ETEAPP']
                     SQL_DIR		  = ['ETEAPP']
 					
+					ENV_CONF_NAME = [
+					        DEV	 : ['mule-app-global.properties'		,'mule-batch-global.properties'],
+					        VIT	 : ['mule-app-global-vit.properties'	,'mule-batch-global-vit.properties'],
+					        SIT	 : ['mule-app-global-sit.properties'	,'mule-batch-global-sit.properties'],
+					        UAT	 : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties'],
+					        PPRD : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties'],
+					        PRD	 : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties']
+					]
 					
 					ENV_APPS_DIR = [
 					        DEV	 : ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV'],
@@ -72,14 +82,15 @@ pipeline {
 					        PRD	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']
 					]
 					
-					echo "${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][1]}/${ETE_TYPE}"
-
-					DEV_SQL_HOME1   = "env/DEV/ETE/SQL/ETEAPP"
-					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
-					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
-					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
+					ENV_BATCH_INFO = [
+					        DEV	 : [	conf	: 'mule-app-global.properties', 	dir		: ['mule-esb-3.7.3-DEV']],	
+					        VIT	 : [	conf	: 'mule-app-global-vit.properties', dir		: ['mule-esb-3.7.3-VIT']],
+					        SIT	 : [	conf	: 'mule-app-global-sit.properties', dir		: ['mule-esb-3.7.3-SIT']],
+					        UAT	 : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
+					        PPRD : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
+					        PRD	 : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']]
+					]
 					
-
 	                if (DELETE_DIR) {
 	                
 	                	sh '''
@@ -108,11 +119,10 @@ pipeline {
             }
         }
     	     
-        stage('Build applications or domains.') {
+        stage('Build') {
 			when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
-                    //expression { return (!IS_BATCH) }
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -150,80 +160,6 @@ pipeline {
             }
         } 
         
-        stage('Build batches.') {
-			when {
-                allOf { 
-                	expression { return false }
-                    expression { return (IS_BATCH) }
-                    expression { return (ETE_BRANCH != '') } 
-                } 
-            }
-            steps {
-
-            	echo "Checking out source code from SVN..."
-
-				script {
-				
-					if (ETE_BRANCH =~ /DEV/) {
-	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}"
-	                
-		                dir ("${ETE_REPO}/trunk/${ETE_TYPE}/${ETE_APP_NAME}") {
-							
-							sh '''
-								if [ -f "pom.xml" ]
-								then
-									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
-									export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
-									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
-									mvn clean package -o
-								fi
-							'''
-						}               	       
-	            	} else {
-	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}"
-	                
-		                dir ("${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}") {
-							
-							sh '''
-								if [ -f "pom.xml" ]
-								then
-									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
-									export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
-									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
-									mvn clean package -o
-								fi
-							'''
-						}
-	  	
-	            	}
-					
-					switch (ETE_BRANCH) {
-						case ~/DEV/:
-							sh "mkdir -p $DEV_BATCH_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_BATCH_HOME1}"					
-							break;
-						case ~/SIT/: 
-							sh "mkdir -p $SIT_BATCH_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_BATCH_HOME1}"
-							sh "mkdir -p $VIT_BATCH_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${VIT_BATCH_HOME1}"
-							break;
-				        case ~/UAT/: 
-					    	sh "mkdir -p $UAT_BATCH_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_BATCH_HOME1}"
-					        break;
-				        case ~/PRD/: 
-					        println "PRD"; 
-					        break;
-				        default: input "Do not known your build environment !";           
-
-					}
- 
-                }
-				
-            }
-        }
-        
         stage('Pick configuration files') {
             when {
                 allOf { 
@@ -234,26 +170,31 @@ pipeline {
             steps{
 
                 script {
- 					if (ETE_BRANCH =~ /DEV/) {
-	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/${ETE_TYPE} ${ETE_REPO}/trunk/${ETE_TYPE}"
-	            	    if (ETE_CONF_FILE =~ /Application/) {
-	 						FILE_NAME	= "mule-app-global.properties"
-	 						FILE_NAME2	= "mule-app-global.properties"                
-	 					} else {
-	 					    FILE_NAME	= "mule-batch-global.properties"
-	 					    FILE_NAME2	= "mule-batch-global.properties"      
-	 					}
-	                } else {
-	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/${ETE_TYPE}"
-	                	BENV = ${ETE_BRANCH}.toLowerCase()
-	                	if (ETE_CONF_FILE =~ /Application/) {
-	 						FILE_NAME	= "mule-app-global-${BENV}.properties"
-	 						FILE_NAME2	= "mule-app-global.properties"            
-	 					} else {
-	 					    FILE_NAME	= "mule-batch-global-${BENV}.properties" 
-	 					    FILE_NAME2	= "mule-batch-global.properties"      
-	 					}
-	                }
+                
+                	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
+
+					//${ENV_BATCH_INFO[ETE_BRANCH][ETE_TYPE]}
+					//${ENV_BATCH_INFO[ETE_BRANCH]['dir'][0]}
+					
+ 					dir (RA_BASE_PATH) {
+ 					
+ 						if (RA_PATH == 'App') {
+ 							${ENV_APPS_DIR[ETE_BRANCH]}.eachWithIndex { name, index ->
+    							sh "mkdir -p ${RA_PATH}${name}/${ETE_TYPE}"
+    							sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_CONF_NAME[ETE_BRANCH][0]} ${RA_BASE_PATH}${RA_PATH}${name}/${ETE_TYPE}/${ETE_CONF_FILE}"
+							} 
+ 						       
+ 						} else {
+ 						    ${ENV_BATCH_INFO[ETE_BRANCH]['dir']}.eachWithIndex { name, index ->
+    							echo "mkdir -p ${RA_PATH}${name}/conf"
+    							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_CONF_NAME[ETE_BRANCH][0]} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${ENV_BATCH_INFO[ETE_BRANCH]['conf']}"
+							}	     
+ 						}
+	
+			        }
+ 					
+ 					
+ 					input "cont ?"
  					
 					switch (ETE_BRANCH) {
 						case ~/DEV/: 
