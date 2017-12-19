@@ -24,38 +24,43 @@ pipeline {
             		
 				    if(ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
-
+						RA_PATH	 = 'App/'
+						
 				    } else if (ETE_BATCH_NAME != '') { 
-				        ETE_TYPE = 'apps'
+				        ETE_TYPE	 = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
-				        IS_BATCH = true
+				        IS_BATCH	 = true
+				        RA_PATH		 = 'Batch/'
 
 				    } else if (ETE_DOMAIN_NAME != '') {
-				        ETE_TYPE = 'domains'
+				        ETE_TYPE	 = 'domains'
 				        ETE_APP_NAME = ETE_DOMAIN_NAME
+				        RA_PATH		 = 'App/'
 
 				    } else if (ETE_CONF_FILE != '') {
     					ETE_TYPE = 'conf'
+    					RA_PATH	 = 'App/'
     					
 				    } else if (ETE_SQL_FILE != '') {
 				        ETE_TYPE = 'spufi'
-				        spufi = ETE_SQL_FILE.tokenize('\n')         
+				        spufi = ETE_SQL_FILE.tokenize('\n') 
+				        RA_PATH	 = 'SQL/'        
+				        
 				    } else {
 				        echo "Nothing to do."
 				    }
 			        
-			        APPS_BASE	   = 'env/${ETE_BRANCH}/ETE/App/'
-			        BATCH_BASE	   = 'env/${ETE_BRANCH}/ETE/Batch/'
+			        RA_BASE_PATH	   = 'env/${ETE_BRANCH}/ETE/'
 			       	
-			        DEV_APPS_HOME  = ['mule-esb-3.7.3-DEV']
-			        VIT_APPS_HOME  = ['mule-esb-3.7.3-VIT']
-			        SIT_APPS_HOME  = ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM','mule-esb-3.7.3-SIT-PP']
-			        UAT_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
-                    PPRD_APPS_HOME = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
-                    PRD_APPS_HOME  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
-                    RA_DIR		   = ['Result', 'SQL']
-                    RESULT_HOME    = ['ETEAPP']
-                    SQL_HOME	   = ['ETEAPP']
+			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV']
+			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT']
+			        SIT_APPS_DIR  = ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM','mule-esb-3.7.3-SIT-PP']
+			        UAT_APPS_DIR  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    PPRD_APPS_DIR = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    PRD_APPS_DIR  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
+                    RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
+                    RESULT_DIR	  = ['ETEAPP']
+                    SQL_DIR		  = ['ETEAPP']
 
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
@@ -117,10 +122,15 @@ pipeline {
 						'''
 			            echo "Create required directory for supporting RA"
 			            
-			            
-			            
+			            dir (RA_BASE_PATH) {
+			            	RA_REQ_DIR.eachWithIndex { name, index ->
+    							sh "mkdir -p ${name}"
+							}     
+			            }
 
 			            
+
+			            input "cont ?"
 			            
 			            switch (ETE_BRANCH) {
 
