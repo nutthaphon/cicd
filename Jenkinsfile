@@ -58,8 +58,8 @@ pipeline {
 			        
 			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
 			       	
-			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV']
-			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT']
+			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV']
+			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT']
 			        SIT_APPS_DIR  = ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM','mule-esb-3.7.3-SIT-PP']
 			        UAT_APPS_DIR  = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
                     PPRD_APPS_DIR = ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'    ,'mule-esb-3.7.3-PP']
@@ -67,7 +67,15 @@ pipeline {
                     RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
                     RESULT_DIR	  = ['ETEAPP']
                     SQL_DIR		  = ['ETEAPP']
-			
+					
+					
+					APPS_DIR = [
+					        DEV : ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV'],
+					        VIT : ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT']
+					]
+					
+					input "${APPS_DIR['DEV'][1]} cont ?"
+					//${RA_BASE_PATH}${RA_PATH}${DEV_APPS_DIR}${ETE_TYPE}
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
 					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
@@ -110,9 +118,7 @@ pipeline {
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
 					
-					echo "${SIT_APPS_DIR[1]}"
-					input "cont ?"
-					
+
 	                if (DELETE_DIR) {
 	                
 	                	sh '''
@@ -171,7 +177,7 @@ pipeline {
 					
 					switch (ETE_APP_NAME) {
 					case ~/^atm/:
-						sh "mkdir -p $DEV_APPS_HOME2"
+						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${DEV_APPS_DIR[1]}${ETE_TYPE}"
 						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
 						break;
 					case ~/^promptpay/:
