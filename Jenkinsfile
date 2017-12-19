@@ -73,44 +73,7 @@ pipeline {
 					]
 					
 					echo "${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][1]}/${ETE_TYPE}"
-					
-					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
-					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
-					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
-					SIT_APPS_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
-					SIT_APPS_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
-					SIT_APPS_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
-					VIT_APPS_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
-					UAT_APPS_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
-					UAT_APPS_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
-					UAT_APPS_HOME3  = "env/UAT/ETE/App/mule-esb-3.7.3-PP/${ETE_TYPE}"
 
-					DEV_BATCH_HOME1 = "env/DEV/ETE/Batch/mule-esb-3.7.3-DEV/${ETE_TYPE}"
-                    SIT_BATCH_HOME1 = "env/SIT/ETE/Batch/mule-esb-3.7.3-SIT/${ETE_TYPE}"
-					VIT_BATCH_HOME1 = "env/VIT/ETE/Batch/mule-esb-3.7.3-VIT/${ETE_TYPE}"
-					UAT_BATCH_HOME1 = "env/UAT/ETE/Batch/mule-esb-3.7.3/${ETE_TYPE}"
-					
-					DEV_CONF_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
-					DEV_CONF_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
-					DEV_CONF_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
-					SIT_CONF_HOME1  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT/${ETE_TYPE}"
-					SIT_CONF_HOME2  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-ATM/${ETE_TYPE}"
-					SIT_CONF_HOME3  = "env/SIT/ETE/App/mule-esb-3.7.3-SIT-PP/${ETE_TYPE}"
-					VIT_CONF_HOME1  = "env/VIT/ETE/App/mule-esb-3.7.3-VIT/${ETE_TYPE}"
-					UAT_CONF_HOME1  = "env/UAT/ETE/App/mule-esb-3.7.3/${ETE_TYPE}"
-					UAT_CONF_HOME2  = "env/UAT/ETE/App/mule-esb-3.7.3-ATM/${ETE_TYPE}"
-					UAT_CONF_HOME3  = "env/UAT/ETE/App/mule-esb-3.7.3-PP/${ETE_TYPE}"
-					
-					DEV_CONF_HOME4  = "env/DEV/ETE/Batch/mule-esb-3.7.3-DEV/${ETE_TYPE}"
-					SIT_CONF_HOME4  = "env/SIT/ETE/Batch/mule-esb-3.7.3-SIT/${ETE_TYPE}"
-					VIT_CONF_HOME2  = "env/VIT/ETE/Batch/mule-esb-3.7.3-VIT/${ETE_TYPE}"
-					UAT_CONF_HOME4  = "env/UAT/ETE/Batch/mule-esb-3.7.3/${ETE_TYPE}"
-					
-					DEV_RESULT_HOME1= "env/DEV/ETE/Result/ETEAPP"
-					SIT_RESULT_HOME1= "env/SIT/ETE/Result/ETEAPP"
-					VIT_RESULT_HOME1= "env/VIT/ETE/Result/ETEAPP"
-					UAT_RESULT_HOME1= "env/UAT/ETE/Result/ETEAPP"
-					
 					DEV_SQL_HOME1   = "env/DEV/ETE/SQL/ETEAPP"
 					SIT_SQL_HOME1   = "env/SIT/ETE/SQL/ETEAPP"
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
@@ -149,7 +112,7 @@ pipeline {
 			when {
                 allOf { 
                     expression { return ETE_TYPE ==~ /(apps|domains)/ };
-                    expression { return (!IS_BATCH) }
+                    //expression { return (!IS_BATCH) }
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -178,71 +141,10 @@ pipeline {
 						case ~/^promptpay/	: DIR_IDX = 2; break;
 						default				: DIR_IDX = 0; break;
 					}
-					echo "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
-					echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
 					
-					input "cont ?"
+					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
+					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
 					
-					switch (ETE_BRANCH) {
-						case ~/DEV/:
-							println "Wrapping DEV";
-							if (ETE_APP_NAME =~ /^atm/) { 
-								sh "mkdir -p $DEV_APPS_HOME2"
-								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME2}"
-					
-		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
-								sh "mkdir -p $DEV_APPS_HOME3"
-								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME3}"
-
-		                    } else {
-		                    	sh "mkdir -p $DEV_APPS_HOME1"
-								sh "cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${DEV_APPS_HOME1}"
-		                    
-		                    }				
-							break;
-						case ~/SIT/: 
-							println "Wrapping SIT";
-							if (ETE_APP_NAME =~ /^atm/) { 
-								sh "mkdir -p $SIT_APPS_HOME2"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME2}"
-					
-		                    } else if (ETE_APP_NAME =~ /^promptpay/) {
-								sh "mkdir -p $SIT_APPS_HOME3"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME3}"
-
-		                    } else {
-		                    	sh "mkdir -p $SIT_APPS_HOME1"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${SIT_APPS_HOME1}"
-		                    
-		                    }
-							println "Wrapping VIT";
-							sh "mkdir -p $VIT_APPS_HOME1"
-							sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${VIT_APPS_HOME1}"
-							break;
-				        case ~/UAT/: 
-					    	println "Wrapping UAT";    
-						    if (ETE_APP_NAME =~ /^atm/) { 
-						    	sh "mkdir -p $UAT_APPS_HOME2"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME2}"
-			                
-			                } else if (ETE_APP_NAME =~ /^promptpay/) {
-			                    sh "mkdir -p $UAT_APPS_HOME3"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME3}"
-			                     
-			                } else {
-			                	sh "mkdir -p $UAT_APPS_HOME1"
-								sh "cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${UAT_APPS_HOME1}"
-			                
-			                }
-		                    
-					        break;
-				        case ~/PRD/: 
-					        println "PRD"; 
-					        break;
-				        default: input "Do not known your build environment !";           
-
-					}
- 
                 }
 				
             }
@@ -251,6 +153,7 @@ pipeline {
         stage('Build batches.') {
 			when {
                 allOf { 
+                	expression { return false }
                     expression { return (IS_BATCH) }
                     expression { return (ETE_BRANCH != '') } 
                 } 
