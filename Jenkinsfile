@@ -22,14 +22,15 @@ pipeline {
             		ETE_CONF_FILE	= params.ETE_CONF_FILE
             		ETE_PP			= params.ETE_PP
             		
-            		if (ETE_BRANCH != '') {
-            			if (ETE_BRANCH =~ /DEV/) {
-            				SVN_BRANCH_PATH = 'trunk/'
-            			} else {
-							SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"
-            			}
+            		if (ETE_BRANCH =~ /DEV/) {
+            			SVN_BRANCH_PATH = 'trunk/'
             			
-            		} else if(ETE_APP_NAME != '') { 
+            		} else {
+						SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"
+						
+            		}
+            			
+            		if(ETE_APP_NAME != '') { 
 				        ETE_TYPE = 'apps'
 						RA_PATH	 = 'App/'
 						
@@ -56,7 +57,6 @@ pipeline {
 				    } 
 			        
 			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
-			       	echo "5555"
 			       	
 			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV']
 			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT']
@@ -110,7 +110,7 @@ pipeline {
 					VIT_SQL_HOME1   = "env/VIT/ETE/SQL/ETEAPP"
 					UAT_SQL_HOME1   = "env/UAT/ETE/SQL/ETEAPP"
 					
-					//echo "${SIT_APPS_DIR[1]}"
+					echo "${SIT_APPS_DIR[1]}"
 					input "cont ?"
 					
 	                if (DELETE_DIR) {
