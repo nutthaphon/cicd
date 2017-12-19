@@ -56,6 +56,7 @@ pipeline {
 				    } 
 			        
 			        RA_BASE_PATH	   = "env/${ETE_BRANCH}/ETE/"
+			       	echo "5555"
 			       	
 			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV']
 			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT']
@@ -66,7 +67,7 @@ pipeline {
                     RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
                     RESULT_DIR	  = ['ETEAPP']
                     SQL_DIR		  = ['ETEAPP']
-
+			
 					DEV_APPS_HOME1  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV/${ETE_TYPE}"
 					DEV_APPS_HOME2  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-ATM/${ETE_TYPE}"
 					DEV_APPS_HOME3  = "env/DEV/ETE/App/mule-esb-3.7.3-DEV-PP/${ETE_TYPE}"
