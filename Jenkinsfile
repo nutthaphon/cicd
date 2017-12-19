@@ -50,7 +50,7 @@ pipeline {
 				        echo "Nothing to do."
 				    }
 			        
-			        RA_BASE_PATH	   = 'env/${ETE_BRANCH}/ETE/'
+			        RA_BASE_PATH	   = 'env/${ETE_BATCH_NAME}/ETE/'
 			       	
 			        DEV_APPS_DIR  = ['mule-esb-3.7.3-DEV']
 			        VIT_APPS_DIR  = ['mule-esb-3.7.3-VIT']
