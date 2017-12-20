@@ -166,7 +166,7 @@ pipeline {
 					
  					dir (RA_BASE_PATH) {
  					
- 						if (RA_PATH == 'App') {
+ 						if (RA_PATH == 'App/') {
 							ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
     							echo "mkdir -p ${RA_PATH}${name}/conf"
     							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
