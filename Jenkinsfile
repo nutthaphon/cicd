@@ -139,14 +139,11 @@ pipeline {
 							'''
 					}
 					
+					if (ETE_APP_NAME =~ /^atm/) { DIR_IDX = 1; } 
+					else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
+					else { DIR_IDX = 0; }
 					
-					switch (ETE_APP_NAME) {
-						case ~/^atm/		: DIR_IDX = 1; break;
-						case ~/^promptpay/	: DIR_IDX = 2; break;
-						default				: DIR_IDX = 0; 
-					}
-					
-					input "Align along app name, ${ETE_APP_NAME} = ${DIR_IDX} ?"
+					//input "Align along app name, ${ETE_APP_NAME} = ${DIR_IDX} ?"
 					
 					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
