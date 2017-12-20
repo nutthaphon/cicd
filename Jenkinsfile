@@ -143,8 +143,6 @@ pipeline {
 					else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
 					else { DIR_IDX = 0; }
 					
-					//input "Align along app name, ${ETE_APP_NAME} = ${DIR_IDX} ?"
-					
 					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					
@@ -184,123 +182,7 @@ pipeline {
 			        }
  					
  					input "cont ?"
- 					
-					switch (ETE_BRANCH) {
-						case ~/DEV/: 
-							sh """
-		                    	if [ -d \$(dirname $DEV_CONF_HOME4) ]
-		                    	then
-		                    		mkdir -p $DEV_CONF_HOME4
-		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME4}/${FILE_NAME2}
-		                    	fi
-		                    """
-		                    sh """
-		                    	if [ -d \$(dirname $DEV_CONF_HOME3) ]
-		                    	then
-		                    		mkdir -p $DEV_CONF_HOME3
-		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME3}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $DEV_CONF_HOME2) ]
-		                    	then
-		                    		mkdir -p $DEV_CONF_HOME2
-		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME2}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $DEV_CONF_HOME1) ]
-		                    	then
-		                    		mkdir -p $DEV_CONF_HOME1
-		                    		cp -rp ${ETE_WORKSPACE}/trunk/${ETE_TYPE}/src/${FILE_NAME} ${DEV_CONF_HOME1}/${FILE_NAME2}
-		                    	fi
-		                    """
-					        break;
-					        
-						case ~/SIT/: 
-							sh """
-		                    	if [ -d \$(dirname $SIT_CONF_HOME4) ]
-		                    	then
-		                    		mkdir -p $SIT_CONF_HOME4
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME4}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $SIT_CONF_HOME3) ]
-		                    	then
-		                    		mkdir -p $SIT_CONF_HOME3
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME3}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $SIT_CONF_HOME2) ]
-		                    	then
-		                    		mkdir -p $SIT_CONF_HOME2
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME2}/${FILE_NAME2}
-		                    	fi
-		                    """
-		                    sh """
-		                    	if [ -d \$(dirname $SIT_CONF_HOME1) ]
-		                    	then
-		                    		mkdir -p $SIT_CONF_HOME1
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${SIT_CONF_HOME1}/${FILE_NAME2}
-		                    	fi
-		                    """
-		                    sh """
-		                    	if [ -d \$(dirname $VIT_CONF_HOME2) ]
-		                    	then
-		                    		mkdir -p $VIT_CONF_HOME2
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${VIT_CONF_HOME2}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $VIT_CONF_HOME1) ]
-		                    	then
-		                    		mkdir -p $VIT_CONF_HOME1
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${VIT_CONF_HOME1}/${FILE_NAME2}
-		                    	fi
-		                    """
-							break;
-							
-				        case ~/UAT/: 
-				        	sh """
-		                    	if [ -d \$(dirname $UAT_CONF_HOME4) ]
-		                    	then
-		                    		mkdir -p $UAT_CONF_HOME4
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME4}/${FILE_NAME2}
-		                    	fi
-		                    """
-				        	sh """
-		                    	if [ -d \$(dirname $UAT_CONF_HOME3) ]
-		                    	then
-		                    		mkdir -p $UAT_CONF_HOME3
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME3}/${FILE_NAME2}
-		                    	fi
-		                    """
-							sh """
-		                    	if [ -d \$(dirname $UAT_CONF_HOME2) ]
-		                    	then
-		                    		mkdir -p $UAT_CONF_HOME2
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME2}/${FILE_NAME2}
-		                    	fi
-		                    """
-		                    sh """
-		                    	if [ -d \$(dirname $UAT_CONF_HOME1) ]
-		                    	then
-		                    		mkdir -p $UAT_CONF_HOME1
-		                    		cp -rp ${ETE_WORKSPACE}/branches/${ETE_BRANCH}/${ETE_TYPE}/src/${FILE_NAME} ${UAT_CONF_HOME1}/${FILE_NAME2}
-		                    	fi
-		                    """
-					        break;
-					        
-				        case ~/PRD/: 
-					        println "PRD"; 
-					        break;
-					        
-				        default: input "Do not known your build environment !";
 
-					}
-	                
 			    }
                 
             }
