@@ -166,13 +166,13 @@ pipeline {
 					
  					if (RA_PATH == 'App/') {
 						ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
-    						sh "mkdir -p ${RA_PATH}${name}/conf"
+    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
     						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
 						}
  						       
  					} else {
  					    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
-    						sh "mkdir -p ${RA_PATH}${name}/conf"
+    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
     						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
 						}	     
  					}
