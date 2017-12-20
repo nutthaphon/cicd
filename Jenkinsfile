@@ -64,31 +64,24 @@ pipeline {
                     RESULT_DIR	  = ['ETEAPP']
                     SQL_DIR		  = ['ETEAPP']
 					
-					ENV_CONF_NAME = [
-					        DEV	 : ['mule-app-global.properties'		,'mule-batch-global.properties'],
-					        VIT	 : ['mule-app-global-vit.properties'	,'mule-batch-global-vit.properties'],
-					        SIT	 : ['mule-app-global-sit.properties'	,'mule-batch-global-sit.properties'],
-					        UAT	 : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties'],
-					        PPRD : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties'],
-					        PRD	 : ['mule-app-global-uat.properties'	,'mule-batch-global-uat.properties']
-					]
-					
-					ENV_APPS_DIR = [
-					        DEV	 : ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	  ,'mule-esb-3.7.3-DEV'],
-					        VIT	 : ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	  ,'mule-esb-3.7.3-VIT'],
-					        SIT	 : ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP'],
-					        UAT	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'],
-					        PPRD : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'],
-					        PRD	 : ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']
+					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
+									
+					ENV_APPS_INFO = [
+					        DEV	 : [	conf	: 'mule-app-global.properties'	  , 	dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
+					        VIT	 : [	conf	: 'mule-app-global-vit.properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
+					        SIT	 : [	conf	: 'mule-app-global-sit.properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP']],
+					        UAT	 : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
+					        PPRD : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
+					        PRD	 : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']]
 					]
 					
 					ENV_BATCH_INFO = [
-					        DEV	 : [	conf	: 'mule-app-global.properties', 	dir		: ['mule-esb-3.7.3-DEV']],	
-					        VIT	 : [	conf	: 'mule-app-global-vit.properties', dir		: ['mule-esb-3.7.3-VIT']],
-					        SIT	 : [	conf	: 'mule-app-global-sit.properties', dir		: ['mule-esb-3.7.3-SIT']],
-					        UAT	 : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
-					        PPRD : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
-					        PRD	 : [	conf	: 'mule-app-global-uat.properties',	dir		: ['mule-esb-3.7.3']]
+					        DEV	 : [	conf	: 'mule-batch-global.properties'	, 	dir		: ['mule-esb-3.7.3-DEV']],	
+					        VIT	 : [	conf	: 'mule-batch-global-vit.properties',	dir		: ['mule-esb-3.7.3-VIT']],
+					        SIT	 : [	conf	: 'mule-batch-global-sit.properties',	dir		: ['mule-esb-3.7.3-SIT']],
+					        UAT	 : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
+					        PPRD : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
+					        PRD	 : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']]
 					]
 					
 	                if (DELETE_DIR) {
@@ -152,8 +145,8 @@ pipeline {
 						default				: DIR_IDX = 0; break;
 					}
 					
-					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
-					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_DIR[ETE_BRANCH][DIR_IDX]}/${ETE_TYPE}"
+					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
+					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					
                 }
 				
@@ -172,24 +165,23 @@ pipeline {
                 script {
                 
                 	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
-
-					//${ENV_BATCH_INFO[ETE_BRANCH][ETE_TYPE]}
-					//${ENV_BATCH_INFO[ETE_BRANCH]['dir'][0]}
 					
  					dir (RA_BASE_PATH) {
  					
  						if (RA_PATH == 'App') {
-
+							ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
+    							echo "mkdir -p ${RA_PATH}${name}/conf"
+    							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
+							}
  						       
  						} else {
  						    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
     							echo "mkdir -p ${RA_PATH}${name}/conf"
-    							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_CONF_NAME[ETE_BRANCH][0]} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${ENV_BATCH_INFO[ETE_BRANCH]['conf']}"
+    							echo "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
 							}	     
  						}
 	
 			        }
- 					
  					
  					input "cont ?"
  					
