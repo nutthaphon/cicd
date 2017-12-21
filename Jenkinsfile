@@ -57,14 +57,22 @@ pipeline {
 				        
 				    } 
 			        
+			        
+			        FTP_SERVER_INFO	= [
+			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV'], account : ['root', 'P@ssete17']],
+			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT'], account : ['root', 'P@ssete17']],
+			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT'], account : ['root', 'P@ssete17']],
+			        		UAT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/UAT'], account : ['root', 'P@ssete17']],
+			        		PPRD : [ server : ['10.200.115.196', '22', '/app/DevOps/PPRD'], account : ['root', 'P@ssete17']],
+			        		PRD	 : [ server : ['10.200.115.196', '22', '/app/DevOps/PRD'], account : ['root', 'P@ssete17']]
+			        ]
+			        
 			        RA_BASE_PATH	 = "env/${ETE_BRANCH}/ETE/"
 			       	
 					RA_REQ_DIR	  = [
 							prog : 	[	'App',	'Batch'],
 							db 	 : 	[
-										[ 	sql		: 'Result/ETEAPP',		result		: 'SQL/ETEAPP'],
-										[ 	sql		: 'Result/ETEAPP2',		result		: 'SQL/ETEAPP2'],
-										[ 	sql		: 'Result/ETEAPP3',		result		: 'SQL/ETEAPP3']
+										[ 	sql		: 'Result/ETEAPP',		result		: 'SQL/ETEAPP']
 								  	]
 					]
 					
@@ -229,46 +237,11 @@ pipeline {
             }
             steps {
             	script {
-	                
-	                switch (ETE_BRANCH) {
-	                	case ~/DEV/:
-	                		dir ("env/DEV") {
-								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                			sh "jar -cMf ETE.zip ETE"           
-	                		}
-	                		break;
-	                	case ~/SIT/:
-	                		dir ("env/SIT") {
-	                			
-								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                			sh "jar -cMf ETE.zip ETE"        
-	                		        
-	                		}
-							dir ("env/VIT") {
-								sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    sh "jar -cMf ETE.zip ETE"   
-	                		        
-	                		}
-	                		break;
-	                	case ~/UAT/:
-	                		dir ("env/UAT") {
-	                			sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    sh "jar -cMf ETE.zip ETE"   
-	                		        
-	                		}
-	                		break;
-	                	case ~/PRD/:
-	                		dir ("env/PRD") {
-	                			sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/trunk/docs/ETE_config_manifest.xml ETE"
-	                		    sh "jar -cMf ETE.zip ETE"   
-	                		        
-	                		}
-	                		break;
-	                	default: input "Do not known your build environment !";             
-	                           
+	                dir ("env/${ETE_BRANCH}") {
+						sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
+	                	sh "jar -cMf ETE.zip ETE"           
 	                }
-
-	                
+ 
 			    }
             }
         }
@@ -283,38 +256,10 @@ pipeline {
             steps {
                 
                 script {
-	                
-	                switch (ETE_BRANCH) {
-	                	case ~/DEV/:
-	                		dir ("env/DEV") {
-	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/DEV"  
-	                		}
-	                		break;
-	                	case ~/SIT/:
-	                		dir ("env/SIT") {      
-	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/SIT"    
-	                		}
-							dir ("env/VIT") { 
-	                		    sh "sshpass -p P@ssete17 scp  ETE.zip root@10.200.115.196:/app/DevOps/VIT"   
-	                		}
-	                		break;
-	                	case ~/UAT/:
-	                		dir ("env/UAT") {
-	                		    
-	                		        
-	                		}
-	                		break;
-	                	case ~/PRD/:
-	                		dir ("env/PRD") {
-	                		     
-	                		        
-	                		}
-	                		break;
-	                	default: echo "Leave it in workspace.";             
-	                           
+	                dir ("env/${ETE_BRANCH}") {
+	                	sh "sshpass -p ${FTP_SERVER_INFO[ETE_BRANCH]['account'][1]} scp -P ${FTP_SERVER_INFO[ETE_BRANCH]['server'][1]} ETE.zip ${FTP_SERVER_INFO[ETE_BRANCH]['account'][0]}@${FTP_SERVER_INFO[ETE_BRANCH]['server'][0]}:${FTP_SERVER_INFO[ETE_BRANCH]['server'][2]}"
 	                }
-
-	                
+	                 
 			    }
             }
         }
