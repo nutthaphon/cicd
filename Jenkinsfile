@@ -13,7 +13,6 @@ pipeline {
             steps {
             	script {
 					
-            		//IS_BATCH		= false
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
             		ETE_BRANCH		= params.ETE_BRANCH
