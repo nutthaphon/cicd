@@ -109,8 +109,8 @@ pipeline {
     							sh "mkdir -p ${dir}"
 							}
 							RA_REQ_DIR['db'].eachWithIndex { dir, index ->
-    							sh "mkdir -p ${dir['sql']}"
-    							sh "mkdir -p ${dir['result']}"
+    							sh "mkdir -p dir['sql']"
+    							sh "mkdir -p dir['result']"
 							}    
 			            }   
 			        } 
