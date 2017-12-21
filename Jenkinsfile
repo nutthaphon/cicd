@@ -5,7 +5,6 @@ pipeline {
     	ETE_SVN_HOST	= 'http://10.175.230.180:8080'
 		ETE_REPO		= 'svn/ETESystem'
 		ETE_WORKSPACE	= 'svn/ETESystem'
-		BUILD_APTH		= '.temp/'
     }
     
     stages {
