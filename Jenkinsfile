@@ -59,7 +59,12 @@ pipeline {
 			        
 			        RA_BASE_PATH	 = "env/${ETE_BRANCH}/ETE/"
 			       	
-                    RA_REQ_DIR	  = ['App','Batch','Result/ETEAPP', 'SQL/ETEAPP']
+					RA_REQ_DIR	  = [
+							prog : 	[	'App',	'Batch'],
+							db 	 : 	[
+										[ 	sql		: ['Result/ETEAPP'],		result		: ['SQL/ETEAPP']]
+								  	]
+					]
 					
 					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
 									
@@ -97,12 +102,16 @@ pipeline {
 								rm -rf svn/*
 							fi
 						'''
-			            echo "Create required directory for supporting RA"
+			            echo "Create required directory"
 			            
 			            dir (RA_BASE_PATH) {
-			            	RA_REQ_DIR.eachWithIndex { name, index ->
-    							sh "mkdir -p ${name}"
-							}  
+			            	RA_REQ_DIR['prog'].eachWithIndex { prog, index ->
+    							sh "mkdir -p ${prog}"
+							}
+							RA_REQ_DIR['db'].eachWithIndex { db, index ->
+    							sh "mkdir -p ${db['sql']}"
+    							sh "mkdir -p ${db['result']}"
+							}    
 			            }   
 			        } 
 			    }
