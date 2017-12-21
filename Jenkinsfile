@@ -247,7 +247,7 @@ pipeline {
             		ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	
 		                dir ("env/${envname}") {
-							sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
+							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
 		                	sh "jar -cMf ETE.zip ETE"           
 		                }
 		            }    
