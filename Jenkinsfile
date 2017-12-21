@@ -62,7 +62,9 @@ pipeline {
 					RA_REQ_DIR	  = [
 							prog : 	[	'App',	'Batch'],
 							db 	 : 	[
-										[ 	sql		: ['Result/ETEAPP'],		result		: ['SQL/ETEAPP']]
+										[ 	sql		: 'Result/ETEAPP',		result		: 'SQL/ETEAPP'],
+										[ 	sql		: 'Result/ETEAPP2',		result		: 'SQL/ETEAPP2'],
+										[ 	sql		: 'Result/ETEAPP3',		result		: 'SQL/ETEAPP3']
 								  	]
 					]
 					
