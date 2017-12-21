@@ -105,12 +105,12 @@ pipeline {
 			            echo "Create required directory"
 			            
 			            dir (RA_BASE_PATH) {
-			            	RA_REQ_DIR[prog].eachWithIndex { dir, index ->
+			            	RA_REQ_DIR['prog'].eachWithIndex { dir, index ->
     							sh "mkdir -p ${dir}"
 							}
-							RA_REQ_DIR[db].eachWithIndex { dir, index ->
-    							sh "mkdir -p ${dir[sql]}"
-    							sh "mkdir -p ${dir[result]}"
+							RA_REQ_DIR['db'].eachWithIndex { dir, index ->
+    							sh "mkdir -p ${dir['sql']}"
+    							sh "mkdir -p ${dir['result']}"
 							}    
 			            }   
 			        } 
