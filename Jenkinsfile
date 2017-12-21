@@ -213,6 +213,8 @@ pipeline {
             steps{
             
                 script {
+                
+                	
 	                ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
 			        	
@@ -222,9 +224,9 @@ pipeline {
 								sh "cp -rp ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP" 
 							} 
 		                } else {
-		            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE}"
+		            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}"
 		                	spufi.each {
-								sh "cp -rp ${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP"
+								sh "cp -rp ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP"
 							}
 		                }
  					}
