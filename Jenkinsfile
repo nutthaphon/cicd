@@ -184,15 +184,15 @@ pipeline {
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
  					
 	 					if (RA_PATH == 'App/') {
-							ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, diridx ->
+							ENV_APPS_INFO[envname]['dir'].eachWithIndex { name, diridx ->
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
+	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
 							}
 	 						       
 	 					} else {
-	 					    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, diridx ->
+	 					    ENV_BATCH_INFO[envname]['dir'].eachWithIndex { name, diridx ->
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
+	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
 							}	     
 	 					}
  					}
@@ -216,15 +216,15 @@ pipeline {
 	                ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
 			        	
-	 					if (ETE_BRANCH =~ /DEV/) {
+	 					if (envname =~ /DEV/) {
 		            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/DBScripts/${ETE_TYPE} ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}"
 		            	    spufi.each {
 								sh "cp -rp ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP" 
 							} 
 		                } else {
-		            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}"
+		            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE}"
 		                	spufi.each {
-								sh "cp -rp ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP"
+								sh "cp -rp ${ETE_REPO}/branches/${envname}/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP"
 							}
 		                }
  					}
