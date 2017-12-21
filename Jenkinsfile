@@ -5,6 +5,7 @@ pipeline {
     	ETE_SVN_HOST	= 'http://10.175.230.180:8080'
 		ETE_REPO		= 'svn/ETESystem'
 		ETE_WORKSPACE	= 'svn/ETESystem'
+		
     }
     
     stages {
@@ -21,13 +22,7 @@ pipeline {
             		ETE_CONF_FILE	= params.ETE_CONF_FILE
             		ETE_PP			= params.ETE_PP
             		
-            		if (ETE_BRANCH =~ /DEV/) {
-            			SVN_BRANCH_PATH = 'trunk/'
-            			
-            		} else {
-						SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"
-						
-            		}
+            		if (ETE_BRANCH =~ /DEV/) {	SVN_BRANCH_PATH = 'trunk/'} else {	SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"}
             			
             		if(ETE_APP_NAME != '') { 
 				        ETE_TYPE	 = 'apps'
@@ -36,7 +31,6 @@ pipeline {
 				    } else if (ETE_BATCH_NAME != '') { 
 				        ETE_TYPE	 = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
-				        //IS_BATCH	 = true
 				        RA_PATH		 = 'Batch/'
 
 				    } else if (ETE_DOMAIN_NAME != '') {
@@ -46,10 +40,8 @@ pipeline {
 
 				    } else if (ETE_CONF_FILE != '') {
     					ETE_TYPE	 = 'conf'
-    					
     					if (ETE_CONF_FILE == 'Application') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
 
-    					
 				    } else if (ETE_SQL_FILE != '') {
 				        ETE_TYPE	 = 'spufi'
 				        spufi		 = ETE_SQL_FILE.tokenize('\n') 
@@ -57,18 +49,15 @@ pipeline {
 				        
 				    } 
 			        
-			        
 			        FTP_SERVER_INFO	= [
 			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV'], account : ['root', 'P@ssete17']],
 			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT'], account : ['root', 'P@ssete17']],
 			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT'], account : ['root', 'P@ssete17']],
 			        		UAT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/UAT'], account : ['root', 'P@ssete17']],
-			        		PPRD : [ server : ['10.200.115.196', '22', '/app/DevOps/PPRD'], account : ['root', 'P@ssete17']],
+			        		PPRD : [ server : ['10.200.115.196', '22', '/app/DevOps/PPRD'],account : ['root', 'P@ssete17']],
 			        		PRD	 : [ server : ['10.200.115.196', '22', '/app/DevOps/PRD'], account : ['root', 'P@ssete17']]
 			        ]
 			        
-			        RA_BASE_PATH	 = "env/${ETE_BRANCH}/ETE/"
-			       	
 					RA_REQ_DIR	  = [
 							prog : 	[	'App',	'Batch'],
 							db 	 : 	[
@@ -77,8 +66,15 @@ pipeline {
 					]
 					
 					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
-									
-					ENV_APPS_INFO = [
+					
+					ENV_REPLICA	   = [
+							DEV	 : ['DEV'],
+							SIT	 : ['SIT', 'VIT'],
+							UAT	 : ['UAT'],
+							PRD	 : ['PRD', 'PPRD']
+					]
+							
+					ENV_APPS_INFO  = [
 					        DEV	 : [	conf	: 'mule-app-global.properties'	  , 	dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
 					        VIT	 : [	conf	: 'mule-app-global-vit.properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
 					        SIT	 : [	conf	: 'mule-app-global-sit.properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP']],
@@ -112,17 +108,19 @@ pipeline {
 								rm -rf svn/*
 							fi
 						'''
-			            echo "Create required directory"
-			            
-			            dir (RA_BASE_PATH) {
-			            	RA_REQ_DIR['prog'].eachWithIndex { dir, index ->
-    							sh "mkdir -p ${dir}"
-							}
-							RA_REQ_DIR['db'].eachWithIndex { dir, index ->
-    							sh "mkdir -p ${dir['sql']}"
-    							sh "mkdir -p ${dir['result']}"
-							}    
-			            }   
+
+			            ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+			            	RA_BASE_PATH = "env/${envname}/ETE/"
+				            dir (RA_BASE_PATH) {
+				            	RA_REQ_DIR['prog'].eachWithIndex { dir, index ->
+	    							sh "mkdir -p ${dir}"
+								}
+								RA_REQ_DIR['db'].eachWithIndex { dir, index ->
+	    							sh "mkdir -p ${dir['sql']}"
+	    							sh "mkdir -p ${dir['result']}"
+								}    
+				            } 
+				        }      
 			        } 
 			    }
             }
@@ -136,7 +134,7 @@ pipeline {
                 } 
             }
             steps {
-            	echo "Checking out source code from SVN..."
+
             	script {
 
 					sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
@@ -159,9 +157,11 @@ pipeline {
 					else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
 					else { DIR_IDX = 0; }
 					
-					sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
-					sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[ETE_BRANCH]['dir'][DIR_IDX]}/${ETE_TYPE}"
-					
+					ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+					    RA_BASE_PATH = "env/${envname}/ETE/"
+						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
+						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
+					}
                 }
 				
             }
@@ -179,20 +179,24 @@ pipeline {
                 script {
                 
                 	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
-					
- 					if (RA_PATH == 'App/') {
-						ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
-    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
-						}
- 						       
- 					} else {
- 					    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
-    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
-						}	     
+				
+			        ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+			        	RA_BASE_PATH = "env/${envname}/ETE/"
+ 					
+	 					if (RA_PATH == 'App/') {
+							ENV_APPS_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
+	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
+	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
+							}
+	 						       
+	 					} else {
+	 					    ENV_BATCH_INFO[ETE_BRANCH]['dir'].eachWithIndex { name, index ->
+	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
+	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[ETE_BRANCH]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
+							}	     
+	 					}
  					}
-
+					
 			    }
                 
             }
@@ -209,19 +213,21 @@ pipeline {
             steps{
             
                 script {
-	                
- 					if (ETE_BRANCH =~ /DEV/) {
-	            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/DBScripts/${ETE_TYPE} ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}"
-	            	    spufi.each {
-							sh "cp -rp ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}/${it} env/${ETE_BRANCH}/ETE/SQL/ETEAPP" 
-						} 
-	                } else {
-	            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}"
-	                	spufi.each {
-							sh "cp -rp ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}/${it} env/${ETE_BRANCH}/ETE/SQL/ETEAPP"
-						}
-	                }
- 
+	                ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+			        	RA_BASE_PATH = "env/${envname}/ETE/"
+			        	
+	 					if (ETE_BRANCH =~ /DEV/) {
+		            	    sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/trunk/DBScripts/${ETE_TYPE} ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}"
+		            	    spufi.each {
+								sh "cp -rp ${ETE_REPO}/trunk/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP" 
+							} 
+		                } else {
+		            		sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE} ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}"
+		                	spufi.each {
+								sh "cp -rp ${ETE_REPO}/branches/${ETE_BRANCH}/DBScripts/${ETE_TYPE}/${it} ${RA_BASE_PATH}SQL/ETEAPP"
+							}
+		                }
+ 					}
 			    }
                 
             }
@@ -237,11 +243,13 @@ pipeline {
             }
             steps {
             	script {
-	                dir ("env/${ETE_BRANCH}") {
-						sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
-	                	sh "jar -cMf ETE.zip ETE"           
-	                }
- 
+            		ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+			        	
+		                dir ("env/${envname}") {
+							sh "svn export ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
+		                	sh "jar -cMf ETE.zip ETE"           
+		                }
+		            }    
 			    }
             }
         }
@@ -256,10 +264,11 @@ pipeline {
             steps {
                 
                 script {
-	                dir ("env/${ETE_BRANCH}") {
-	                	sh "sshpass -p ${FTP_SERVER_INFO[ETE_BRANCH]['account'][1]} scp -P ${FTP_SERVER_INFO[ETE_BRANCH]['server'][1]} ETE.zip ${FTP_SERVER_INFO[ETE_BRANCH]['account'][0]}@${FTP_SERVER_INFO[ETE_BRANCH]['server'][0]}:${FTP_SERVER_INFO[ETE_BRANCH]['server'][2]}"
-	                }
-	                 
+                	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, index ->
+		                dir ("env/${envname}") {
+		                	sh "sshpass -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
+		                }
+	                } 
 			    }
             }
         }
@@ -275,13 +284,6 @@ pipeline {
         }
         failure {
             echo 'Fail.'
-        }
-        unstable {
-            echo 'This will run only if the run was marked as unstable'
-        }
-        changed {
-            echo 'This will run only if the state of the Pipeline has changed'
-            echo 'For example, if the Pipeline was previously failing but is now successful'
         }
     }
     
