@@ -137,7 +137,7 @@ pipeline {
 
             	script {
 
-					sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
+					sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 	                CURRENT_DIR = "${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 					
 					dir (CURRENT_DIR) {
@@ -178,7 +178,7 @@ pipeline {
 
                 script {
                 
-                	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
+                	sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
 				
 			        ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
@@ -214,7 +214,7 @@ pipeline {
             
                 script {
                 
-                	sh "svn checkout ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE}"
+                	sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE}"
                 	
 	                ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
