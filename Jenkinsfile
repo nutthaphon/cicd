@@ -59,9 +59,7 @@ pipeline {
 			        
 			        RA_BASE_PATH	 = "env/${ETE_BRANCH}/ETE/"
 			       	
-                    RA_REQ_DIR	  = ['App','Batch','Result', 'SQL']
-                    RESULT_DIR	  = ['ETEAPP']
-                    SQL_DIR		  = ['ETEAPP']
+                    RA_REQ_DIR	  = ['App','Batch','Result/ETEAPP', 'SQL/ETEAPP']
 					
 					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
 									
@@ -104,7 +102,7 @@ pipeline {
 			            dir (RA_BASE_PATH) {
 			            	RA_REQ_DIR.eachWithIndex { name, index ->
     							sh "mkdir -p ${name}"
-							}     
+							}  
 			            }   
 			        } 
 			    }
