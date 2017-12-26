@@ -277,11 +277,21 @@ pipeline {
         
     }
     post {
+    	always {
+    	    mail (to: '47238@tmbbank.com',
+         	subject: "ETE Application Building",
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built.");
+    	}
+
         success {
-            mail bcc: '', body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successfully.", cc: 'nutthaphon@gmail.com', from: '', replyTo: '', subject: 'ETE Application Building', to: '47238@tmbbank.com'
+        	mail (to: '47238@tmbbank.com',
+         	subject: "ETE Application Building",
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successfully.");
         }
         failure {
-            mail bcc: '', body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} budsilt with failure.", cc: 'nutthaphon@gmail.com', from: '', replyTo: '', subject: 'ETE Application Building', to: '47238@tmbbank.com'
+        	mail (to: '47238@tmbbank.com',
+         	subject: "ETE Application Building",
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with failure..");
         }
     }
     
