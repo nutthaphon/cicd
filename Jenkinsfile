@@ -267,7 +267,7 @@ pipeline {
                 script {
                 	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 		                dir ("env/${envname}") {
-		                	FTP_CONSOLE = sh returnStdout: true, script: "sshpass -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
+		                	FTP_CONSOLE = sh returnStdout: true, script: "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
 		                }
 	                } 
 			    }
