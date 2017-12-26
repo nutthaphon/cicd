@@ -12,7 +12,7 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-					FTP_CONSOLE		= ''
+					FTP_CONSOLE		= 'Thanks for using.'
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
             		ETE_BRANCH		= params.ETE_BRANCH
