@@ -12,7 +12,6 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-					FTP_CONSOLE		= 'Thanks for using.'
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
             		ETE_BRANCH		= params.ETE_BRANCH
@@ -267,7 +266,7 @@ pipeline {
                 script {
                 	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 		                dir ("env/${envname}") {
-		                	FTP_CONSOLE = sh returnStdout: true, script: "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
+		                	sh "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
 		                }
 	                } 
 			    }
@@ -280,12 +279,12 @@ pipeline {
         success {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n ${FTP_CONSOLE}");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n FTP => ${SEND_RA}");
         }
         failure {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n ${FTP_CONSOLE}");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n FTP => ${SEND_RA}");
         }
     }
     
