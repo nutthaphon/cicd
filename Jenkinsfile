@@ -280,12 +280,12 @@ pipeline {
         success {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successful. \n ${FTP_CONSOLE}");
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n ${FTP_CONSOLE}");
         }
         failure {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with error.  \n ${FTP_CONSOLE}");
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n ${FTP_CONSOLE}");
         }
     }
     
