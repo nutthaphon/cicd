@@ -12,7 +12,7 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-					
+					FTP_CONSOLE		= ''
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
             		ETE_BRANCH		= params.ETE_BRANCH
@@ -267,7 +267,7 @@ pipeline {
                 script {
                 	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 		                dir ("env/${envname}") {
-		                	sh "sshpass -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
+		                	FTP_CONSOLE = sh returnStdout: true, script: "sshpass -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
 		                }
 	                } 
 			    }
@@ -277,21 +277,15 @@ pipeline {
         
     }
     post {
-    	always {
-    	    mail (to: '47238@tmbbank.com',
-         	subject: "ETE Application Building",
-         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built.");
-    	}
-
         success {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Application Building",
-         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successfully.");
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successful. \n ${FTP_CONSOLE}");
         }
         failure {
         	mail (to: '47238@tmbbank.com',
          	subject: "ETE Application Building",
-         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with failure..");
+         	body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with error.  \n ${FTP_CONSOLE}");
         }
     }
     
