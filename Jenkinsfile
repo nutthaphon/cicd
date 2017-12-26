@@ -20,6 +20,7 @@ pipeline {
             		ETE_BATCH_NAME	= params.ETE_BATCH_NAME
             		ETE_CONF_FILE	= params.ETE_CONF_FILE
             		ETE_PP			= params.ETE_PP
+            		MAIL_TO			= params.MAIL_TO
             		
             		if (ETE_BRANCH =~ /DEV/) {	SVN_BRANCH_PATH = 'trunk/'} else {	SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"}
             			
@@ -277,12 +278,12 @@ pipeline {
     }
     post {
         success {
-        	mail (to: '47238@tmbbank.com',
+        	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n FTP => ${SEND_RA}");
         }
         failure {
-        	mail (to: '47238@tmbbank.com',
+        	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n FTP => ${SEND_RA}");
         }
