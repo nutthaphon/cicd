@@ -277,14 +277,11 @@ pipeline {
         
     }
     post {
-        always {
-            echo 'Thank you for using.'
-        }
         success {
-            echo 'Successful.'
+            mail bcc: '', body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built with successfully.", cc: 'nutthaphon@gmail.com', from: '', replyTo: '', subject: 'ETE Application Building', to: '47238@tmbbank.com'
         }
         failure {
-            echo 'Fail.'
+            mail bcc: '', body: "${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} budsilt with failure.", cc: 'nutthaphon@gmail.com', from: '', replyTo: '', subject: 'ETE Application Building', to: '47238@tmbbank.com'
         }
     }
     
