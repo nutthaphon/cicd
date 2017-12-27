@@ -50,12 +50,12 @@ pipeline {
 				    } 
 			        
 			        FTP_SERVER_INFO	= [
-			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV'], account : ['root', 'P@ssete17']],
-			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT'], account : ['root', 'P@ssete17']],
-			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT'], account : ['root', 'P@ssete17']],
-			        		UAT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/UAT'], account : ['root', 'P@ssete17']],
-			        		PPRD : [ server : ['10.200.115.196', '22', '/app/DevOps/PPRD'],account : ['root', 'P@ssete17']],
-			        		PRD	 : [ server : ['10.200.115.196', '22', '/app/DevOps/PRD'], account : ['root', 'P@ssete17']]
+			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV'], account : ['appadm', 'TMBete123']],
+			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT'], account : ['appadm', 'TMBete123']],
+			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT'], account : ['appadm', 'TMBete123']],
+			        		UAT	 : [ server : ['10.200.115.45', '22', '/app/DevOps/UAT'], account : ['appadm', 'ETEuat123']],
+			        		PPRD : [ server : ['10.200.115.47', '22', '/app/DevOps/PREPRD'],account : ['appadm', 'ETEuat123']],
+			        		PRD	 : [ server : ['10.200.115.47', '22', '/app/DevOps/PREPRD'], account : ['appadm', 'ETEuat123']]
 			        ]
 			        
 					RA_REQ_DIR	  = [
