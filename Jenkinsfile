@@ -280,12 +280,12 @@ pipeline {
         success {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n FTP => ${SEND_RA}. \n ${BUILD_LOG_REGEX, regex="^Build package URL:", showTruncatedLines=false}");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. \n FTP => ${SEND_RA}. \n ${BUILD_LOG_REGEX, regex=\"^Build package URL:\", showTruncatedLines=false}");
         }
         failure {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n FTP => ${SEND_RA}. \n ${BUILD_LOG_REGEX, regex="^Build package URL:", showTruncatedLines=false}");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  \n FTP => ${SEND_RA}. \n ${BUILD_LOG_REGEX, regex=\"^Build package URL:\", showTruncatedLines=false}");
         }
     }
     
