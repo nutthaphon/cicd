@@ -281,13 +281,13 @@ pipeline {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with successful. <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS.</font>. <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built with error.  <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>ERROR.</font>.  <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
     }
     
