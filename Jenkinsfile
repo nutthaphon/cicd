@@ -239,7 +239,7 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (paramSEND_RA == true) };
+                    expression { return (env.SEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
