@@ -18,8 +18,8 @@ pipeline {
             		ETE_PP			= params.ETE_PP
             		MAIL_TO			= params.MAIL_TO
             		
-            		if(params.ETE_BRANCH != '') {
-            			ETE_BRANCH		= params.ETE_BRANCH
+            		if(ETE_BRANCH != '') {
+            			//ETE_BRANCH		= params.ETE_BRANCH
 	            		if (ETE_BRANCH =~ /DEV/) {	
 	            			SVN_BRANCH_PATH = 'trunk/'
 	            		} else {	
