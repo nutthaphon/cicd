@@ -14,37 +14,44 @@ pipeline {
             	script {
             		DELETE_DIR		= params.DELETE_DIR
             		SEND_RA			= params.SEND_RA
-            		ETE_BRANCH		= params.ETE_BRANCH
-            		ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
-            		ETE_APP_NAME	= params.ETE_APP_NAME
-            		ETE_BATCH_NAME	= params.ETE_BATCH_NAME
-            		ETE_CONF_FILE	= params.ETE_CONF_FILE
+
             		ETE_PP			= params.ETE_PP
             		MAIL_TO			= params.MAIL_TO
             		
-            		if (ETE_BRANCH =~ /DEV/) {	SVN_BRANCH_PATH = 'trunk/'} else {	SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"}
+            		if(params.ETE_BRANCH != '') {
+            			ETE_BRANCH		= params.ETE_BRANCH
+	            		if (ETE_BRANCH =~ /DEV/) {	
+	            			SVN_BRANCH_PATH = 'trunk/'
+	            		} else {	
+	            			SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/"	
+	            		}
+            		}
             			
-            		if(ETE_APP_NAME != '') { 
+            		if(params.ETE_APP_NAME != '') { 
+            			ETE_APP_NAME	= params.ETE_APP_NAME
 				        ETE_TYPE	 = 'apps'
 						RA_PATH		 = 'App/'
 						
-				    } else if (ETE_BATCH_NAME != '') { 
+				    } else if (params.ETE_BATCH_NAME != '') {
+				    	ETE_BATCH_NAME	= params.ETE_BATCH_NAME
 				        ETE_TYPE	 = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
 				        RA_PATH		 = 'Batch/'
 
-				    } else if (ETE_DOMAIN_NAME != '') {
+				    } else if (params.ETE_DOMAIN_NAME != '') {
+				    	ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
 				        ETE_TYPE	 = 'domains'
 				        ETE_APP_NAME = ETE_DOMAIN_NAME
 				        RA_PATH		 = 'App/'
 
-				    } else if (ETE_CONF_FILE != '') {
+				    } else if (params.ETE_CONF_FILE != '') {
+				    	ETE_CONF_FILE	= params.ETE_CONF_FILE
     					ETE_TYPE	 = 'conf'
     					if (ETE_CONF_FILE == 'Application') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
 
-				    } else if (ETE_SQL_FILE != '') {
-				        ETE_TYPE	 = 'spufi'
+				    } else if (ETE_SQL_FILE != '') {  
 				        spufi		 = ETE_SQL_FILE.tokenize('\n') 
+				        ETE_TYPE	 = 'spufi'
 				        RA_PATH		 = 'SQL/'        
 				        
 				    } 
@@ -98,7 +105,7 @@ pipeline {
 							if [ -d "env" ]
 							then
 								echo "Delete env directory."
-								rm -rf env/*
+								rm -rf env/${ETE_BRANCH}
 							fi
 						'''
 						sh '''
