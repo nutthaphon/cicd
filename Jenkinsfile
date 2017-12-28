@@ -9,7 +9,7 @@ pipeline {
     }
     
     stages {
-    	stage('Preparation') {
+    	stage('(1) Preparation') {
             steps {
             	script {
 					sh 'printenv'
@@ -143,7 +143,7 @@ pipeline {
             }
         }
     	     
-        stage('Build') {
+        stage('(2) Build') {
 			when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(apps|domains)/) };
@@ -184,7 +184,7 @@ pipeline {
             }
         } 
         
-        stage('Pick configuration files') {
+        stage('(3) Pick configuration files') {
             when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(conf)/) };
@@ -220,7 +220,7 @@ pipeline {
 
         }
 		
-		stage('Pick SQL files') {
+		stage('(4) Pick SQL files') {
             when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(spufi)/) };
@@ -252,7 +252,7 @@ pipeline {
 
         }
 		
-        stage('Packaging') {
+        stage('(5) Packaging') {
             when {
                 allOf { 
                     expression { return (SEND_RA) };
@@ -272,7 +272,7 @@ pipeline {
             }
         }
                         
-        stage('Transfering') {
+        stage('(6) Transfering') {
         	when {
                 allOf { 
                     expression { return (SEND_RA == true) };
