@@ -5,14 +5,15 @@ pipeline {
     	ETE_SVN_HOST	= 'http://10.175.230.180:8080'
 		ETE_REPO		= 'svn/ETESystem'
 		ETE_WORKSPACE	= 'svn/ETESystem'
-		
+
     }
     
     stages {
     	stage('Preparation') {
             steps {
             	script {
-
+					sh 'printenv'
+					
             		if(ETE_BRANCH != '') {
             			ETE_TYPE	 = ''
 	            		if (ETE_BRANCH =~ /DEV/) {	
@@ -238,7 +239,7 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (SEND_RA == true) };
+                    expression { return (paramSEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
