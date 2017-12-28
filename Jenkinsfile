@@ -92,23 +92,23 @@ pipeline {
 					
 	                if (DELETE_DIR) {
 	                
-	                	sh '''
-			            	if [ -d "svn" ]
+	                	sh """
+			            	if [ -d 'svn' ]
 							then
-								echo "Delete ${ETE_WORKSPACE}/${SVN_BRANCH_PATH} directory."
+								echo Delete ${ETE_WORKSPACE}/${SVN_BRANCH_PATH} directory.
 								rm -rf ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}
 							fi
-						'''
+						"""
 
 			            ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			            
-				            sh '''
-								if [ -d "env" ]
+				            sh """
+								if [ -d 'env' ]
 								then
-									echo "Delete env/${envname} directory."
+									echo Delete env/${envname} directory.
 									rm -rf env/${envname}
 								fi
-							'''
+							"""
 
 			            	RA_BASE_PATH = "env/${envname}/ETE/"
 				            dir (RA_BASE_PATH) {
