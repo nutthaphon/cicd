@@ -95,7 +95,7 @@ pipeline {
 	                	sh '''
 			            	if [ -d "svn" ]
 							then
-								echo "Delete svn directory."
+								echo "Delete ${ETE_WORKSPACE}/${SVN_BRANCH_PATH} directory."
 								rm -rf ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}
 							fi
 						'''
@@ -105,7 +105,7 @@ pipeline {
 				            sh '''
 								if [ -d "env" ]
 								then
-									echo "Delete env directory."
+									echo "Delete env/${envname} directory."
 									rm -rf env/${envname}
 								fi
 							'''
@@ -238,7 +238,7 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (params.SEND_RA == 'True') };
+                    expression { return (SEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -258,7 +258,7 @@ pipeline {
         stage('Transfering') {
         	when {
                 allOf { 
-                    expression { return (params.SEND_RA == 'True') };
+                    expression { return (SEND_RA == true) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
