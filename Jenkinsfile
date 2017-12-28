@@ -12,7 +12,6 @@ pipeline {
     	stage('(1) Preparation') {
             steps {
             	script {
-					sh 'printenv'
 					
 			        DELETE_DIR		= params.DELETE_DIR
 			        SEND_RA			= params.SEND_RA
@@ -107,43 +106,57 @@ pipeline {
 					        PRD	 : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']]
 					]
 					
-	                if (DELETE_DIR) {
+	                sh 'printenv'
 	                
-	                	sh """
-			            	if [ -d 'svn' ]
+			    }
+            }
+        }
+    	
+    	stage('(2) Cleanup') {
+        	when {
+                allOf { 
+                    expression { return (DELETE_DIR == true) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps {
+                
+                script {
+
+	                sh """
+			            if [ -d 'svn' ]
+						then
+							echo Delete ${ETE_WORKSPACE}/${SVN_BRANCH_PATH} directory.
+							rm -rf ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}
+						fi
+					"""
+
+		            ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+			     		sh """
+							if [ -d 'env' ]
 							then
-								echo Delete ${ETE_WORKSPACE}/${SVN_BRANCH_PATH} directory.
-								rm -rf ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}
+								echo Delete env/${envname} directory.
+								rm -rf env/${envname}
 							fi
 						"""
 
-			            ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
-			            
-				            sh """
-								if [ -d 'env' ]
-								then
-									echo Delete env/${envname} directory.
-									rm -rf env/${envname}
-								fi
-							"""
-
-			            	RA_BASE_PATH = "env/${envname}/ETE/"
-				            dir (RA_BASE_PATH) {
-				            	RA_REQ_DIR['prog'].eachWithIndex { dir, diridx ->
-	    							sh "mkdir -p ${dir}"
-								}
-								RA_REQ_DIR['db'].eachWithIndex { dir, diridx ->
-	    							sh "mkdir -p ${dir['sql']}"
-	    							sh "mkdir -p ${dir['result']}"
-								}    
-				            } 
-				        }      
-			        } 
+			            RA_BASE_PATH = "env/${envname}/ETE/"
+				        dir (RA_BASE_PATH) {
+				           	RA_REQ_DIR['prog'].eachWithIndex { dir, diridx ->
+	    						sh "mkdir -p ${dir}"
+							}
+							RA_REQ_DIR['db'].eachWithIndex { dir, diridx ->
+	    						sh "mkdir -p ${dir['sql']}"
+	    						sh "mkdir -p ${dir['result']}"
+							}    
+				        } 
+					}      
+ 
 			    }
             }
         }
     	     
-        stage('(2) Build') {
+        stage('(3) Build') {
 			when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(apps|domains)/) };
@@ -184,7 +197,7 @@ pipeline {
             }
         } 
         
-        stage('(3) Pick configuration files') {
+        stage('(4) Pick configuration files') {
             when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(conf)/) };
@@ -220,7 +233,7 @@ pipeline {
 
         }
 		
-		stage('(4) Pick SQL files') {
+		stage('(5) Pick SQL files') {
             when {
                 allOf { 
                     expression { return (ETE_TYPE ==~ /(spufi)/) };
@@ -252,7 +265,7 @@ pipeline {
 
         }
 		
-        stage('(5) Packaging') {
+        stage('(6) Packaging') {
             when {
                 allOf { 
                     expression { return (SEND_RA) };
@@ -272,7 +285,7 @@ pipeline {
             }
         }
                         
-        stage('(6) Transfering') {
+        stage('(7) Transfering') {
         	when {
                 allOf { 
                     expression { return (SEND_RA == true) };
