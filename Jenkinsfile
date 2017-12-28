@@ -14,6 +14,7 @@ pipeline {
             	script {
 
             		if(ETE_BRANCH != '') {
+            			ETE_TYPE	 = ''
 	            		if (ETE_BRANCH =~ /DEV/) {	
 	            			SVN_BRANCH_PATH = 'trunk/'
 	            		} else {	
