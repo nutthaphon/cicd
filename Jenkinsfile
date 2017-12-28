@@ -130,7 +130,7 @@ pipeline {
         stage('Build') {
 			when {
                 allOf { 
-                    expression { return ETE_TYPE ==~ /(apps|domains)/ };
+                    expression { return (ETE_TYPE ==~ /(apps|domains)/) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -171,7 +171,7 @@ pipeline {
         stage('Pick configuration files') {
             when {
                 allOf { 
-                    expression { return ETE_TYPE ==~ /(conf)/ };
+                    expression { return (ETE_TYPE ==~ /(conf)/) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -207,7 +207,7 @@ pipeline {
 		stage('Pick SQL files') {
             when {
                 allOf { 
-                    expression { return ETE_TYPE ==~ /(spufi)/ };
+                    expression { return (ETE_TYPE ==~ /(spufi)/) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -239,7 +239,7 @@ pipeline {
         stage('Packaging') {
             when {
                 allOf { 
-                    expression { return (env.SEND_RA == true) };
+                    expression { return (env.SEND_RA) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
