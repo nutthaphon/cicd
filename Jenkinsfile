@@ -12,11 +12,11 @@ pipeline {
     	stage('Preparation') {
             steps {
             	script {
-            		DELETE_DIR		= params.DELETE_DIR
-            		SEND_RA			= params.SEND_RA
+            		//DELETE_DIR		= params.DELETE_DIR
+            		//SEND_RA			= params.SEND_RA
 
-            		ETE_PP			= params.ETE_PP
-            		MAIL_TO			= params.MAIL_TO
+            		//ETE_PP			= params.ETE_PP
+            		//MAIL_TO			= params.MAIL_TO
             		
             		if(ETE_BRANCH != '') {
             			//ETE_BRANCH		= params.ETE_BRANCH
