@@ -27,25 +27,25 @@ pipeline {
 	            		}
             		}
             			
-            		if(params.ETE_APP_NAME != '') { 
-            			ETE_APP_NAME	= params.ETE_APP_NAME
+            		if(ETE_APP_NAME != '') { 
+            			//ETE_APP_NAME	= params.ETE_APP_NAME
 				        ETE_TYPE	 = 'apps'
 						RA_PATH		 = 'App/'
 						
-				    } else if (params.ETE_BATCH_NAME != '') {
-				    	ETE_BATCH_NAME	= params.ETE_BATCH_NAME
+				    } else if (ETE_BATCH_NAME != '') {
+				    	//ETE_BATCH_NAME	= params.ETE_BATCH_NAME
 				        ETE_TYPE	 = 'apps'
 				        ETE_APP_NAME = ETE_BATCH_NAME
 				        RA_PATH		 = 'Batch/'
 
-				    } else if (params.ETE_DOMAIN_NAME != '') {
-				    	ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
+				    } else if (ETE_DOMAIN_NAME != '') {
+				    	//ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
 				        ETE_TYPE	 = 'domains'
 				        ETE_APP_NAME = ETE_DOMAIN_NAME
 				        RA_PATH		 = 'App/'
 
-				    } else if (params.ETE_CONF_FILE != '') {
-				    	ETE_CONF_FILE	= params.ETE_CONF_FILE
+				    } else if (ETE_CONF_FILE != '') {
+				    	//ETE_CONF_FILE	= params.ETE_CONF_FILE
     					ETE_TYPE	 = 'conf'
     					if (ETE_CONF_FILE == 'Application') { RA_PATH = 'App/' } else { RA_PATH = 'Batch/' }
 
