@@ -278,7 +278,7 @@ pipeline {
 			        	
 		                dir ("env/${envname}") {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
-		                	sh "jar -cMf ETE.zip ETE"           
+		                	sh "zip -vr ETE.zip ./ETE"          
 		                }
 		            }    
 			    }
