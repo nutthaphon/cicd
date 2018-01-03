@@ -278,7 +278,9 @@ pipeline {
 			        	
 		                dir ("env/${envname}") {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
-		                	sh "zip -vr ETE.zip ./ETE"          
+		                	sh "zip -vr ETE-ALL.zip ./ETE" 
+		                	sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\""
+		                	sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\" -x \"ETE/App/mule-esb-3.7.3-PP/*\""         
 		                }
 		            }    
 			    }
