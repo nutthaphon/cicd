@@ -14,6 +14,7 @@ pipeline {
             	script {
 					
 			        DELETE_DIR		= params.DELETE_DIR
+			        ZIP_DIR			= params.ZIP_DIR
 			        SEND_RA			= params.SEND_RA
 
             		if(params.ETE_BRANCH != '') {
