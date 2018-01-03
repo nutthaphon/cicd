@@ -268,7 +268,7 @@ pipeline {
         stage('(6) Packaging') {
             when {
                 allOf { 
-                    expression { return (SEND_RA) };
+                    expression { return (ZIP_DIR) };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
