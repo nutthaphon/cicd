@@ -52,9 +52,6 @@ pipeline {
 				        RA_PATH		 	= 'SQL/'        
 				        
 				    } 
-			        
-
-			        ETE_PP		= params.ETE_PP
 					
 					if (params.MAIL_TO != '') {
 			        	MAIL_TO		= params.MAIL_TO
@@ -278,9 +275,17 @@ pipeline {
 			        	
 		                dir ("env/${envname}") {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
+							
+							//choice 1
+							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\" -x \"ETE/App/mule-esb-3.7.3-PP/*\""
+							//choice 2
+							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-PP/*\""
+							//choice 3
+							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\""
+		                	//choice 4
 		                	sh "zip -vr ETE-ALL.zip ./ETE" 
-		                	sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\""
-		                	sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\" -x \"ETE/App/mule-esb-3.7.3-PP/*\""         
+		                	
+		                	        
 		                }
 		            }    
 			    }
@@ -290,7 +295,7 @@ pipeline {
         stage('(7) Transfering') {
         	when {
                 allOf { 
-                    expression { return (SEND_RA == true) };
+                    expression { return (SEND_RA != '') };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
@@ -299,7 +304,7 @@ pipeline {
                 script {
                 	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
 		                dir ("env/${envname}") {
-		                	sh "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ETE.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}"
+		                	sh "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ${SEND_RA}.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}/ETE.zip"
 		                }
 	                } 
 			    }
