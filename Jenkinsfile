@@ -86,7 +86,7 @@ pipeline {
 							DEV	 : ['DEV'],
 							SIT	 : ['SIT', 'VIT'],
 							UAT	 : ['UAT'],
-							PRD	 : ['PRD']
+							PRD	 : ['PRD', 'PPRD']
 					]
 						
 					ENV_APPS_INFO  = [
@@ -306,7 +306,8 @@ pipeline {
             steps {
                 
                 script {
-		        	dir ("env/${ETE_BRANCH}") {
+                	CURR_DIR = ENV_REPLICA.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
+		        	dir ("env/${CURR_DIR}") {
 		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
 		            }
 			    }
