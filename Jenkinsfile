@@ -307,7 +307,7 @@ pipeline {
                 
                 script {
 		        	dir ("env/${ETE_BRANCH}") {
-		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[envname]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[envname]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[envname]['account'][0]}@${RA_ENV_SERVERS_INFO[envname]['server'][0]}:${RA_ENV_SERVERS_INFO[envname]['server'][2]}/ETE.zip"
+		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
 		            }
 			    }
             }
