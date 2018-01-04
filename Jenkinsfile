@@ -15,7 +15,8 @@ pipeline {
 					
 			        DELETE_DIR		= params.DELETE_DIR
 			        ZIP_DIR			= params.ZIP_DIR
-			        SEND_RA			= params.SEND_RA
+			        RA_DEPLOY_TYPE	= params.RA_DEPLOY_TYPE
+			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
 
             		if(params.ETE_BRANCH != '') {
             			ETE_BRANCH	 	= params.ETE_BRANCH
@@ -60,14 +61,16 @@ pipeline {
 			        	MAIL_TO		= ''      
 			        }
 
-			        
-			        FTP_SERVER_INFO	= [
-			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV'],	account : ['appadm', 'TMBete123']],
-			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT'],	account : ['appadm', 'TMBete123']],
-			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT'],	account : ['appadm', 'TMBete123']],
-			        		UAT	 : [ server : ['10.200.115.45', '22', '/app/DevOps/UAT'],	account : ['appadm', 'ETEuat123']],
-			        		PPRD : [ server : ['10.200.115.47', '22', '/app/DevOps/PREPRD'],account : ['appadm', 'ETEuat123']],
-			        		PRD	 : [ server : ['10.200.115.47', '22', '/app/DevOps/PREPRD'],account : ['appadm', 'ETEuat123']]
+			        RA_ENV_SERVERS_INFO	= [
+			        		DEV	 : [ server : ['10.200.115.196', '22', '/app/DevOps/DEV']	,account : ['appadm', 'TMBete123']],
+			        		VIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/VIT']	,account : ['appadm', 'TMBete123']],
+			        		SIT	 : [ server : ['10.200.115.196', '22', '/app/DevOps/SIT']	,account : ['appadm', 'TMBete123']],
+			        		UAT	 : [ server : ['10.200.115.45' , '22', '/app/DevOps/UAT']	,account : ['appadm', 'ETEuat123']],
+			        		PPRD : [ server : ['10.200.115.47' , '22', '/app/DevOps/PREPRD'],account : ['appadm', 'ETEuat123']],
+		        			PRD1 : [ server : ['10.200.115.47' , '22', '/app/DevOps/PRD1']	,account : ['appadm', 'ETEuat123']],
+			        		PRD3 : [ server : ['10.200.115.47' , '22', '/app/DevOps/PRD3']	,account : ['appadm', 'ETEuat123']],
+			        		PRD4 : [ server : ['10.200.115.47' , '22', '/app/DevOps/PRD4']	,account : ['appadm', 'ETEuat123']],
+			        		PRDB : [ server : ['10.200.115.47' , '22', '/app/DevOps/BATCH']	,account : ['appadm', 'ETEuat123']]
 			        ]
 			        
 					RA_REQ_DIR	  = [
@@ -83,9 +86,9 @@ pipeline {
 							DEV	 : ['DEV'],
 							SIT	 : ['SIT', 'VIT'],
 							UAT	 : ['UAT'],
-							PRD	 : ['PRD', 'PPRD']
+							PRD	 : ['PRD']
 					]
-							
+						
 					ENV_APPS_INFO  = [
 					        DEV	 : [	conf	: 'mule-app-global.properties'	  , 	dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
 					        VIT	 : [	conf	: 'mule-app-global-vit.properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
@@ -285,8 +288,7 @@ pipeline {
 							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/mule-esb-3.7.3-ATM/*\""
 		                	//choice 4
 		                	sh "zip -vr ETE-ALL.zip ./ETE" 
-		                	
-		                	        
+		                	  
 		                }
 		            }    
 			    }
@@ -296,18 +298,17 @@ pipeline {
         stage('(7) Transfering') {
         	when {
                 allOf { 
-                    expression { return (SEND_RA != '') };
+                    expression { return (RA_DEPLOY_TYPE != '') };
+                    expression { return (RA_ENV_SERVERS != '') };
                     expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
                 
                 script {
-                	ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
-		                dir ("env/${envname}") {
-		                	sh "sshpass -v -p ${FTP_SERVER_INFO[envname]['account'][1]} scp -P ${FTP_SERVER_INFO[envname]['server'][1]} ${SEND_RA}.zip ${FTP_SERVER_INFO[envname]['account'][0]}@${FTP_SERVER_INFO[envname]['server'][0]}:${FTP_SERVER_INFO[envname]['server'][2]}/ETE.zip"
-		                }
-	                } 
+		        	dir ("env/${ETE_BRANCH}") {
+		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[envname]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[envname]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[envname]['account'][0]}@${RA_ENV_SERVERS_INFO[envname]['server'][0]}:${RA_ENV_SERVERS_INFO[envname]['server'][2]}/ETE.zip"
+		            }
 			    }
             }
         }
@@ -319,13 +320,13 @@ pipeline {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER})",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>ERROR</font>.  <br> FTP => ${SEND_RA}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>ERROR</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
     }
     
