@@ -88,6 +88,13 @@ pipeline {
 							UAT	 : ['UAT'],
 							PRD	 : ['PRD', 'PPRD']
 					]
+					
+					ENV_REPLICA2	   = [
+							DEV	 : ['DEV'],
+							SIT	 : ['SIT', 'VIT'],
+							UAT	 : ['UAT'],
+							PRD	 : ['PRD1', 'PRD3', 'PRD4', 'PRDB', 'PPRD']
+					]
 						
 					ENV_APPS_INFO  = [
 					        DEV	 : [	conf	: 'mule-app-global.properties'	  , 	dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
@@ -306,7 +313,7 @@ pipeline {
             steps {
                 
                 script {
-                	CURR_DIR = ENV_REPLICA.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
+                	CURR_DIR = ENV_REPLICA2.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
 		        	dir ("env/${CURR_DIR}") {
 		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
 		            }
