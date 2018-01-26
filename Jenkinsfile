@@ -291,11 +291,11 @@ pipeline {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
 							
 							//choice 1
-							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/${ENV_APPS_INFO[envname]['dir'][1]}/*\" -x \"ETE/App/${ENV_APPS_INFO[envname]['dir'][2]}/*\""
+							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/*-PP/*\""
 							//choice 2
-							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/${ENV_APPS_INFO[envname]['dir'][2]}/*\""
+							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/*-PP/*\""
 							//choice 3
-							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/${ENV_APPS_INFO[envname]['dir'][1]}/*\""
+							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/*-ATM/*\""
 		                	//choice 4
 		                	sh "zip -vr ETE-ALL.zip ./ETE" 
 		                	  
