@@ -82,16 +82,19 @@ pipeline {
 					
 					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
 					
-					ENV_REPLICA	   = [
+					//Environments share replica source code
+					BRANCH_TO_ENV	   = [
 							DEV	 : ['DEV'],
 							SIT	 : ['SIT', 'VIT'],
 							UAT	 : ['UAT'],
 							PRD	 : ['PRD', 'PPRD']
 					]
 					
-					ENV_REPLICA2	   = [
+					//Environments deployment target
+					ENV_TO_SERVER	   = [
 							DEV	 : ['DEV'],
-							SIT	 : ['SIT', 'VIT'],
+							SIT	 : ['SIT'],
+							VIT	 : ['VIT'],
 							UAT	 : ['UAT'],
 							PRD	 : ['PRD1', 'PRD3', 'PRD4', 'PRDB', 'PPRD']
 					]
@@ -139,7 +142,7 @@ pipeline {
 						fi
 					"""
 
-		            ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+		            BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			     		sh """
 							if [ -d 'env' ]
 							then
@@ -195,7 +198,7 @@ pipeline {
 					else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
 					else { DIR_IDX = 0; }
 					
-					ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+					BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 					    RA_BASE_PATH = "env/${envname}/ETE/"
 						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
 						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
@@ -218,7 +221,7 @@ pipeline {
                 
                 	sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}"
 				
-			        ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+			        BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
  					
 	 					if (RA_PATH == 'App/') {
@@ -254,7 +257,7 @@ pipeline {
                 
                 	sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE} ${ETE_REPO}/${SVN_BRANCH_PATH}DBScripts/${ETE_TYPE}"
                 	
-	                ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+	                BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
 			        	
 	 					if (envname =~ /DEV/) {
@@ -282,7 +285,7 @@ pipeline {
             }
             steps {
             	script {
-            		ENV_REPLICA[ETE_BRANCH].eachWithIndex { envname, envidx ->
+            		BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	
 		                dir ("env/${envname}") {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
@@ -313,7 +316,7 @@ pipeline {
             steps {
                 
                 script {
-                	CURR_DIR = ENV_REPLICA2.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
+                	CURR_DIR = ENV_TO_SERVER.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
 		        	dir ("env/${CURR_DIR}") {
 		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
 		            }
