@@ -288,7 +288,7 @@ pipeline {
             		BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	
 		                dir ("env/${envname}") {
-							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/ETE_config_manifest.xml ETE"
+							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/jenkins/ETE_config_manifest.xml ETE"
 							
 							//choice 1
 							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/*-PP/*\""
@@ -318,7 +318,8 @@ pipeline {
                 script {
                 	CURR_DIR = ENV_TO_SERVER.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
 		        	dir ("env/${CURR_DIR}") {
-		            	sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
+		            	// sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
+		            	sh "ssh -i ete appadm@10.200.115.47"
 		            }
 			    }
             }
