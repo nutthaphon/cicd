@@ -318,8 +318,6 @@ pipeline {
                 script {
                 	CURR_DIR = ENV_TO_SERVER.find{ value -> value =~ /${RA_ENV_SERVERS}/ }.key
 		        	dir ("env/${CURR_DIR}") {
-		            	// sh "sshpass -v -p ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][1]} scp -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
-		            	
 		            	sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/jenkins/ete"
 		            	sh "chmod 600 ete"
 		            	sh "scp -i ete -P ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][1]} ${RA_DEPLOY_TYPE}.zip ${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['account'][0]}@${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][0]}:${RA_ENV_SERVERS_INFO[RA_ENV_SERVERS]['server'][2]}/ETE.zip"
