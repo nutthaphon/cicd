@@ -186,7 +186,7 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									export MAVEN_HOME=/app/installed/apache-maven-3.5.2
+									export MAVEN_HOME=/app/installed/apache-maven-3.5.0
 									export JAVA_HOME=/app/installed/jdk1.7.0_80
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
 									mvn clean package -o
