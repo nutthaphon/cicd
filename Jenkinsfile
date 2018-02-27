@@ -24,8 +24,9 @@ pipeline {
 	            		if (ETE_BRANCH =~ /DEV/) { SVN_BRANCH_PATH = 'trunk/' } else { SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/" }
             		}
             			
-            		if(params.ETE_APP_NAME != '') { 
-            			ETE_APP_NAME 	= params.ETE_APP_NAME
+            		if(params.SVN_APP_NAME != '') { 
+            			SVN_APP_NAME	= params.SVN_APP_NAME
+            			ETE_APP_NAME 	= SVN_APP_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'apps'
 						RA_PATH		 	= 'App/'
 						
@@ -178,7 +179,7 @@ pipeline {
 
             	script {
 
-					sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
+					sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${SVN_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 	                CURRENT_DIR = "${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 					
 					dir (CURRENT_DIR) {
