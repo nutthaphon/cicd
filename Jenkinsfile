@@ -30,16 +30,20 @@ pipeline {
 				        ETE_TYPE	 	= 'apps'
 						RA_PATH		 	= 'App/'
 						
-				    } else if (params.ETE_BATCH_NAME != '') {
-				    	ETE_BATCH_NAME	= params.ETE_BATCH_NAME
+				    } else if (params.SVN_BATCH_NAME != '') {
+				    	SVN_BATCH_NAME	= params.SVN_BATCH_NAME
+				    	ETE_BATCH_NAME	= SVN_BATCH_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'apps'
 				        ETE_APP_NAME 	= ETE_BATCH_NAME
+				        SVN_APP_NAME 	= SVN_BATCH_NAME
 				        RA_PATH		 	= 'Batch/'
 
-				    } else if (params.ETE_DOMAIN_NAME != '') {
-				    	ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
+				    } else if (params.SVN_DOMAIN_NAME != '') {
+				    	SVN_DOMAIN_NAME	= params.SVN_DOMAIN_NAME
+				    	ETE_DOMAIN_NAME	= SVN_DOMAIN_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'domains'
 				        ETE_APP_NAME 	= ETE_DOMAIN_NAME
+				        SVN_APP_NAME 	= SVN_DOMAIN_NAME
 				        RA_PATH		 	= 'App/'
 
 				    } else if (params.ETE_CONF_FILE != '') {
@@ -334,13 +338,13 @@ pipeline {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Success.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_APP_NAME} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
         	mail (to: "${MAIL_TO}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Fail.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${ETE_APP_NAME} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
     }
     
