@@ -333,8 +333,5 @@ pipeline {
 
         
     }
-    post {
-
-    }
     
 }
