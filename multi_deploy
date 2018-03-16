@@ -6,8 +6,17 @@ pipeline {
                 script {
                 	
                 	SVN_APPLICATION_NAME.tokenize(",").eachWithIndex { appName, index ->
-    					println "${index+1}. ${appName}"
+    					print appName
+
 					}
+					
+					build job: 'ETE Hot Deployment', 
+    					parameters: [
+    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: 'trunk'], 
+    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: 'amsgateway'], 
+    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: 'amsdomain'], 
+    						string(name: 'DEPLOY_TARGET', value: 'Online Test JDK 1.8')
+    					]
                 }
             }
         }
