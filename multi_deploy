@@ -5,7 +5,7 @@ pipeline {
             steps { 
                 script {
                 	
-                	SVN_APPLICATION_NAME.tokenize(",")[].eachWithIndex { appName, index ->
+                	SVN_APPLICATION_NAME.tokenize(",").eachWithIndex { appName, index ->
     					println "${index+1}. ${appName}"
 					}
                 }
