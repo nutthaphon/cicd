@@ -9,7 +9,7 @@ pipeline {
     					build job: 'ETE Hot Deployment', 
 	    					parameters: [
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
-	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ${domainName}], 
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: domainName], 
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET)
 	    					]
 
@@ -29,7 +29,7 @@ pipeline {
     					build job: 'ETE Hot Deployment', 
 	    					parameters: [
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
-	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: ${appName}], 
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: appName], 
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET)
 	    					]
 
