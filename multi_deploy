@@ -1,7 +1,13 @@
 pipeline { 
     agent any
     stages {
-        stage('Build Domains') { 
+        stage('Build Domains') {
+        	when {
+                allOf { 
+                    expression { return (SVN_DOMAIN_NAME != '') };
+                    expression { return (SVN_BRANCH != '') } 
+                } 
+            }
             steps { 
                 script {
                 	
@@ -23,6 +29,12 @@ pipeline {
             }
         }
         stage('Build Applications'){
+        	when {
+                allOf { 
+                    expression { return (SVN_APPLICATION_NAME != '') };
+                    expression { return (SVN_BRANCH != '') } 
+                } 
+            }
             steps {
                 script {
                 	
@@ -42,6 +54,14 @@ pipeline {
     				
                 }
             }
+        }
+
+    }
+    post {
+        always {
+			mail to: "${MAIL_TO}",
+    		subject: "Job '${JOB_NAME}' (${BUILD_NUMBER}) Finished.",
+    		body: "Please go to ${BUILD_URL} and verify the build"
         }
 
     }
