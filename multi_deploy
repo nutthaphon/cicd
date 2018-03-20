@@ -13,7 +13,7 @@ pipeline {
                 	
                 	SVN_DOMAIN_NAME.tokenize(",").eachWithIndex { domainName, index ->
                 		println "${index+1}. domain ${domainName}"
-    					build job: 'ETE Hot Deployment', 
+    					build job: 'ETE Hot Deployment (Single)', 
 	    					parameters: [
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: domainName], 
@@ -40,7 +40,7 @@ pipeline {
                 	
                 	SVN_APPLICATION_NAME.tokenize(",").eachWithIndex { appName, index ->
                 		println "${index+1}. app ${appName}"
-    					build job: 'ETE Hot Deployment', 
+    					build job: 'ETE Hot Deployment (Single)', 
 	    					parameters: [
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: appName], 
