@@ -17,6 +17,8 @@ pipeline {
 			        ZIP_DIR			= params.ZIP_DIR
 			        RA_DEPLOY_TYPE	= params.RA_DEPLOY_TYPE
 			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
+			        JAVA_VERSION	= params.JAVA_VERSION
+			        MAVEN_VERSION	= params.MAVEN_VERSION
 
             		if(params.ETE_BRANCH != '') {
             			ETE_BRANCH	 	= params.ETE_BRANCH
@@ -191,10 +193,15 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									export MAVEN_HOME=/app/installed/apache-maven-3.5.0
-									export JAVA_HOME=/app/installed/jdk1.7.0_80
+									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
+									export JAVA_HOME=/app/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+									echo ##########################################################
+									mvn -v
+									echo ##########################################################
+									echo ##########################################################
 									mvn clean package -o
+									echo ##########################################################
 								fi
 							'''
 					}
