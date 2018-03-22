@@ -343,13 +343,13 @@ pipeline {
     
     post {
         success {
-        	mail (to: "${MAIL_TO}",
+        	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Success.",
          	mimeType: 'text/html',
          	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
-        	mail (to: "${MAIL_TO}",
+        	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Fail.",
          	mimeType: 'text/html',
          	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
