@@ -9,16 +9,17 @@ pipeline {
             steps { 
                 script {
              			
-                		println "Delete folder env/${ETE_BRANCH}"
+                		println "Delete workspace."
                 		
 						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
 							parameters: [
-								booleanParam(name: 'DELETE_DIR', value: true), 
+								booleanParam(name: 'DELETE_DIR', value: DELETE_DIR), 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
-								string(name: 'ETE_CONF_FILE', value: 'Application'), text(name: 'ETE_SQL_FILE', value: ''), 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
 								booleanParam(name: 'ZIP_DIR', value: false), 
 								string(name: 'RA_DEPLOY_TYPE', value: ''), 
 								string(name: 'RA_ENV_SERVERS', value: ''), 
