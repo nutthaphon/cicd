@@ -24,8 +24,8 @@ pipeline {
 								string(name: 'RA_DEPLOY_TYPE', value: ''), 
 								string(name: 'RA_ENV_SERVERS', value: ''), 
 								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
-								string(name: 'JAVA_VERSION', value: 'jdk1.7.0_80'), 
-								string(name: 'MAVEN_VERSION', value: 'apache-maven-3.5.2')
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
 							]
 							
 
