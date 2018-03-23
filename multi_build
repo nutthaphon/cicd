@@ -47,7 +47,7 @@ pipeline {
         	when {
                 allOf { 
                     expression { return (SVN_DOMAIN_NAME != '') };
-                    expression { return (SVN_BRANCH != '') } 
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps { 
@@ -84,8 +84,8 @@ pipeline {
         stage('Build Applications'){
         	when {
                 allOf { 
-                    expression { return (SVN_APPLICATION_NAME != '') };
-                    expression { return (SVN_BRANCH != '') } 
+                    expression { return (SVN_APP_NAME != '') };
+                    expression { return (ETE_BRANCH != '') } 
                 } 
             }
             steps {
@@ -112,12 +112,5 @@ pipeline {
         }
 
     }
-    post {
-        always {
-			mail to: "${ETE_CM_EMAIL}",
-    		subject: "Job '${JOB_NAME}' (${BUILD_NUMBER}) Finished.",
-    		body: "Please go to ${BUILD_URL} and verify the build"
-        }
 
-    }
 }
