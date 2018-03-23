@@ -5,15 +5,20 @@ pipeline {
     stages {
     
     	stage('Clean up') {
-
+    		when {
+                allOf { 
+                    expression { return (DELETE_DIR) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
             steps { 
                 script {
              			
-                		println "Delete workspace."
+                		println "Deleting workspace..."
                 		
 						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
 							parameters: [
-								booleanParam(name: 'DELETE_DIR', value: DELETE_DIR), 
+								booleanParam(name: 'DELETE_DIR', value: true), 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
 								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
@@ -28,7 +33,7 @@ pipeline {
 								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
 							]
 							
-
+						println "Workspace deleted."
                 }
             }
         }
