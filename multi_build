@@ -5,12 +5,7 @@ pipeline {
     stages {
     
     	stage('Clean up') {
-        	when {
-                allOf { 
-                    expression { return (DELETE_DIR == true) };
-                    expression { return (ETE_BRANCH != '') } 
-                } 
-            }
+
             steps { 
                 script {
              			
