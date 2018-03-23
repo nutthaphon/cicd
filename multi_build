@@ -13,10 +13,8 @@ pipeline {
             }
             steps { 
                 script {
-                	
-                	SVN_DOMAIN_NAME.tokenize(",").eachWithIndex { domainName, index ->
-                
-                		println ${index+1}. Delete folder SVN_BRANCH
+             			
+                		println Delete folder ETE_BRANCH
                 		
 						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
 							parameters: [
@@ -34,11 +32,7 @@ pipeline {
 								string(name: 'MAVEN_VERSION', value: 'apache-maven-3.5.2')
 							]
 							
-					}
-					
 
-    				
-    				
                 }
             }
         }
