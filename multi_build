@@ -1,0 +1,113 @@
+pipeline { 
+    agent any
+    
+    
+    stages {
+    
+    	stage('Clean up') {
+        	when {
+                allOf { 
+                    expression { return (DELETE_DIR == true) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	SVN_DOMAIN_NAME.tokenize(",").eachWithIndex { domainName, index ->
+                
+                		println ${index+1}. Delete folder SVN_BRANCH
+                		
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: true), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: SVN_BRANCH]
+							]
+							
+					}
+					
+
+    				
+    				
+                }
+            }
+        }
+    	
+        stage('Build Domains') {
+        	when {
+                allOf { 
+                    expression { return (SVN_DOMAIN_NAME != '') };
+                    expression { return (SVN_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	SVN_DOMAIN_NAME.tokenize(",").eachWithIndex { domainName, index ->
+                		println "${index+1}. domain ${domainName}"
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: true), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: 'UAT'], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: 'amsdomain'], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: 'atmtransform'], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: 'bdc-control'], 
+								string(name: 'ETE_CONF_FILE', value: 'Application'), text(name: 'ETE_SQL_FILE', value: '''aaaaaa.sql
+								bbbbbb.sql
+								cccccc.sql'''), 
+								booleanParam(name: 'ZIP_DIR', value: true), 
+								string(name: 'RA_DEPLOY_TYPE', value: 'ETE-3'), 
+								string(name: 'RA_ENV_SERVERS', value: 'UAT'), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: true), 
+								string(name: 'JAVA_VERSION', value: 'jdk1.7.0_80'), 
+								string(name: 'MAVEN_VERSION', value: 'apache-maven-3.5.2')
+							]
+
+					}
+					
+
+    				
+    				
+                }
+            }
+        }
+        stage('Build Applications'){
+        	when {
+                allOf { 
+                    expression { return (SVN_APPLICATION_NAME != '') };
+                    expression { return (SVN_BRANCH != '') } 
+                } 
+            }
+            steps {
+                script {
+                	
+                	SVN_APPLICATION_NAME.tokenize(",").eachWithIndex { appName, index ->
+                		println "${index+1}. app ${appName}"
+    					build job: 'ETE Hot Deployment (Single)', 
+	    					parameters: [
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: appName], 
+	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET),
+	    						string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+	    					]
+
+					}
+					
+
+    				
+    				
+                }
+            }
+        }
+
+    }
+    post {
+        always {
+			mail to: "${ETE_CM_EMAIL}",
+    		subject: "Job '${JOB_NAME}' (${BUILD_NUMBER}) Finished.",
+    		body: "Please go to ${BUILD_URL} and verify the build"
+        }
+
+    }
+}
