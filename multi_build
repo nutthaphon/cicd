@@ -14,7 +14,7 @@ pipeline {
             steps { 
                 script {
              			
-                		println "Deleting workspace..."
+                		sh 'printenv'
                 		
 						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
 							parameters: [
@@ -33,7 +33,7 @@ pipeline {
 								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
 							]
 							
-						println "Workspace deleted."
+						
                 }
             }
         }
