@@ -7,8 +7,8 @@ pipeline {
     	stage('Clean up') {
     		when {
                 allOf { 
-                    expression { return (DELETE_DIR) };
-                    expression { return (ETE_BRANCH != '') } 
+                    expression { return (params.DELETE_DIR) };
+                    expression { return (params.ETE_BRANCH != '') } 
                 } 
             }
             steps { 
