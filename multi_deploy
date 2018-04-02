@@ -20,7 +20,8 @@ pipeline {
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET),
 	    						string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
 								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
-	    					]
+	    					],
+	    					propagate: params.PROPAGATE
 
 					}
 					
@@ -49,7 +50,8 @@ pipeline {
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET),
 	    						string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
 								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
-	    					]
+	    					],
+	    					propagate: params.PROPAGATE
 
 					}
 					
