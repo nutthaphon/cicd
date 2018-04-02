@@ -17,6 +17,7 @@ pipeline {
 	    					parameters: [
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: domainName], 
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: ''],
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET),
 	    						string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
 								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
@@ -45,7 +46,8 @@ pipeline {
                 		println "${index+1}. app ${appName}"
     					build job: 'ETE Hot Deployment (Single)', 
 	    					parameters: [
-	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH], 
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BRANCH', value: SVN_BRANCH],
+	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
 	    						[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APPLICATION_NAME', value: appName], 
 	    						string(name: 'DEPLOY_TARGET', value: DEPLOY_TARGET),
 	    						string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
