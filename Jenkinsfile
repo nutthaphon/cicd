@@ -196,12 +196,16 @@ pipeline {
 									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
 									export JAVA_HOME=/app/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
-									echo ##########################################################
+									echo ----------------------------------------------------------
 									mvn -v
-									echo ##########################################################
-									echo ##########################################################
+									echo ----------------------------------------------------------
+									echo ----------------------------------------------------------
 									mvn clean package -o
-									echo ##########################################################
+									echo ----------------------------------------------------------
+									
+									cd target
+									zip -g ${ETE_APP_NAME}.zip classes/*.properties 2>/dev/null
+									unzip -v ${ETE_APP_NAME}.zip
 								fi
 							'''
 					}
