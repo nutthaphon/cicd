@@ -1,0 +1,2655 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ETE_Applications",
+		"_postman_id": "0a9c5122-0f81-139b-0d87-f5072a523b8f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "callmenow: call-me-now/lead",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Correct response\", function () {",
+							"    var faultReg = new RegExp('success');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(true);",
+							"});",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{callmenow}}/call-me-now/lead",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"request_id\": \"1\",\r\n\"first_name\":\"ชื่อ\",\r\n\"last_name\": \"นามสกุล\", \r\n\"product_name\": \"สินค้า\",\r\n\"mobile\": \"0123456789\",\r\n\"campaign\": \"campaign\",\r\n\"droplead_datetime\": \"2017-05-18 18:00\",\r\n\"var_1\": \"ตัวแปรหนึ่ง\",\r\n\"var_2\": \"ตัวแปรสอง\", \r\n\"var_3\": \"ตัวแปรสาม\", \r\n\"var_4\": \"ตัวแปรสี่\", \r\n\"var_5\": \"ตัวแปรห้า\", \r\n\"var_6\": \"ตัวแปรหก\", \r\n\"url_field\": \"http://www.tmbbank.com\",\r\n\"channel_name\" : \"แชนแนล\",\r\n\"required_wrap_up\" : \"true\" \r\n}\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "coreglservice: CoreGL/SD_Acct_Sum",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{coreglservice}}/CoreGL/SD_Acct_Sum",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic QkFUQ0hfVVNFUjp3ZWxjb21lMTIz",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<ns:TMB_WS_PKG_MSG_Input xmlns:ns=\"http://xmlns.oracle.com/apps/gl/rest/TMB_WS_PKG/tmb_sd_acct_sum/\" xmlns:ns1=\"http://xmlns.oracle.com/apps/gl/rest/TMB_WS_PKG/header\">\r\n   <ns1:RESTHeader/>\r\n   <ns:InputParameters>\r\n      <ns:IN_DATA>\r\n         <TMBInput>\r\n            <Header>\r\n               <TELLER_ID>1</TELLER_ID>\r\n               <AUTHORIZE_ID>1</AUTHORIZE_ID>\r\n               <WORKSTATION_ID>1</WORKSTATION_ID>\r\n               <DATE>25042017</DATE>\r\n            </Header>\r\n            <Details>\r\n               <TRANSACTION_CODE>7130</TRANSACTION_CODE>\r\n               <HOBR_BALANCING>H001</HOBR_BALANCING>\r\n               <ORIGINATE_OFFICE_CODE>0000</ORIGINATE_OFFICE_CODE>\r\n               <ACCOUNT_SUMMARY_TYPE>0</ACCOUNT_SUMMARY_TYPE>\r\n            </Details>\r\n         </TMBInput>\r\n      </ns:IN_DATA>\r\n   </ns:InputParameters>\r\n</ns:TMB_WS_PKG_MSG_Input>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "cpmservice: CPM/UpdateDrawer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Correctly response\", function () {",
+							"    var faultReg = new RegExp('no data found');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(true);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{cpmservice}}/CPM/UpdateDrawer",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ETEUpdateDrawerRq>\r\n\t<RqUID>4064464E-3256-4D19-9B26-0F40F0152DB8</RqUID>\r\n\t<ADUser>40057</ADUser>\r\n\t<SDUser>0012222S</SDUser>\r\n\t<EventCPMAccountPostingID>GL-C5</EventCPMAccountPostingID>\r\n\t<BranchNo>001</BranchNo>\r\n\t<Amount>10000</Amount>\r\n</ETEUpdateDrawerRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "cxmgateway: CXMGateway/ForwardTaskEvent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{cxmgateway}}/CXMGateway/ForwardTaskEvent",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:for=\"http://www.tmbbank.com/CXMGateway/ForwardTaskEvent/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <for:ForwardTaskEventRequest>\r\n\t    <ReqId>12345654-2341-9876-9283-000000000011</ReqId>\r\n         <Channel>CRM</Channel>\r\n         <DateTime>24/05/2017 14:19:29</DateTime>\r\n         <Data>{ \"TMBCustomerIDPE\":\"001100000000000000000013239206\", \"Name\":\"ABC Company Co., Ltd.\", \"Id\":\"0019000001U4b7iAAA\", \"Segment\":\"5\", \"TaskCreatedBranchCode\":\"001\", \"EventCreatedBranchCode\":, \"TaskCreatedZoneCode\":\"1234\", \"EventCreatedZoneCode\":\"1234\", \"TaskCreatedRegionCode\":\"5678\", \"EventCreatedRegionCode\":\"5678\", \"TaskCreatedEmpId\":\"00001\", \"EventCreatedEmpId\":\"00001\", \"ProductName\":\"All Free\", \"ProductCode\":\"022535_M\", \"ProductGroup\":\"Deposit\", \"ProdSubGrp\":\"TRANSACTIONAL\", \"TaskCreatedChannel\":\"Branch\", \"EventCreatedChannel\":\"Branch\", \"TaskSubject\":\"PortfolioReview\", \"EventSubject\":\"PortfolioReview\", \"TaskStatus\":\"Completed\", \"LastModifiedDate\":\"24/05/2017 11:04:21\", \"DueDate\":\"24/05/2017 11:04:21\"  }</Data>\r\n      </for:ForwardTaskEventRequest>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Eai Gateway: SearchDepositBalance",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"/*pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"Fault\");",
+							"});*/",
+							"",
+							"pm.test(\"resCode value should be 99\", function () {",
+							"    var responseObject = xml2Json(responseBody); ",
+							"    var expect = \"99\";",
+							"    var actual = responseObject[\"soapenv:Envelope\"][\"soapenv:Body\"][\"eai:searchDepositBalanceServiceResponse\"][\"headerSection\"][\"resCode\"];",
+							"    pm.expect(expect).to.equal(actual);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{Eai Gateway}}/SearchDepositBalance",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n   <soapenv:Body>\r\n      <NS1:searchDepositBalanceService xmlns:NS1=\"http://tmbbank.eaiservice/EAISearchDepositBalanceService/\">\r\n         <headerSection>\r\n            <requestID>0216488510070001</requestID>\r\n            <productCode>SCF</productCode>\r\n            <acronym>0000000100</acronym>\r\n         </headerSection>\r\n         <bodySection>\r\n            <accountNumber>0031018005</accountNumber>\r\n            <currencyType>THB</currencyType>\r\n         </bodySection>\r\n      </NS1:searchDepositBalanceService>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ECAS Gateway: ECASGateway/Dp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{ECAS Gateway}}/ECASGateway/Dp",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ser=\"http://service.am.isprint.com/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <ser:getDPParams>\r\n         \r\n        <moduleId>MIBDPnoAES</moduleId>\r\n         <params>\r\n            <entries>\r\n               <key/>\r\n              <value/>\r\n            </entries>\r\n         </params>\r\n      </ser:getDPParams>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "ECASHSMServices: Orh/ECASHSMVerifyandAssignPIN",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{ECASHSMServices}}/Orh/ECASHSMVerifyandAssignPIN",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ns1:PinVerifyInqRq xmlns:ns1=\"http://www.fnf.com/xes\">\r\n         <ns0:RqUID xmlns:ns0=\"urn:ifxforum-org:XSD:1\">022610b5-d89f-4f68-a1f5-7795d782167c</ns0:RqUID>\r\n         <ns0:MsgRqHdr xmlns:ns0=\"urn:ifxforum-org:XSD:1\">\r\n            <ns0:CredentialsRqHdr>\r\n               <ns0:SubjectRole/>\r\n            </ns0:CredentialsRqHdr>\r\n            <ns0:ContextRqHdr>\r\n               <ns0:ClientDt>2016-06-03T11:49:11.000677-00:00</ns0:ClientDt>\r\n               <ns0:CustLangPref>en_US</ns0:CustLangPref>\r\n               <ns0:ClientApp>\r\n                  <ns0:Org>com.fnis.xes</ns0:Org>\r\n                  <ns0:Name>MB-INQ</ns0:Name>\r\n                  <ns0:Version>2.0</ns0:Version>\r\n               </ns0:ClientApp>\r\n               <ns0:SPName>com.fnis.tmb.BASE24</ns0:SPName>\r\n            </ns0:ContextRqHdr>\r\n         </ns0:MsgRqHdr>\r\n         <ns0:ECASHSMVerifyandAssign xmlns:ns0=\"urn:ifxforum-org:XSD:1\">\r\n            <ns0:loginModuleId>B24ATMPB</ns0:loginModuleId>\r\n            <ns0:E2EESID>00013uQAD-WG-KCT6LwbF7zSzIYHVrUsVYbHNJOXZuLRn4D-ekW6RWDo0mUP28V4g9tCRE4w0OWe4CIKlbYE_sB2Rql8</ns0:E2EESID>\r\n            <ns0:FM>0</ns0:FM>\r\n            <ns0:RPIN>00013uQAD-WG-KCT6LwbF7zSzIYHVrUsVYbHNJOXZuLRn4D-ekW6RWDo0mUP28V4g9tCRE4w0OWe4CIKlbYE_sB2Rql8,67D3E57AE2866876C899BE157CDAE413:753E59F3D6ADE3CD037C6686559302ADD9EAEF08B52763857E66B90467C4D1AE7A66FAC30CDAA1B305A172A5F41E306B2524248B51F5E5AC9CBB2A899468C0A355300FC95A656B043374522A6B12BED170D38A5F601D8C0225006439661A6D74D3BA84F60121E249C3D541D685B74CB3F46E7B9AA4652B584F2FBE9BA525235CD602E80AB5D25576CC27838A5A6FF00400D5EEF4CEC6F9E242BB2F85CFACD5A195F40578ACA6FCE2F6E01BB9BFA4CA5DF67E321DFF582A68660A658FACC331E3D03D250875ECDA9152CBB93CEA8DF57358B300E6780ECC475DBADD5DD7C2EF0151C683780AADF451565462B50FE00A39ED67130B1ED940F141C3777E77FCCA6F</ns0:RPIN>\r\n            <ns0:PFo>1</ns0:PFo>\r\n            <ns0:ANB>0000000000000000</ns0:ANB>\r\n         </ns0:ECASHSMVerifyandAssign>\r\n         <ns1:PinVerifySel>\r\n            <ns1:PinVerifyKeys>\r\n               <ns0:CardNum xmlns:ns0=\"urn:ifxforum-org:XSD:1\">4215839200000374</ns0:CardNum>\r\n               <ns1:Pin>0000000000000000</ns1:Pin>\r\n               <ns1:ServiceCode>10</ns1:ServiceCode>\r\n               <ns0:EffDt xmlns:ns0=\"urn:ifxforum-org:XSD:1\">2016-06-03T11:49:11.000677-00:00</ns0:EffDt>\r\n               <ns1:TermId>I000242B011BTMBM</ns1:TermId>\r\n            </ns1:PinVerifyKeys>\r\n         </ns1:PinVerifySel>\r\n      </ns1:PinVerifyInqRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "eguaranteeservices: eGuaranteeService",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{eguaranteeservices}}/eGuaranteeService",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soap:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <soap:Body>\r\n    <EximProcess xmlns=\"http://tempuri.org/\">\r\n      <info>\r\n        <Header>\r\n          <RequestID>20170505</RequestID>\r\n          <CICS>EXM </CICS>\r\n          <ControlerID>0</ControlerID>\r\n          <TransTime>125500</TransTime>\r\n          <WorkStationID>0</WorkStationID>\r\n          <TransCode>01</TransCode>\r\n          <TellerID>98770000</TellerID>\r\n        </Header>\r\n        <Body>\r\n          <RequestInfo>\r\n            <Requester>01</Requester>\r\n            <InterfaceFlow>01</InterfaceFlow>\r\n            <CIBRef>00000000000000000023</CIBRef>\r\n            <CustomerRef>00000010704836</CustomerRef>\r\n            <DGWRef/>\r\n            <RefNo1/>\r\n            <RefNo2/>\r\n          </RequestInfo>\r\n          <TxArea>\r\n            <RMNumber>00000010704836</RMNumber>\r\n            <TaxID>0125550046619</TaxID>\r\n            <ProductCode>1990602004</ProductCode>\r\n            <EffectDate>21042017</EffectDate>\r\n            <LGRef>02</LGRef>\r\n          </TxArea>\r\n          <Fee>\r\n            <FeeFlag>XXXXX</FeeFlag>\r\n            <FeeAmt>0</FeeAmt>\r\n            <FeeRate>0</FeeRate>\r\n            <ComPeriod>0</ComPeriod>\r\n          </Fee>\r\n          <Stamp>\r\n            <DutyStampFlag>12</DutyStampFlag>\r\n            <DutyStampAmt>0</DutyStampAmt>\r\n            <DutyStampRate>0</DutyStampRate>\r\n          </Stamp>\r\n          <LGClaim>\r\n            <ClaimAmt>0</ClaimAmt>\r\n            <ClaimCCY/>\r\n          </LGClaim>\r\n          <LGInfo>\r\n            <LGCCY>C</LGCCY>\r\n            <LGType/>\r\n            <LGDueDate>20042017</LGDueDate>\r\n            <LGContractDue>20042017</LGContractDue>\r\n            <ComDueDate>20042017</ComDueDate>\r\n            <IssueDate>21042017</IssueDate>\r\n            <LGAmt>20000</LGAmt>\r\n            <DecreaseAmt>0</DecreaseAmt>\r\n            <OldAmt>0</OldAmt>\r\n            <BeneName>กรมศุลกากร</BeneName>\r\n            <BeneType>01</BeneType>\r\n            <BeneTaxID/>\r\n            <BeneRM/>\r\n            <Note/>\r\n            <DeliveryDate>21042017</DeliveryDate>\r\n            <ProjectNo/>\r\n            <DeclareNo>12345679</DeclareNo>\r\n            <DeclareSeq>2234</DeclareSeq>\r\n            <PurposeDesc>นำเข้าสินค้า</PurposeDesc>\r\n            <InvestCountry/>\r\n          </LGInfo>\r\n        </Body>\r\n      </info>\r\n    </EximProcess>\r\n</soap:Body>\r\n</soap:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Enterprisecontentmanagement: EnterpriseContentManagement/searchDocuments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{Enterprisecontentmanagement}}/EnterpriseContentManagement",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:wsap=\"http://wsapi.svc.ecm.clevel.com/\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n\t\t<wsap:searchDocuments>\r\n\t\t\t<documentRequest>\r\n            <reqId>A0171160623029039</reqId>\r\n            <reqUserId>92590</reqUserId>\r\n            <channelId>A0171</channelId>\r\n            <segmentCode>6</segmentCode>\r\n            <indexGroups>\r\n               <no>0</no>\r\n               <documentIndexs>\r\n                  <indexKey>ECM_DOC_ID</indexKey>\r\n                  <value>20160404000248</value>\r\n               </documentIndexs>\r\n            </indexGroups>\r\n         </documentRequest>\r\n\t\t</wsap:searchDocuments>\r\n\t</soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "epaymentgateway: Orh/BillerEPaymentGateway",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{epaymentgateway}}/Orh/BillerEPaymentGateway",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:eaib=\"http://tmbbank.eaiservice/EAIBillerEPaymentGatewayService/\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n\t\t<eaib:EAIBillerEPaymentGatewayService>\r\n\t\t\t<requestData>\r\n\t\t\t\t<ReqUID>234123412341234</ReqUID>\r\n\t\t\t\t<Provider>TMBDirect</Provider>\r\n\t\t\t\t<SubProvider>RevenueD</SubProvider>\r\n\t\t\t\t<CustRef>3101065510</CustRef>\r\n\t\t\t\t<BillerCode>0888</BillerCode>\r\n\t\t\t\t<MsgType>Normal</MsgType>\r\n\t\t\t\t<InvoiceIssueDate>20161229</InvoiceIssueDate>\r\n\t\t\t\t<InvoiceIssueTime>090507</InvoiceIssueTime>\r\n\t\t\t\t<InvoiceDueDate>20161229</InvoiceDueDate>\r\n\t\t\t\t<InvoiceAmt>989.00</InvoiceAmt>\r\n\t\t\t\t<InvoiceCcy>THB</InvoiceCcy>\r\n\t\t\t\t\t<NetAmt>10</NetAmt>\r\n\t\t\t\t<OutstandingAmt>848.00</OutstandingAmt>\r\n\t\t\t\t\t<TaxAmt>0</TaxAmt>\r\n\t\t\t\t\t<TaxRate>7</TaxRate>\r\n\t\t\t\t<Ref1>3679775875705</Ref1>\r\n\t\t\t\t<Ref2>A3520619261</Ref2>\r\n\t\t\t\t<Ref3>002015</Ref3>\r\n\t\t\t\t\t<Ref4>44ทดสอบ</Ref4>\r\n\t\t\t\t\t<Ref5>ทดสอบ55</Ref5>\r\n\t\t\t\t\t<Ref6>ทดสอบ</Ref6>\r\n\t\t\t\t\t<Ref7>165456465</Ref7>\r\n\t\t\t\t\t<Ref8>ก.พ.60</Ref8>\r\n\t\t\t\t\t<Ref9>4154445</Ref9>\r\n\t\t\t\t\t<Ref10>9878994</Ref10>\r\n\t\t\t\t<Status>NEW</Status>\r\n\t\t\t\t<Filter>0F07DBAB287062EEF44D8BED9F32CCDE12C0CCC34709762A3FA14C904F961DA2F5D830D8541E8C0F</Filter>\r\n\t\t\t</requestData>\r\n\t\t</eaib:EAIBillerEPaymentGatewayService>\r\n </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "etelogcalendarnotify:  onlinePPstmt/insert",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{etelogcalendarnotify}}/onlinePPstmt/insert",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "etelogcalendarnotify:  ete-batch/onlineRTPstmt/update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{etelogcalendarnotify}}/ete-batch/onlineRTPstmt/update",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "eventtriggerservices: ETE/Xpress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{eventtriggerservices}}/ETE/Xpress",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n<fnis:BillPmtInqRq xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns=\"urn:ifxforum-org:XSD:1\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t<fnis:RqUID>4064464E-3256-4D19-9B26-0F40F0152DB7</fnis:RqUID>\r\n\t<MsgRqHdr>\r\n\t<CredentialsRqHdr>\r\n      \t<ifx:SubjectRole/>\r\n    </CredentialsRqHdr>\r\n    <ContextRqHdr>\r\n<!--        <ifx:PointOfServiceData>-->\r\n<!--                  <ifx:Environment/>-->\r\n<!--                  <ifx:POSAgent>-->\r\n<!--                     <ifx:AgentIdent>98770001</ifx:AgentIdent>-->\r\n<!--                  </ifx:POSAgent>-->\r\n<!--               </ifx:PointOfServiceData>-->\r\n\t\t<ifx:ClientDt>2017-09-07T16:17:15</ifx:ClientDt>\r\n\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t<ifx:ClientApp>\r\n\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t<ifx:Name>MB</ifx:Name>\r\n\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t</ifx:ClientApp>\r\n\t\t<ifx:SPName>com.fnis.tmb.ETBS</ifx:SPName>\r\n\t</ContextRqHdr>\r\n  </MsgRqHdr>\r\n  <fnis:BillPmtSel>\r\n  <fnis:BillPmtKeys>\r\n\t<fnis:TranCode>8810</fnis:TranCode>\r\n\t<fnis:FromAcctRef>\r\n\t\t<AcctKeys>\r\n\t\t\t<AcctIdent>\r\n\t\t\t\t<AcctIdentValue>0011962230</AcctIdentValue>\r\n\t\t\t</AcctIdent>\r\n\t\t\t<AcctType>\r\n\t\t\t\t<AcctTypeValue>DDA</AcctTypeValue>\r\n\t\t\t</AcctType>\r\n\t\t</AcctKeys>\r\n\t</fnis:FromAcctRef>\r\n\t<CurAmt>\r\n\t\t<Amt>9.00</Amt>\r\n\t</CurAmt>\r\n\t<fnis:BillPmtFee>\r\n\t\t<Amt>0.00</Amt>\r\n\t</fnis:BillPmtFee>\r\n\t<PmtRefIdent>19</PmtRefIdent>\r\n\t<InvoiceNum></InvoiceNum>\r\n\t<PostedDt>2017-09-07</PostedDt>\r\n\t<fnis:EPAYCode></fnis:EPAYCode>\r\n\t<fnis:CompCode>2733</fnis:CompCode>\r\n\t<fnis:PostedTime></fnis:PostedTime>\r\n\t<fnis:WaiveCode>I</fnis:WaiveCode>\r\n \t</fnis:BillPmtKeys>\r\n  </fnis:BillPmtSel>\r\n</fnis:BillPmtInqRq>\r\n</soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "fltfcbsservices: CBS/Notifymsg",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{fltfcbsservices}}/CBS/Notifymsg",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0001|7512980353          |14|SCBA|0019220938          |11|TMB |000000000010200|00000|               |01|ATM|20171017|144801|  |0859111557                              |000000000200000|00000012004030|                                                                                                                                                      |SAWASDEE                                |น.ส. อะอาอิอีฮารือเยอะกาม มาหารวยโคตรเลย|KONGSAK.SUP@TMBBANK.COM                 |99140000|0859111557|                    |                    |                    |  |ST|2924|   | |Y|N|TH|                    \r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "import-itmx-billerprofiles: ete-batch/ImportBillerProfiles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{import-itmx-billerprofiles}}/ete-batch/ImportBillerProfiles",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ETEBatchRequest>\r\n\t<JobName>Import Merchant</JobName>\r\n\t<JobFileType>AJBPR</JobFileType>\r\n\t<JobRunDate>2017-12-03</JobRunDate>\r\n</ETEBatchRequest>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Insurancebase_system: InsuranceBaseSystem/InsurancePolicyDetailInq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{Insurancebase_system}}/InsuranceBaseSystem",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:tem=\"http://tempuri.org/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <tem:InsurancePolicyDetailInq>\r\n         <tem:POLICY_NO>T50689613</tem:POLICY_NO>\r\n         <tem:DATASET>0</tem:DATASET>\r\n         <tem:CHANEL_ID>IB</tem:CHANEL_ID>\r\n         <tem:CALLER_ID>00000007728892</tem:CALLER_ID>\r\n         <tem:TIMESTAMP>2016-03-07T14:38:59.000739-00:00</tem:TIMESTAMP>\r\n         <tem:REQUEST_NO>54de18a9-3916-4588-aa48-945a7aec2b72</tem:REQUEST_NO>\r\n         <tem:TOKEN_KEY>QZUJWf7INV9Czm35s84Ny3cI6sSo8v8JAVCHj550wmWLbdKtjv+HuOry0av3dzx5MTEOR79WOxMx0y2HB+46Dq2rypimRj9d8YrzfFizUj7S/MbaAOZVlRGf1c3wqFN10gfgd8p4Jg0HSkJF+dwySwIjoNQWYVb50mW+WTCZnDhO92oSK26BS3Drw3uZ5cCf2+pvRZKdIz2KEGygv0IMtR5hXf2fjjGDKfclgsV3F4UQYCDGDFohxu3jqPEsHmB+L3rnkU/0IiOUShg8icQefaF+mpiAtPdI4HAc8Q6jeiNKjBoCGwrX92DyDMwOP301S6B/NWleq93cI42ck/H4RQ==</tem:TOKEN_KEY>\r\n      </tem:InsurancePolicyDetailInq>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "moneygram: MONEYGRAM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{moneygram}}/MONEYGRAM",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soap:Envelope xmlns:soap=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n   <soap:Body>\r\n      <receiveValidationRequest xmlns=\"http://www.moneygram.com/AgentConnect1305\">\r\n         <agentID>40719348</agentID>\r\n         <agentSequence>02</agentSequence>\r\n         <token>TEST</token>\r\n         <timeStamp>2016-11-24T09:22:27Z</timeStamp>\r\n         <apiVersion>1305</apiVersion>\r\n         <clientSoftwareVersion>1</clientSoftwareVersion>\r\n         <userID>002</userID>\r\n         <referenceNumber>22198581</referenceNumber>\r\n         <receiveCurrency>THB</receiveCurrency>\r\n         <agentCheckAmount>134992.010</agentCheckAmount>\r\n         <receiverAddress>RAYONG</receiverAddress>\r\n         <receiverCity>RAYONG</receiverCity>\r\n         <receiverZipCode>10010</receiverZipCode>\r\n         <receiverCountry>THA</receiverCountry>\r\n         <receiverPhotoIdType>PAS</receiverPhotoIdType>\r\n         <receiverPhotoIdNumber>AA4455311</receiverPhotoIdNumber>\r\n         <receiverPhotoIdCountry>ESP</receiverPhotoIdCountry>\r\n         <receiverLegalIdType>INT</receiverLegalIdType>\r\n         <receiverLegalIdNumber>AA4455311</receiverLegalIdNumber>\r\n         <receiverDOB>19987-09-12</receiverDOB>\r\n         <receiverOccupation>Trade-retail</receiverOccupation>\r\n         <receiverBirthCountry>THA</receiverBirthCountry>\r\n         <consumerId>0</consumerId>\r\n         <mgiTransactionSessionID>407193482X1479980391878</mgiTransactionSessionID>\r\n         <formFreeStaging>0</formFreeStaging>\r\n         <fieldValues/>\r\n      </receiveValidationRequest>\r\n   </soap:Body>\r\n</soap:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "msgaddonservices: MAO/Xpress",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{msgaddonservices}}/MAO/Xpress",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n<fnis:BillPmtInqRq xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns=\"urn:ifxforum-org:XSD:1\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t<fnis:RqUID>4064464E-3256-4D19-9B26-0F40F0152DB7</fnis:RqUID>\r\n\t<MsgRqHdr>\r\n\t<CredentialsRqHdr>\r\n      \t<ifx:SubjectRole/>\r\n    </CredentialsRqHdr>\r\n    <ContextRqHdr>\r\n<!--        <ifx:PointOfServiceData>-->\r\n<!--                  <ifx:Environment/>-->\r\n<!--                  <ifx:POSAgent>-->\r\n<!--                     <ifx:AgentIdent>98770001</ifx:AgentIdent>-->\r\n<!--                  </ifx:POSAgent>-->\r\n<!--               </ifx:PointOfServiceData>-->\r\n\t\t<ifx:ClientDt>2017-09-07T16:17:15</ifx:ClientDt>\r\n\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t<ifx:ClientApp>\r\n\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t<ifx:Name>MB</ifx:Name>\r\n\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t</ifx:ClientApp>\r\n\t\t<ifx:SPName>com.fnis.tmb.ETBS</ifx:SPName>\r\n\t</ContextRqHdr>\r\n  </MsgRqHdr>\r\n  <fnis:BillPmtSel>\r\n  <fnis:BillPmtKeys>\r\n\t<fnis:TranCode>8810</fnis:TranCode>\r\n\t<fnis:FromAcctRef>\r\n\t\t<AcctKeys>\r\n\t\t\t<AcctIdent>\r\n\t\t\t\t<AcctIdentValue>0011962230</AcctIdentValue>\r\n\t\t\t</AcctIdent>\r\n\t\t\t<AcctType>\r\n\t\t\t\t<AcctTypeValue>DDA</AcctTypeValue>\r\n\t\t\t</AcctType>\r\n\t\t</AcctKeys>\r\n\t</fnis:FromAcctRef>\r\n\t<CurAmt>\r\n\t\t<Amt>9.00</Amt>\r\n\t</CurAmt>\r\n\t<fnis:BillPmtFee>\r\n\t\t<Amt>0.00</Amt>\r\n\t</fnis:BillPmtFee>\r\n\t<PmtRefIdent>19</PmtRefIdent>\r\n\t<InvoiceNum></InvoiceNum>\r\n\t<PostedDt>2017-09-07</PostedDt>\r\n\t<fnis:EPAYCode></fnis:EPAYCode>\r\n\t<fnis:CompCode>2733</fnis:CompCode>\r\n\t<fnis:PostedTime></fnis:PostedTime>\r\n\t<fnis:WaiveCode>I</fnis:WaiveCode>\r\n \t</fnis:BillPmtKeys>\r\n  </fnis:BillPmtSel>\r\n</fnis:BillPmtInqRq>\r\n</soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Mutaulfunds_systems: MF/MutualFundsAIPInq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{Mutaulfunds_systems}}/MF/MutualFundsAIPInq",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:mf=\"MF\">\r\n   <soapenv:Header>\r\n       <TokenKey>66e6af499efb40ac8a78e11d31f55391</TokenKey>\r\n      <ServiceName>>MutualFundsAIPInq</ServiceName>\r\n      <RqUID>AAEBEEED-CQQDA1-AAEEAf-ED90-5ae42f0d8fd6-fdsaf4</RqUID>\r\n      <RqDateTime>2015-12-17T14:06:35.902+07:00</RqDateTime>\r\n      <ChannelID>CM</ChannelID>\r\n   </soapenv:Header>\r\n   <soapenv:Body>\r\n      <mf:AIPParameter>\r\n         <!--Optional:-->\r\n         <mf:FundCode>JSM</mf:FundCode>\r\n         <!--Optional:-->\r\n         <mf:UnitHolderNo>111021003065</mf:UnitHolderNo>\r\n      </mf:AIPParameter>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "nsllservice: NSLL/JSON/SVCSearchBasicInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{nsllservice}}/NSLL/JSON/SVCSearchBasicInfo",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"options\":{\r\n\r\n   },\r\n   \"Input\":{\r\n      \"Row\":[\r\n         {\r\n            \"requestSystem\":\"NSLL_WEB\",\r\n            \"referenceCode\":\"1479899505556\",\r\n            \"searchPersonFlag\":true,\r\n            \"customerType\":\"Individual\",\r\n            \"firstNameTH\":\"?????????\",\r\n            \"firstNameTHMatchType\":\"Exact\",\r\n            \"lastNameTH\":\"???????\",\r\n            \"lastNameTHMatchType\":\"Exact\",\r\n            \"personAdvanceMatchingFlag\":true,\r\n            \"searchAddressFlag1\":true,\r\n            \"houseNo1\":\"9/229\",\r\n            \"houseNoMatchType1\":\"Exact\",\r\n            \"province1\":\"???????\",\r\n            \"provinceMatchType1\":\"Exact\",\r\n            \"district1\":\"??????\",\r\n            \"districtMatchType1\":\"Exact\",\r\n            \"subdistrict1\":\"?????????\",\r\n            \"subdistrictMatchType1\":\"Exact\",\r\n            \"addressAdvanceMatchingFlag1\":true,\r\n            \"searchAddressFlag2\":false,\r\n            \"searchAddressFlag3\":false,\r\n            \"searchTelephoneFlag1\":false,\r\n            \"searchTelephoneFlag2\":false,\r\n            \"searchTelephoneFlag3\":false,\r\n            \"warningRecordCount\":100,\r\n            \"searchRLOSStatus\":\"all\",\r\n            \"RLOSPeriod\":24,\r\n            \"CAWPeriod\":24,\r\n            \"SELOSPeriod\":24,\r\n            \"FDRPeriod\":24,\r\n            \"CSIPeriod\":24\r\n         }\r\n      ]\r\n   }\r\n}\r\n\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "odsservice: ODS/JSON/InterestRateInq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{odsservice}}/ODS/JSON/InterestRateInq",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ODSService\": {\r\n        \"InterestRates\": [{\r\n            \"PRDGRP\": \"200, 206, 219, 221, 300, 301, 302, 601, 602, 659, 666, 664, 668\"\r\n        }]\r\n    }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationanyidservices: Orh/AnyIDservices/AnyIDRegistrationETEInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationanyidservices}}/Orh/AnyIDservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<AnyIDRegistrationETEInqRq>\r\n   <DataGateWay>\r\n      <PIVOT_XPRESS_DGW>\r\n         <provider>ITMXANYID</provider>\r\n         <sender>\r\n            <senderRole>SME</senderRole>\r\n         </sender>\r\n         <productCode>ANYID</productCode>\r\n         <command>INQUIRY</command>\r\n         <transactionType>RQT</transactionType>\r\n         <headType>NATID</headType>\r\n         <customerRefNo>0105547073996</customerRefNo>\r\n         <contract>\r\n            <contractNo>00000000819434</contractNo>\r\n         </contract>\r\n         <transmitDateTime>2018-02-08T10:43:46.000433-00:00</transmitDateTime>\r\n      </PIVOT_XPRESS_DGW>\r\n   </DataGateWay>\r\n   <XPRESS>\r\n      <AnyIDRegisterInqRq xmlns=\"http://www.fnf.com/xes\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n         <RqUID>fd012e6b-4a1c-4cf3-bd83-244562b32cbf</RqUID>\r\n         <ifx:MsgRqHdr>\r\n            <CredentialsRqHdr>\r\n               <ifx:SubjectRole/>\r\n            </CredentialsRqHdr>\r\n            <ContextRqHdr>\r\n               <ifx:ClientDt>2018-02-08T10:43:46.000433-00:00</ifx:ClientDt>\r\n               <ifx:ClientApp>\r\n                  <ifx:Org>com.fnis.xes</ifx:Org>\r\n                  <ifx:Name>SMEMB-INQ</ifx:Name>\r\n                  <ifx:Version>2.0</ifx:Version>\r\n               </ifx:ClientApp>\r\n               <ifx:SPName>com.fnis.xes.TS</ifx:SPName>\r\n            </ContextRqHdr>\r\n         </ifx:MsgRqHdr>\r\n         <AnyIDRegisterSel>\r\n            <AnyIDRegisterKeys>\r\n               <ActionFlag>I</ActionFlag>\r\n               <RMNum>00000000819434</RMNum>\r\n               <AnyIDType>03</AnyIDType>\r\n             </AnyIDRegisterKeys>\r\n         </AnyIDRegisterSel>\r\n      </AnyIDRegisterInqRq>\r\n   </XPRESS>\r\n   <ActionCode>A</ActionCode>\r\n</AnyIDRegistrationETEInqRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationbillpmtservice: Orh/BillPmtservices/BillPmtETEInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationbillpmtservice}}/Orh/BillPmtservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<BillPmtETEInqRq>\r\n   <fnis:BillPmtInqRq xsi:schemaLocation=\"http://www.fnf.com/xes file:///D:/workspaces_crmsm/xpress-xbo-ifx20/src/main/config/schema/prod/FNIS_BillPmt.xsd\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns=\"urn:ifxforum-org:XSD:1\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n         <fnis:RqUID>D7C4EE44-0859-4A04-BEBB-46D4083099B5</fnis:RqUID>\r\n         <MsgRqHdr>\r\n            <CredentialsRqHdr>\r\n               <ifx:SubjectRole/>\r\n            </CredentialsRqHdr>\r\n            <ContextRqHdr>\r\n            \t<ifx:PointOfServiceData>\r\n                  <ifx:Environment/>\r\n                  <ifx:POSAgent>\r\n                     <ifx:AgentIdent>1110411D</ifx:AgentIdent>\r\n                  </ifx:POSAgent>\r\n               </ifx:PointOfServiceData>\r\n               <ifx:ClientDt>2015-08-10T13:32:00.000000-00:00</ifx:ClientDt>\r\n               <ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n               <ifx:ClientApp>\r\n                  <ifx:Org>com.fnis.xes</ifx:Org>\r\n                  <ifx:Name>IB</ifx:Name>\r\n                  <ifx:Version>2.0</ifx:Version>\r\n               </ifx:ClientApp>\r\n               <ifx:SPName>com.fnis.tmb.ETBS</ifx:SPName>\r\n            </ContextRqHdr>\r\n         </MsgRqHdr>\r\n         <fnis:BillPmtSel>\r\n            <fnis:BillPmtKeys>\r\n               <fnis:TranCode>8810</fnis:TranCode>\r\n               <fnis:FromAcctRef>\r\n                  <ifx:AcctKeys>\r\n                     <AcctIdent>\r\n                        <AcctIdentValue>0011000304</AcctIdentValue>\r\n                     </AcctIdent>\r\n                     <AcctType>\r\n                        <AcctTypeValue>DDA</AcctTypeValue>\r\n                     </AcctType>\r\n                  </ifx:AcctKeys>\r\n               </fnis:FromAcctRef>\r\n               <!--To Account Reference-->\r\n               <ToAcctRef>\r\n                  <ifx:AcctKeys>\r\n                     <AcctIdent>\r\n                        <AcctIdentValue>0541053807</AcctIdentValue>\r\n                     </AcctIdent>\r\n                     <AcctType>\r\n                        <AcctTypeValue>DDA</AcctTypeValue>\r\n                     </AcctType>\r\n                     <!--<FIIdent>0011000100020000</FIIdent>-->\r\n                  </ifx:AcctKeys>\r\n               </ToAcctRef>\r\n               <CurAmt>\r\n                  <Amt>100.00</Amt>\r\n               </CurAmt>\r\n               <fnis:BillPmtFee>\r\n                  <Amt>0</Amt>\r\n               </fnis:BillPmtFee>\r\n               <PmtRefIdent>Ref1:123456789012345</PmtRefIdent>\r\n               <InvoiceNum>Ref2:123456789012345</InvoiceNum>\r\n               <PostedDt>2015-08-11</PostedDt>\r\n               <fnis:EPAYCode/>\r\n               <fnis:RBANo>98820001</fnis:RBANo>\r\n               <fnis:CompCode>0016</fnis:CompCode>\r\n               <fnis:PostedTime>100000</fnis:PostedTime>\r\n               <fnis:WaiveCode>I</fnis:WaiveCode>\r\n               <fnis:TaxID/>  \r\n               <ifx:BranchIdent>00122</ifx:BranchIdent>        \r\n            </fnis:BillPmtKeys>\r\n         </fnis:BillPmtSel>\r\n      </fnis:BillPmtInqRq>\r\n</BillPmtETEInqRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationcbsservices: CBS/PushMsg",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationcbsservices}}/CBS/PushMsg",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ETENotifyRq>\r\n  <TemplateID>RTP</TemplateID>\r\n  <FromAcctNo>1113947375</FromAcctNo>\r\n  <FromBankCd>00</FromBankCd>\r\n  <FromBankName></FromBankName>\r\n  <ToAcctNo>0019223718</ToAcctNo>\r\n  <ToBankCd>11</ToBankCd>\r\n  <ToBankName></ToBankName>\r\n  <TranAmt>120.34</TranAmt>\r\n  <FeeAmt>0.00</FeeAmt>\r\n  <Compcode></Compcode>\r\n  <TranType></TranType>\r\n  <Channel/>\r\n  <TranDate>20180112</TranDate>\r\n  <TranTime>122136</TranTime>\r\n  <ProxyType>05</ProxyType>\r\n  <ProxyValue>010753700159010</ProxyValue>\r\n  <AvailBal></AvailBal>\r\n  <RMNo>00000009863866</RMNo>\r\n  <TemplateMsg></TemplateMsg>\r\n  <FromAcctName>From Test ETE Krub</FromAcctName>\r\n  <ToAcctName>To Test ETE Krub</ToAcctName>\r\n  <EmailAddr></EmailAddr>\r\n  <TellerID></TellerID>\r\n  <MobileNo></MobileNo>\r\n  <Ref1>0809201715221</Ref1>\r\n  <Ref2></Ref2>\r\n  <Ref3></Ref3>\r\n  <FromAcctType></FromAcctType>\r\n  <ToAcctType></ToAcctType>\r\n  <TranCode>2924</TranCode>\r\n  <MerchanID></MerchanID>\r\n  <QRFlag></QRFlag>\r\n  <SMSFlag></SMSFlag>\r\n  <SameRMFlag></SameRMFlag>\r\n  <Language></Language>\r\n  <Reserve></Reserve>\r\n  <RTPTranRef>R014801202586716</RTPTranRef>\r\n  <RTPExpireDate>2018-01-18T23:01:01</RTPExpireDate>\r\n  <ReceiverProductCode>200</ReceiverProductCode>\r\n</ETENotifyRq>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationloanbillservices: Orh/LoanBillAcctListservices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationloanbillservices}}/Orh/LoanBillAcctListservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<ns0:Envelope xmlns:ns0=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n  <ns0:Header xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n  <ns0:Body>\r\n    <ns1:LBAcctListInqRq xmlns:ns1=\"http://www.fnf.com/xes\">\r\n      <ns1:RqUID>8383dab9-3702-4b54-86e2-eacf68bb2876</ns1:RqUID>\r\n      <ns2:MsgRqHdr xmlns:ns2=\"urn:ifxforum-org:XSD:1\">\r\n        <ns1:CredentialsRqHdr>\r\n          <ns2:SubjectRole/>\r\n        </ns1:CredentialsRqHdr>\r\n        <ns1:ContextRqHdr>\r\n          <ns2:ClientDt>2016-11-30T11:00:05</ns2:ClientDt>\r\n          <ns2:ClientApp>\r\n            <ns2:Org>com.fnis.tmb</ns2:Org>\r\n            <ns2:Name>CIB</ns2:Name>\r\n            <ns2:Version>2.0</ns2:Version>\r\n          </ns2:ClientApp>\r\n          <ns1:Interface>\r\n            <ns2:InterfaceName/>\r\n            <ns2:InterfaceVersion>01</ns2:InterfaceVersion>\r\n            <ns1:SvcVersion>01</ns1:SvcVersion>\r\n            <ns1:SvcAdapterVersion>01</ns1:SvcAdapterVersion>\r\n          </ns1:Interface>\r\n          <ns2:SPName>com.fnis.tmb.LB</ns2:SPName>\r\n        </ns1:ContextRqHdr>\r\n      </ns2:MsgRqHdr>\r\n      <ns1:LBAcctListSel>\r\n        <ns1:CICSTranCode>LBST</ns1:CICSTranCode>\r\n        <ns1:TxTime>110005</ns1:TxTime>\r\n        <ns1:TranCode>9001</ns1:TranCode>\r\n        <ns1:ProcessBranchID>0001</ns1:ProcessBranchID>\r\n        <ns2:BranchIdent xmlns:ns2=\"urn:ifxforum-org:XSD:1\">001</ns2:BranchIdent>\r\n        <ns1:AcctKeys>\r\n          <ns2:AcctId xmlns:ns2=\"urn:ifxforum-org:XSD:1\">0018063347</ns2:AcctId>\r\n        </ns1:AcctKeys>\r\n      </ns1:LBAcctListSel>\r\n    </ns1:LBAcctListInqRq>\r\n  </ns0:Body>\r\n</ns0:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationmftmbamservices: Orh/MFBillPayTMBAMAdd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationmftmbamservices}}/Orh/MFBillPayTMBAMAdd",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<MFBillPaymentETEAddRq>\r\n\t<XPRESS>\r\n\t\t <fnis:BillPmtAddRq xsi:schemaLocation=\"http://www.fnf.com/xes file:///D:/workspaces_express/xpress-xboc/xbo-ifx20/src/main/config/schema/prod/FNIS_BillPmt.xsd\" xmlns=\"urn:ifxforum-org:XSD:1\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n         <fnis:RqUID>cf6135c0-f807-4fa6-b87c-658993216eb5</fnis:RqUID>\r\n         <MsgRqHdr>\r\n            <CredentialsRqHdr>\r\n               <ifx:SubjectRole/>\r\n            </CredentialsRqHdr>\r\n            <ContextRqHdr>\r\n            \r\n               <ifx:ClientDt>2017-06-13T20:59:22.000610-00:00</ifx:ClientDt>\r\n               <ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n               <ifx:ClientApp>\r\n                  <ifx:Org>com.fnis.xes</ifx:Org>\r\n                  <ifx:Name>MB</ifx:Name>\r\n                  <ifx:Version>2.0</ifx:Version>\r\n               </ifx:ClientApp>\r\n               <ifx:SPName>com.fnis.tmb.ETBS</ifx:SPName>\r\n            </ContextRqHdr>\r\n         </MsgRqHdr>\r\n         <fnis:BillPmtInfo>\r\n            <fnis:TranCode>8820</fnis:TranCode>\r\n            <!--From Account Reference-->\r\n            <fnis:FromAcctRef>\r\n               <AcctKeys>\r\n                  <AcctIdent>\r\n                     <AcctIdentValue>00000149232720</AcctIdentValue>\r\n                  </AcctIdent>\r\n                  <AcctType>\r\n                     <AcctTypeValue>SDA</AcctTypeValue>\r\n                  </AcctType>\r\n                  <FIIdent/>\r\n               </AcctKeys>\r\n            </fnis:FromAcctRef>\r\n            <!--To Account Reference-->\r\n            <ToAcctRef>\r\n               <fnis:AcctKeys>\r\n                  <AcctIdent>\r\n                     <AcctIdentValue>0011302346</AcctIdentValue>\r\n                  </AcctIdent>\r\n                  <AcctType>\r\n                     <AcctTypeValue>DDA</AcctTypeValue>\r\n                  </AcctType>\r\n                  <FIIdent>0011000100010000</FIIdent>\r\n               </fnis:AcctKeys>\r\n            </ToAcctRef>\r\n            <!--Transfer Amount-->\r\n            <ifx:CurAmt>\r\n               <ifx:Amt>100.00</ifx:Amt>\r\n            </ifx:CurAmt>\r\n            <fnis:BillPmtFee>\r\n               <Amt>0</Amt>\r\n            </fnis:BillPmtFee>\r\n            <PmtRefIdent>0010009090</PmtRefIdent>\r\n            <InvoiceNum>TB1</InvoiceNum>\r\n            <PostedDt>2017-06-13</PostedDt>\r\n            <fnis:EPAYCode/>\r\n            <fnis:RBANo/>\r\n            <fnis:FlagFeeReg/>\r\n            <fnis:CompCode>9511</fnis:CompCode>\r\n            <fnis:PostedTime>205922</fnis:PostedTime>\r\n<!--            <fnis:WaiveFlag>R</fnis:WaiveFlag>-->\r\n         </fnis:BillPmtInfo>\r\n      </fnis:BillPmtAddRq>\r\n\t</XPRESS>\r\n\t<TMBAM>\r\n\t\t<Request>\r\n\t\t\t<Header>\r\n\t\t\t\t<Source>TMB</Source>\r\n\t\t\t\t<BranchCode>MIB</BranchCode>\r\n\t\t\t\t<TellerCode>0000</TellerCode>\r\n\t\t\t\t<TMBTransactionID>471a780e-0e4a-40c8-adc0-12ceec620073</TMBTransactionID>\r\n\t\t\t\t<Date>20151119</Date>\r\n\t\t\t\t<Time>174509</Time>\r\n\t\t\t\t<TranType>PUR</TranType> <!-- PUR: Purchase, RED: Redeem -->\r\n\t\t\t\t<TranSubType>T/R</TranSubType>\r\n\t\t\t\t<UnitHolderNo>1230123456</UnitHolderNo>\r\n\t\t\t\t<SecretMsg>adc0-12ceec620073</SecretMsg>\r\n\t\t\t</Header>\r\n\t\t\t<Data>\r\n\t\t\t\t<FundCode>TMBMF</FundCode>\r\n\t\t\t</Data>\r\n\t\t\t<PurchaseAmount>100000.00</PurchaseAmount>\r\n\t\t\t<TrAccountNo>1234567890</TrAccountNo>\r\n\t\t</Request>\r\n\t</TMBAM>\r\n</MFBillPaymentETEAddRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationpromptpayservice: Orh/PromptPayservices/PromptPayETEInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationpromptpayservice}}/Orh/PromptPayservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<PromptPayETEInqRq>\r\n\t<PromptPayInqRq xmlns:ns2=\"urn:ifxforum-org:XSD:1\" xsi:schemaLocation=\"http://www.fnf.com/xesfile:///D:/_FISWorkspace/TMBXP_SCHEMA/ifx-xboc/xbo-ifx20/src/main/config/schema/prod/FNIS_PromptPay.xsd\" xmlns=\"http://www.fnf.com/xes\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t\t<RqUID>65ba64c2-0a4b-4db2-9fc1-313d5ff552e1</RqUID>\r\n\t\t<MsgRqHdr>\r\n\t\t\t<CredentialsRqHdr>\r\n\t\t\t\t<ifx:SubjectRole/>\r\n\t\t\t</CredentialsRqHdr>\r\n\t\t\t<ContextRqHdr>\r\n\t\t\t\t<ifx:ClientDt>2016-10-05T14:44:23.000602-00:00</ifx:ClientDt>\r\n\t\t\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t\t\t<ns2:ClientApp>\r\n\t\t\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t\t\t<ifx:Name>IB</ifx:Name>\r\n\t\t\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t\t\t</ns2:ClientApp>\r\n\t\t\t\t<ifx:SPName>com.fnis.tmb.BASE24</ifx:SPName>\r\n\t\t\t</ContextRqHdr>\r\n\t\t</MsgRqHdr>\r\n\t\t<PromptPaySel>\r\n\t\t\t<PromptPayKeys>\r\n\t\t\t\t<ProxyType>02</ProxyType>\r\n\t\t\t\t<ProxyValue>0817315935</ProxyValue>\r\n\t\t\t\t<FromAcctRef>\r\n\t\t\t\t\t<ifx:AcctKeys>\r\n\t\t\t\t\t\t<ifx:AcctIdent>\r\n\t\t\t\t\t\t\t<ifx:AcctIdentValue>0027029669</ifx:AcctIdentValue>\r\n\t\t\t\t\t\t</ifx:AcctIdent>\r\n\t\t\t\t\t\t<ifx:AcctType>\r\n\t\t\t\t\t\t\t<ifx:AcctTypeValue>11</ifx:AcctTypeValue>\r\n\t\t\t\t\t\t</ifx:AcctType>\r\n\t\t\t\t\t\t<ns2:FIIdent>11</ns2:FIIdent>\r\n\t\t\t\t\t</ifx:AcctKeys>\r\n\t\t\t\t</FromAcctRef>\r\n\t\t\t\t<ifx:ToAcctRef>\r\n\t\t\t\t\t<ifx:AcctKeys>\r\n\t\t\t\t\t\t<ifx:AcctIdent>\r\n\t\t\t\t\t\t\t<ifx:AcctIdentValue>0817315935</ifx:AcctIdentValue>\r\n\t\t\t\t\t\t</ifx:AcctIdent>\r\n\t\t\t\t\t\t<ifx:AcctType>\r\n\t\t\t\t\t\t\t<ifx:AcctTypeValue>02</ifx:AcctTypeValue>\r\n\t\t\t\t\t\t</ifx:AcctType>\r\n\t\t\t\t\t</ifx:AcctKeys>\r\n\t\t\t\t</ifx:ToAcctRef>\r\n\t\t\t\t<FromAcctLen>10</FromAcctLen>\r\n\t\t\t\t<ToAcctLen>10</ToAcctLen>\r\n\t\t\t\t<ifx:CurAmt>\r\n\t\t\t\t\t<ifx:Amt>100.00</ifx:Amt>\r\n\t\t\t\t</ifx:CurAmt>\r\n\t\t\t\t<ifx:PostedDt>2016-07-12</ifx:PostedDt>\r\n\t\t\t\t<TermId>I000330B011BTMBI</TermId>\r\n\t\t\t\t<TermType>60</TermType>\r\n\t\t\t\t<ifx:TrnTypeValue>38</ifx:TrnTypeValue>\r\n\t\t\t\t<MsgType>0200</MsgType>\r\n\t\t\t\t<SenderType>Q</SenderType>\r\n\t\t\t</PromptPayKeys>\r\n\t\t</PromptPaySel>\r\n\t</PromptPayInqRq>\r\n</PromptPayETEInqRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationrtpactivity: Orh/RTPActivityservices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationrtpactivity}}/Orh/RTPActivityservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<OrchestrationRTPActivityRq>\r\n  <RTPActivityAddRequest>\r\n    <RTPTranRef>R004802310000001</RTPTranRef>\r\n    <RMNo>00000009850002</RMNo>\r\n    <TranAmt>999.11</TranAmt>\r\n    <SenderFEE>0.00</SenderFEE>\r\n    <SenderAcctFee>0.00</SenderAcctFee>\r\n    <SenderProxyID>0877044744</SenderProxyID>\r\n    <SenderProxyType>02</SenderProxyType>\r\n    <SenderBankCode>00</SenderBankCode>\r\n    <SenderAcctNo>6042471974</SenderAcctNo>\r\n    <SenderAcctName>SENDER TEST TEST</SenderAcctName>\r\n    <ReceiverAcctFee>0.00</ReceiverAcctFee>\r\n    <ReceiverProxyID>0988264143</ReceiverProxyID>\r\n    <ReceiverProxyType>02</ReceiverProxyType>\r\n    <ReceiverBankCode>11</ReceiverBankCode>\r\n    <ReceiverAcctNo>0212708465</ReceiverAcctNo>\r\n    <ReceiverAcctDispName>PROMPTPAY ACCOUNT3(ATM)</ReceiverAcctDispName>\r\n    <ReceiverAcctName>NAME TEST</ReceiverAcctName>\r\n    <Memo/>\r\n    <SenderRefNo/>\r\n    <Reference1/>\r\n    <Reference2/>\r\n    <Reference3/>\r\n    <PresentURL/>\r\n    <ExpiryDate>2018-01-25 15:28:40</ExpiryDate>\r\n    <TMBProduct>200</TMBProduct>\r\n    <BaseTraceNO>802315000848</BaseTraceNO>\r\n    <RTPType>InwardRTP</RTPType>\r\n  </RTPActivityAddRequest>\r\n</OrchestrationRTPActivityRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationrtpsenderonus: Orh/RTPSenderOnUs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationrtpsenderonus}}/Orh/RTPSenderOnUs",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<OrchestrationRTPSenderOnUsRq>\r\n\t<RTPActivityAddRequest>\r\n\t\t<ChannelName>SMEMB</ChannelName>\r\n\t\t<RTPTranRef>R004802310000104</RTPTranRef>\r\n\t\t<RMNo>00000009850002</RMNo>\r\n\t\t<TranAmt>999.11</TranAmt>\r\n\t\t<SenderFEE>0.00</SenderFEE>\r\n\t\t<SenderAcctFee>0.00</SenderAcctFee>\r\n\t\t<SenderProxyID>0869999999</SenderProxyID>\r\n\t\t<SenderProxyType>02</SenderProxyType>\r\n\t\t<SenderBankCode>11</SenderBankCode>\r\n\t\t<SenderAcctNo>6042471974</SenderAcctNo>\r\n\t\t<SenderAcctName>SENDER TEST TMB</SenderAcctName>\r\n\t\t<ReceiverAcctFee>0.00</ReceiverAcctFee>\r\n\t\t<ReceiverProxyID>0869999999</ReceiverProxyID>\r\n\t\t<ReceiverProxyType>02</ReceiverProxyType>\r\n\t\t<ReceiverBankCode>11</ReceiverBankCode>\r\n\t\t<ReceiverAcctNo>0212708465</ReceiverAcctNo>\r\n\t\t<ReceiverAcctDispName>PROMPTPAY ACCOUNT3(ATM)</ReceiverAcctDispName>\r\n\t\t<ReceiverAcctName>NAME TEST</ReceiverAcctName>\r\n\t\t<Memo/>\r\n\t\t<SenderRefNo/>\r\n\t\t<Reference1/>\r\n\t\t<Reference2/>\r\n\t\t<Reference3/>\r\n\t\t<PresentURL/>\r\n\t\t<ExpiryDate>2018-01-25 15:28:40</ExpiryDate>\r\n\t\t<TMBProduct>225</TMBProduct>\r\n\t\t<BaseTraceNO>802315000848</BaseTraceNO>\r\n\t\t<RTPType>Both</RTPType>\r\n\t\t<SenderRMNo>00000001479587</SenderRMNo>\r\n\t</RTPActivityAddRequest>\r\n</OrchestrationRTPSenderOnUsRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "orchestrationrtpsenderoffus: Orh/RTPSenderOffUs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{orchestrationrtpsenderoffus}}/Orh/RTPSenderOffUs",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<OrchestrationRTPSenderOffUsRq>\r\n\t<RTPActivityAddRequest>\r\n\t\t<ChannelName>SMEMB</ChannelName>\r\n\t\t<RTPTranRef>R011803120000529</RTPTranRef>\r\n\t\t<RMNo>00000000000000</RMNo>\r\n\t\t<TranAmt>999.22</TranAmt>\r\n\t\t<SenderFEE>0.00</SenderFEE>\r\n\t\t<SenderAcctFee>0.00</SenderAcctFee>\r\n\t\t<SenderProxyID>0869999999</SenderProxyID>\r\n\t\t<SenderProxyType>02</SenderProxyType>\r\n\t\t<SenderBankCode>11</SenderBankCode>\r\n\t\t<SenderAcctNo>00000019220938</SenderAcctNo>\r\n\t\t<SenderAcctName>SENDER TEST TMB</SenderAcctName>\r\n\t\t<ReceiverAcctFee>0.00</ReceiverAcctFee>\r\n\t\t<ReceiverProxyID>0826756742</ReceiverProxyID>\r\n\t\t<ReceiverProxyType>02</ReceiverProxyType>\r\n\t\t<ReceiverBankCode>30</ReceiverBankCode>\r\n\t\t<ReceiverAcctNo>0212708465</ReceiverAcctNo>\r\n\t\t<ReceiverAcctDispName>PROMPTPAY ACCOUNT4</ReceiverAcctDispName>\r\n\t\t<ReceiverAcctName>NAME TEST</ReceiverAcctName>\r\n\t\t<Memo>Test Memo</Memo>\r\n\t\t<SenderRefNo/>\r\n\t\t<Reference1/>\r\n\t\t<Reference2/>\r\n\t\t<Reference3/>\r\n\t\t<PresentURL/>\r\n\t\t<ExpiryDate>2018-02-21 15:28:40</ExpiryDate>\r\n\t\t<TMBProduct>225</TMBProduct> \r\n\t\t<BaseTraceNO>802315000848</BaseTraceNO>\r\n\t\t<RTPType>OutwardRTP</RTPType>\r\n\t\t<SenderRMNo>00000001479587</SenderRMNo>\r\n\t\t<TermId>I222222B011BTMBM</TermId>\r\n\t\t<TermType>80</TermType>\r\n\t</RTPActivityAddRequest>\r\n</OrchestrationRTPSenderOffUsRq>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc01-customer-product-holdings: customerProductHoldings",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc01-customer-product-holdings}}/customerProductHoldings",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cus=\"http://www.tmbbank.com/CustomerProductHoldings/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <cus:getProductHoldings>\r\n         <CustomerRMID>00110000000000000000000051187</CustomerRMID>\r\n      </cus:getProductHoldings>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc02-deposit-account-details: retrieveDepositProductDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc02-deposit-account-details}}/retrieveDepositProductDetails",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:dep=\"http://www.tmbbank.com/DepositProductDetails/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <dep:getProductDetails>\r\n         <accountNumber>00000032821886</accountNumber>\r\n         <productType>com.fnis.xes.ST</productType>\r\n         <CustomerRMID>001100000000000000000001494435</CustomerRMID>\r\n         <FIIdent>0011000100030200</FIIdent>\r\n      </dep:getProductDetails>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc03-retrieve-credit-card-details: retrieveCreditCardDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc03-retrieve-credit-card-details}}/retrieveCreditCardDetails",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cred=\"http://www.tmbbank.com/CreditCardDetails/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <cred:getCreditCardDetails>\r\n         <cardNumber>4560432101111150</cardNumber>\r\n         <creditCardType>1</creditCardType>\r\n      </cred:getCreditCardDetails>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc04-retrieve-loan-product-details: retrieveLoanProductDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc04-retrieve-loan-product-details}}/retrieveLoanProductDetails",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:loan=\"http://www.tmbbank.com/LoanProductDetails/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <loan:getLoanProductDetails>\r\n         <accountNumber>01955706724001</accountNumber>\r\n         <productType>com.fnis.xes.AL</productType>\r\n         <FIIdent>0011000101950000</FIIdent>\r\n      </loan:getLoanProductDetails>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc05-retrieve-bancassurance-product-details: retrieveBancassuranceProductDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc05-retrieve-bancassurance-product-details}}/retrieveBancassuranceProductDetails",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:ban=\"http://www.tmbbank.com/BancassuranceProductDetails/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <ban:getBancassuranceProductDetails>\r\n         <PolicyNo>T02836285</PolicyNo>\r\n      </ban:getBancassuranceProductDetails>\r\n  </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc06-retrieve-investment-product-details: retrieveInvestmentProductDetails",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc06-retrieve-investment-product-details}}/retrieveInvestmentProductDetails",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:inv=\"http://www.tmbbank.com/InvestmentProductDetails/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <inv:getInvestmentProductDetails>\r\n         <UnitHolderNo>111643000068</UnitHolderNo>\r\n         <FundCode>ABIG</FundCode>\r\n      </inv:getInvestmentProductDetails>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc07-retrieve-csv-analytical-data: retrieveCVSAnalyticalData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc07-retrieve-csv-analytical-data}}/retrieveCVSAnalyticalData",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:cvs=\"http://www.tmbbank.com/CVSAnalyticsData/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <cvs:getCVSAnalyticsData>\r\n         <RMID>001100000000000000000000000076</RMID>\r\n      </cvs:getCVSAnalyticsData>\r\n  </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc08-retrieve-nbo: retrieveNextBestOffer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{osc08-retrieve-nbo}}/retrieveNextBestOffer",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:nex=\"http://www.tmbbank.com/NextBestOffer/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <nex:getNextBestOffer>\r\n         <rmId>001100000000000000000001599360</rmId>\r\n      </nex:getNextBestOffer>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "osc09-create-campaignmaster: campaign/campaignMaster",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://{{SERVER}}:{{osc09-create-campaignmaster}}/campaign/campaignMaster",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\" xmlns:cam=\"campaign\" xmlns:ns=\"http://schemas.datacontract.org/2004/07/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <tem:manageCampaign>\r\n         <!--Optional:-->\r\n         <tem:value>\r\n            <!--Optional:-->\r\n            <cam:Activity>\r\n               <!--Zero or more repetitions:-->\r\n               <ns:CampignActivity>\r\n                  <!--Optional:-->\r\n                  <ns:CallEndDate>2017-09-14</ns:CallEndDate>\r\n                  <!--Optional:-->\r\n                  <ns:CallStartDate>2017-09-01</ns:CallStartDate>\r\n                  <!--Optional:-->\r\n                  <ns:CampaignActivityID_SF>7010k0000009rVNAAY</ns:CampaignActivityID_SF>\r\n                  <!--Optional:-->\r\n                  <ns:CampaignActivityStatusSF>FINAL Approved</ns:CampaignActivityStatusSF>\r\n                  <!--Optional:-->\r\n                  <ns:CampaignActivitySubTypeID>1</ns:CampaignActivitySubTypeID>\r\n                  <!--Optional:-->\r\n                  <ns:CampaignActivityTypeID>Loyalty</ns:CampaignActivityTypeID>\r\n                  <!--Optional:-->\r\n                  <ns:CampaignId>41106</ns:CampaignId>\r\n                  <!--Optional:-->\r\n                  <ns:CreateBy>41106</ns:CreateBy>\r\n                  <!--Optional:-->\r\n                  <ns:Created>2017-07-11T12:21:31.000Z</ns:Created>\r\n                  <!--Optional:-->\r\n                  <ns:Description>L1707140004A</ns:Description>\r\n                  <!--Optional:-->\r\n                  <ns:ID>?</ns:ID>\r\n                  <!--Optional:-->\r\n                  <ns:Name>A00000000A</ns:Name>\r\n                  <!--Optional:-->\r\n                  <ns:PlannedEndDate>2017-09-14</ns:PlannedEndDate>\r\n                  <!--Optional:-->\r\n                  <ns:PlannedInMarketDate>2017-09-14</ns:PlannedInMarketDate>\r\n                  <!--Optional:-->\r\n                  <ns:Priority>3</ns:Priority>\r\n                  <!--Optional:-->\r\n                  <ns:ProductCode>1:Investment; 2:En16I1_M; 3:Credit Cards</ns:ProductCode>\r\n                  <!--Optional:-->\r\n                  <ns:ReferenceCode></ns:ReferenceCode>\r\n                  <!--Optional:-->\r\n                  <ns:TreatmentName>Outbound call</ns:TreatmentName>\r\n                  <!--Optional:-->\r\n                  <ns:Updated>2017-08-29T12:51:31.000Z</ns:Updated>\r\n                  <!--Optional:-->\r\n                  <ns:UpdatedBy>41106</ns:UpdatedBy>\r\n               </ns:CampignActivity>\r\n            </cam:Activity>\r\n            <cam:ApproveFlag>1</cam:ApproveFlag>\r\n            <cam:CampaignID_SF>7010k0000009rSdAAI</cam:CampaignID_SF>\r\n            <!--Optional:-->\r\n            <cam:CampaignStatus_SF>New</cam:CampaignStatus_SF>\r\n            <!--Optional:-->\r\n            <cam:Created>2017-08-29T08:24:34.000Z</cam:Created>\r\n            <!--Optional:-->\r\n            <cam:CreatedBy>41106</cam:CreatedBy>\r\n            <cam:Description>samphao</cam:Description>\r\n            <cam:Name>A00000000</cam:Name>\r\n            <cam:PlannedEndDate>2017-09-30</cam:PlannedEndDate>\r\n            <cam:PlannedInMarketDate>2017-09-01</cam:PlannedInMarketDate>\r\n            <!--Optional:-->\r\n            <cam:Updated>2017-12-07T12:52:29.000Z</cam:Updated>\r\n            <!--Optional:-->\r\n            <cam:UpdatedBy>41106</cam:UpdatedBy>\r\n         </tem:value>\r\n      </tem:manageCampaign>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "pushservice: PushGateway/PromtPayPushNotificationService",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{pushservice}}/PushGateway/PromtPayPushNotificationService",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<ETENotifyRq>\r\n  <TemplateID>0001</TemplateID>\r\n  <FromAcctNo>7512980353</FromAcctNo>\r\n  <FromBankCd>14</FromBankCd>\r\n  <FromBankName>SCBA</FromBankName>\r\n  <ToAcctNo>0019220938</ToAcctNo>\r\n  <ToBankCd>11</ToBankCd>\r\n  <ToBankName>TMB</ToBankName>\r\n  <TranAmt>102.00</TranAmt>\r\n  <FeeAmt>0.00</FeeAmt>\r\n  <Compcode></Compcode>\r\n  <TranType>01</TranType>\r\n  <Channel>ATM</Channel>\r\n  <TranDate>20171017</TranDate>\r\n  <TranTime>144801</TranTime>\r\n  <ProxyType></ProxyType>\r\n  <ProxyValue>0859111557</ProxyValue>\r\n  <AvailBal>2000.00</AvailBal>\r\n  <RMNo>00000012004030</RMNo>\r\n  <TemplateMsg></TemplateMsg>\r\n  <FromAcctName>SAWASDEE</FromAcctName>\r\n  <ToAcctName>บ้าาบอ</ToAcctName>\r\n  <EmailAddr>KONGSAK.SUP@TMBBANK.COM</EmailAddr>\r\n  <TellerID>99140000</TellerID>\r\n  <MobileNo>0859111557</MobileNo>\r\n  <Ref1></Ref1>\r\n  <Ref2></Ref2>\r\n  <Ref3></Ref3>\r\n  <FromAcctType></FromAcctType>\r\n  <ToAcctType>ST</ToAcctType>\r\n  <TranCode>2924</TranCode>\r\n  <MerchanID></MerchanID>\r\n  <QRFlag></QRFlag>\r\n  <SMSFlag>Y</SMSFlag>\r\n  <SameRMFlag>N</SameRMFlag>\r\n  <Language>TH</Language>\r\n  <Reserve></Reserve>\r\n</ETENotifyRq> "
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "roscgateway: ROSC/ChkKYCStatus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{roscgateway}}/ROSC/ChkKYCStatus",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://data.common.tmb.com/WebCheckDataAndKYCStatus/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <web:checkDataAndKYCStatus>\r\n         <requestData>\r\n            <header>\r\n               <reqId>103666</reqId>\r\n               <productCode>CDM</productCode>\r\n               <acronym>1110412D</acronym>\r\n               <!--Optional:-->\r\n               <serverURL xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <sessionId xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n            </header>\r\n            <body>\r\n               <rmNo>00000008506231</rmNo>\r\n            </body>\r\n         </requestData>\r\n      </web:checkDataAndKYCStatus>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "roscservices: Orh/CreateKYCCorp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{roscservices}}/Orh/CreateKYCCorp",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:web=\"http://data.common.tmb.com/WebCreateKYCCorporate/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <web:createKYCCorporate>\r\n         <requestData>\r\n            <header>\r\n               <reqID>101125</reqID>\r\n               <productCode>OSC</productCode>\r\n               <acronym>4570311D</acronym>\r\n               <!--Optional:-->\r\n               <serverURL xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <sessionId xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n            </header>\r\n            <body>\r\n               <rmNO>00000012119099</rmNO>\r\n               <branchCode>457</branchCode>\r\n               <officeCode>000</officeCode>\r\n               <fullName>โบวาเยล2</fullName>\r\n               <!--Optional:-->\r\n               <fullNameEng>BOWAYEL2 CO., LTD.</fullNameEng>\r\n               <!--Optional:-->\r\n               <corpRelCD xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <cardType>6001</cardType>\r\n               <cardNumber>3643132024111</cardNumber>\r\n               <!--Optional:-->\r\n               <corpBusinessType>5715</corpBusinessType>\r\n               <!--Optional:-->\r\n               <corpRegisterDate>22/04/2499</corpRegisterDate>\r\n               <!--Optional:-->\r\n               <custIncomeSourceCountry>1218</custIncomeSourceCountry>\r\n               <!--Optional:-->\r\n               <corpRegisterAddress>1027 อาคารสรรพสินค้าชิดลม ชั้น 7</corpRegisterAddress>\r\n               <!--Optional:-->\r\n               <corpRegisterCountry>1218</corpRegisterCountry>\r\n               <!--Optional:-->\r\n               <corpCompanyAddress>1027 อาคารสรรพสินค้าชิดลม ชั้น 7</corpCompanyAddress>\r\n               <!--Optional:-->\r\n               <corpCompanyCountry>1218</corpCompanyCountry>\r\n               <!--Optional:-->\r\n               <corpAccObjOther xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpDepositSourceOther xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custNoDRTXN xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custAllDRAMT xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custNoCRTXN xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custAllCRAMT xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpLegalBusiness xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custIncomeSourceOther xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custEstimateIncome xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpDocStructure xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpStockExchange xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custVerifyRuleStatus xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custVerifyWarningList xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custGovermentStatus xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custVerifyByGoverment xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpRegisterDocument xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpRegisterDocumentOther xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <corpCompanyVerification xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custPoliticalPosition xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custLiveRiskCountry xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custIncomeRiskCountry xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custRiskBusinessType xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custWarningListName xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custNominee xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custCustomerLevel3Desc xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <custRiskLevelDefault>4</custRiskLevelDefault>\r\n               <!--Optional:-->\r\n               <cstaReasonComment xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Optional:-->\r\n               <cstaResult>P</cstaResult>\r\n               <!--Optional:-->\r\n               <cstaReasonCode xsi:nil=\"true\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"/>\r\n               <!--Zero or more repetitions:-->\r\n               \r\n               <!--0 to 20 repetitions:-->\r\n               <accountObj>\r\n                  <!--Optional:-->\r\n                  <caobAccObj>20129</caobAccObj>\r\n               </accountObj>\r\n               <!--0 to 20 repetitions:-->\r\n               <custDepositSource>\r\n                  <!--Optional:-->\r\n                  <cudsDepositSource>20097</cudsDepositSource>\r\n               </custDepositSource>\r\n               <!--0 to 20 repetitions:-->\r\n               <custIncomeSource>\r\n                  <!--Optional:-->\r\n                  <cinsIncomeSource>20132</cinsIncomeSource>\r\n               </custIncomeSource>\r\n            </body>\r\n         </requestData>\r\n      </web:createKYCCorporate>\r\n </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rslgateway: RSLGateway/LoanStatusTracking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{rslgateway}}/RSLGateway/LoanStatusTracking",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:trac=\"http://tracking.ws.sml.integrosys.com\" xmlns:req=\"http://request.tracking.ws.sml.integrosys.com\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <trac:searchAppStatusByID>\r\n         <trac:req>\r\n            <req:body>\r\n               <req:citizenID>3249900302942</req:citizenID>\r\n            </req:body>\r\n            <req:header>\r\n               <req:channel>tmbbank</req:channel>\r\n               <req:module>2</req:module>\r\n               <req:requestID>20170511000001</req:requestID>\r\n            </req:header>\r\n         </trac:req>\r\n      </trac:searchAppStatusByID>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "UVGateway: UV/VerifyAccessCode",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{UVGateway}}/UV/VerifyAccessCode",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <soap:uvAccessCodeRequest xmlns:soap=\"http://xmlservice.uv/ete\">\r\n         <soap:uvAccessCodeKeys>\r\n            <soap:mode>V</soap:mode>\r\n            <soap:accessCode>2222</soap:accessCode>\r\n            <soap:amount>2000.00</soap:amount>\r\n            <soap:mobileNumber>0892069644</soap:mobileNumber>\r\n            <soap:terminalId>T001B011B321P480</soap:terminalId>\r\n            <soap:terminalLocation>TEST OMRON2</soap:terminalLocation>\r\n            <soap:tranDate>2017-08-07T10:05:22</soap:tranDate>\r\n            <soap:tranType>M15</soap:tranType>\r\n            <soap:transactionId>20170807100522000408</soap:transactionId>\r\n            <soap:channelId>04</soap:channelId>\r\n         </soap:uvAccessCodeKeys>\r\n      </soap:uvAccessCodeRequest>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "slsservices: slsservices",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{slsservices}}/slsservices",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:sls=\"http://www.tmbbank.com/slsservices/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <sls:CreateOpportunityRequest>\r\n         <JobName>NC</JobName>\r\n         <CaNumber>208236BDM00010317002</CaNumber>\r\n         <OldCaNumber></OldCaNumber>\r\n         <AccountNo1></AccountNo1>\r\n         <CustomerId></CustomerId>\r\n         <CustomerName></CustomerName>\r\n         <CitizenId>1111111111111</CitizenId>\r\n         <RequestType>1</RequestType>\r\n         <CustomerType>2</CustomerType>\r\n         <BdmId>BDM002</BdmId>\r\n         <HubCode>8236</HubCode>\r\n         <RegionCode>8230</RegionCode>\r\n         <UwId></UwId>\r\n         <AppInDateBDM>2017-03-01</AppInDateBDM>\r\n         <FinalApproved></FinalApproved>\r\n         <Parallel>N</Parallel>\r\n         <Pending></Pending>\r\n         <CaExist></CaExist>\r\n         <CaEnd></CaEnd>\r\n         <AccountNo2></AccountNo2>\r\n         <AccountNo3></AccountNo3>\r\n         <AccountNo4></AccountNo4>\r\n         <AccountNo5></AccountNo5>\r\n         <AccountNo6></AccountNo6>\r\n         <AccountNo7></AccountNo7>\r\n         <AccountNo8></AccountNo8>\r\n         <AccountNo9></AccountNo9>\r\n         <AccountNo10></AccountNo10>\r\n         <AppInDateUW></AppInDateUW>\r\n         <RefAppNumber></RefAppNumber>\r\n         <Reason></Reason>\r\n         <CheckNCB>Y</CheckNCB>\r\n         <Ssoid></Ssoid>\r\n         <MobileNo></MobileNo>\r\n         <Province></Province>\r\n         <District></District>\r\n         <SubDistrict></SubDistrict>\r\n         <ZipCode></ZipCode>\r\n         <Country></Country>\r\n         <SaleAmount>10000.00</SaleAmount>\r\n         <YearInBusiness>2017</YearInBusiness>\r\n         <ProductGroupId>1</ProductGroupId>\r\n         <!--Optional:-->\r\n         <FacilityInfos>\r\n            <!--Zero or more repetitions:-->\r\n            <FacilityInfo>\r\n               <ProductProgramId>1</ProductProgramId>\r\n               <CreditTypeId>1</CreditTypeId>\r\n               <RequestAmount>100000.50</RequestAmount>\r\n            </FacilityInfo>\r\n            <FacilityInfo>\r\n               <ProductProgramId>2</ProductProgramId>\r\n               <CreditTypeId>2</CreditTypeId>\r\n               <RequestAmount>100000.50</RequestAmount>\r\n            </FacilityInfo>\r\n         </FacilityInfos>\r\n      </sls:CreateOpportunityRequest>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "smsgatewaysystem: SMSGateWay/WS",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{smsgatewaysystem}}/SMSGateWay/WS",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway:  XPRESSGateway/ifx15/AcctInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx15",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:urn=\"urn:ifxforum-org:XSD:1\" xmlns:xes=\"http://www.fnf.com/xes\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <com.tmb.acct.acctinq.v2_1:AcctInqRq xsi:schemaLocation=\"http://www.ifxforum.org/IFX_150 IFX150_root.xsd\" xmlns=\"http://www.ifxforum.org/IFX_150\" xmlns:com.fnf=\"http://www.fnf.com/xes\" xmlns:com.tmb.acct.acctinq.v2_1=\"http://www.fnf.com/xes/tmb/services/acct/acctinq/v2_1\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n\t   <RqUID>12345654-2341-9876-9283-000000000011</RqUID>\r\n         <MsgRqHdr>\r\n            <SignonRq>\r\n               <ClientDt>2004-10-30T12:00:00.000000-00:00</ClientDt>\r\n               <CustLangPref>en_US</CustLangPref>\r\n               <ClientApp>\r\n                  <Org>com.fnf</Org>\r\n                  <Name>MB-INQ</Name>\r\n                  <Version>1.0</Version>\r\n               </ClientApp>\r\n               <SPName>com.fnf.xes.ST</SPName>\r\n            </SignonRq>\r\n         </MsgRqHdr>\r\n\t\t\t<DepAcctId>\r\n\t\t\t\t<AcctId>03053000620003</AcctId>\r\n\t\t\t\t<AcctType>SDA</AcctType>\r\n\t\t\t\t<BankInfo/>\r\n\t\t\t</DepAcctId>\r\n      </com.tmb.acct.acctinq.v2_1:AcctInqRq>\r\n  </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway:  XPRESSGateway/ifx20/TDStmtInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx20",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xes=\"http://www.fnf.com/xes\" xmlns:urn=\"urn:ifxforum-org:XSD:1\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n   <fnis:TDStmtInqRq xsi:schemaLocation=\"http://www.fnf.com/xes file:///D:/branches_drop2/xpress-xboc/xbo-ifx20/src/main/config/schema/prod/FNIS_TDStmt.xsd\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n  <RqUID>4064464E-3256-4D19-9B26-0F40F0152DB7</RqUID>\t\r\n\t<MsgRqHdr>\r\n\t\t<CredentialsRqHdr>\r\n\t\t\t<ifx:SubjectRole>System</ifx:SubjectRole>\r\n\t\t</CredentialsRqHdr>\r\n\t\t<ContextRqHdr>\r\n\t\t\t<ifx:ClientDt>2013-05-16T16:12:00.000000-00:00</ifx:ClientDt>\r\n\t\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\t\t\r\n\t\t\t<ifx:ClientApp>\r\n\t\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t\t<ifx:Name>IB-INQ</ifx:Name>\r\n\t\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t\t</ifx:ClientApp>\r\n\t\t\t<ifx:SPName>com.fnis.xes.ST</ifx:SPName>\r\n\t\t</ContextRqHdr>\r\n\t</MsgRqHdr>\r\n\t<!--ifx:RecCtrlIn>\r\n\t\t<ifx:Cursor>\r\n\t\t\t<ifx:BinLength>32</ifx:BinLength>\r\n\t\t\t<ifx:BinData>WToxMDAwMDkwMDAwMDAwMDAxODE4ODQrMjAxMzAyMDg=</ifx:BinData>\r\n\t\t</ifx:Cursor>\r\n\t</ifx:RecCtrlIn-->\r\n\t<fnis:TDStmtSel>\r\n\t\t<AcctKeys>\r\n\t\t\t<ifx:AcctIdent>\r\n\t\t\t\t<!-- 0013002001 0034000182 1183317419 0013000112 -->\r\n\t\t\t\t<!-- FCD 0018300095 -->\r\n\t\t\t\t<ifx:AcctIdentValue>0243026515</ifx:AcctIdentValue>\r\n\t\t\t</ifx:AcctIdent>\r\n\t\t\t<!-- <ifx:FIIdent>0011000200010300</ifx:FIIdent> -->\r\n\t\t</AcctKeys>\r\n\t\t\r\n\t\t<DtRange>\r\n  \t\t\t<ifx:StartDt>2012-01-01T12:00:00.000000-00:00</ifx:StartDt> \r\n \t\t\t<ifx:EndDt>2015-08-31T12:00:00.000000-00:00</ifx:EndDt> \r\n  \t\t</DtRange>\t\r\n\r\n\t</fnis:TDStmtSel> \r\n</fnis:TDStmtInqRq>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway:  XPRESSGateway/ifx20/CCStmtInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx20",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xes=\"http://www.fnf.com/xes\" xmlns:urn=\"urn:ifxforum-org:XSD:1\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n\t<fnis:CCStmtInqRq xmlns:fnis=\"http://www.fnf.com/xes\" xmlns=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t<RqUID>87726E84-4BBC-4AB5-8403-9529D07AE346</RqUID>\r\n\t<fnis:MsgRqHdr>\r\n\t\t<fnis:CredentialsRqHdr>\r\n\t\t\t<ifx:SubjectRole/>\r\n\t\t</fnis:CredentialsRqHdr>\r\n\t\t<fnis:ContextRqHdr>\r\n\t\t\t<ifx:ClientDt>2013-03-15T12:00:00.000000-00:00</ifx:ClientDt>\r\n\t\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t\t<ifx:ClientApp>\r\n\t\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t\t<ifx:Name>IB-INQ</ifx:Name>\r\n\t\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t\t</ifx:ClientApp>\r\n\t\t\t<ifx:SPName>com.fnis.tmb.ETBC</ifx:SPName>\r\n\t\t</fnis:ContextRqHdr>\r\n\t</fnis:MsgRqHdr>\r\n\t<fnis:CCStmtSel>\r\n\t\t<ifx:CardRef>\r\n\t\t\t\t<ifx:CardKeys>\r\n\t\t\t\t\t\t<ifx:CardId>000010114050161600018015</ifx:CardId>\r\n\t\t\t\t</ifx:CardKeys>\r\n\t\t</ifx:CardRef>\r\n\t\t<fnis:WaiverCode/>\r\n\t\t<fnis:TranCode>8190</fnis:TranCode>\r\n\t\t<ifx:PostedDt>2015-03-17</ifx:PostedDt>\r\n\t</fnis:CCStmtSel>\r\n</fnis:CCStmtInqRq>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway:  XPRESSGateway/ifx20/ORFTTrnferInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx20",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xes=\"http://www.fnf.com/xes\" xmlns:urn=\"urn:ifxforum-org:XSD:1\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n\t\t<ORFTTrnferInqRq xsi:schemaLocation=\"http://www.fnf.com/xes file:///D:/_FISWorkspace/TMBXP_SCHEMA/ifx-xboc/xbo-ifx20/src/main/config/schema/prod/FNIS_ORFTTrnfer.xsd\" xmlns=\"http://www.fnf.com/xes\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t\t\t<RqUID>4a0eca4a-4eac-4963-aa40-38e3f4ff2e5c</RqUID>\r\n\t\t\t<MsgRqHdr>\r\n\t\t\t\t<CredentialsRqHdr>\r\n\t\t\t\t\t<ifx:SubjectRole/>\r\n\t\t\t\t</CredentialsRqHdr>\r\n\t\t\t\t<ContextRqHdr>\r\n\t\t\t\t\t<ifx:ClientDt>2013-01-22T12:00:00.000000-00:00</ifx:ClientDt>\r\n\t\t\t\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t\t\t\t<ifx:ClientApp>\r\n\t\t\t\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t\t\t\t<ifx:Name>IB-INQ</ifx:Name>\r\n\t\t\t\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t\t\t\t</ifx:ClientApp>\r\n\t\t\t\t\t<ifx:SPName>com.fnis.tmb.BASE24</ifx:SPName>\r\n\t\t\t\t</ContextRqHdr>\r\n\t\t\t</MsgRqHdr>\r\n\t\t\t<ORFTTrnferSel>\r\n\t\t\t\t<ORFTTrnferKeys>\r\n\t\t\t\t\t<CardAcctLen/>\r\n\t\t\t\t\t<ifx:CardRef>\r\n\t\t\t\t\t\t<ifx:CardKeys>\r\n\t\t\t\t\t\t\t<ifx:CardId/>\r\n\t\t\t\t\t\t</ifx:CardKeys>\r\n\t\t\t\t\t</ifx:CardRef>\r\n\t\t\t\t\t<FromAcctRef>\r\n\t\t\t\t\t\t<ifx:AcctKeys>\r\n\t\t\t\t\t\t\t<ifx:AcctIdent>\r\n\t\t\t\t\t\t\t\t<ifx:AcctIdentValue>0012005864</ifx:AcctIdentValue>\r\n\t\t\t\t\t\t\t</ifx:AcctIdent>\r\n\t\t\t\t\t\t\t<ifx:AcctType>\r\n\t\t\t\t\t\t\t\t<ifx:AcctTypeValue>11</ifx:AcctTypeValue>\r\n\t\t\t\t\t\t\t</ifx:AcctType>\r\n\t\t\t\t\t\t\t<ifx:FIIdent>11</ifx:FIIdent>\r\n\t\t\t\t\t\t</ifx:AcctKeys>\r\n\t\t\t\t\t</FromAcctRef>\r\n\t\t\t\t\t<ifx:ToAcctRef>\r\n\t\t\t\t\t\t<ifx:AcctKeys>\r\n\t\t\t\t\t\t\t<ifx:AcctIdent>\r\n\t\t\t\t\t\t\t\t<ifx:AcctIdentValue>0000011584</ifx:AcctIdentValue>\r\n\t\t\t\t\t\t\t</ifx:AcctIdent>\r\n\t\t\t\t\t\t\t<ifx:AcctType>\r\n\t\t\t\t\t\t\t\t<ifx:AcctTypeValue>00</ifx:AcctTypeValue>\r\n\t\t\t\t\t\t\t</ifx:AcctType>\r\n\t\t\t\t\t\t\t<ifx:FIIdent>06</ifx:FIIdent>\r\n\t\t\t\t\t\t</ifx:AcctKeys>\r\n\t\t\t\t\t</ifx:ToAcctRef>\r\n\t\t\t\t\t<FromAcctLen>10</FromAcctLen>\r\n\t\t\t\t\t<ToAcctLen>10</ToAcctLen>\r\n\t\t\t\t\t<ifx:CurAmt>\r\n\t\t\t\t\t\t<ifx:Amt>1200.00</ifx:Amt>\r\n\t\t\t\t\t</ifx:CurAmt>\r\n\t\t\t\t\t<Pin>FFFFFFFFFFFFFFFF</Pin>\r\n\t\t\t\t\t<TermId>I216891B011BTMBI</TermId>\r\n\t\t\t\t\t<!--ifx:AcctRef> \r\n\t\t\t<ifx:AcctKeys>\r\n\t\t\t\t<ifx:BranchIdent>0001</ifx:BranchIdent>\r\n\t\t\t</ifx:AcctKeys>\r\n\t\t</ifx:AcctRef-->\r\n\t\t\t\t\t<!--TermRecNum></TermRecNum-->\r\n\t\t\t\t\t<TermType>60</TermType>\r\n\t\t\t\t\t<DestBankCode>04</DestBankCode>\r\n\t\t\t\t\t<TrackToLen/>\r\n\t\t\t\t\t<TrackToDat/>\r\n\t\t\t\t\t<ifx:TrnTypeValue>39</ifx:TrnTypeValue>\r\n\t\t\t\t\t<MsgType>0100</MsgType>\r\n\t\t\t\t</ORFTTrnferKeys>\r\n\t\t\t</ORFTTrnferSel>\r\n\t\t</ORFTTrnferInqRq>\r\n\t</soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway:  XPRESSGateway/ifx20/XferInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx20",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xes=\"http://www.fnf.com/xes\" xmlns:urn=\"urn:ifxforum-org:XSD:1\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <XferInqRq xmlns=\"http://www.fnf.com/xes\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\">\r\n         <RqUID>4064464E-3256-4D19-9B26-0F40F0152DB7</RqUID>\r\n         <ifx:MsgRqHdr>\r\n            <CredentialsRqHdr>\r\n               <ifx:SubjectRole/>\r\n            </CredentialsRqHdr>\r\n            <ContextRqHdr>\r\n               <ifx:ClientDt>2013-07-17T09:50:00.000000-00:00</ifx:ClientDt>\r\n               <ifx:ClientApp>\r\n                  <ifx:Org>com.fnis.xes</ifx:Org>\r\n                  <ifx:Name>IB</ifx:Name>\r\n                  <ifx:Version>2.0</ifx:Version>\r\n               </ifx:ClientApp>\r\n               <Interface>\r\n                  <ifx:InterfaceName/>\r\n                  <ifx:InterfaceVersion>01</ifx:InterfaceVersion>\r\n                  <SvcVersion>02</SvcVersion>\r\n                  <SvcAdapterVersion>01</SvcAdapterVersion>\r\n               </Interface>\r\n               <ifx:SPName>com.fnis.tmb.ETBS</ifx:SPName>\r\n            </ContextRqHdr>\r\n         </ifx:MsgRqHdr>\r\n         <ifx:XferSel>\r\n            <XferKeys>\r\n               <ifx:XferId/>\r\n               <TranCode>8822</TranCode>\r\n               <FromAcctRef>\r\n                  <AcctRec>\r\n                     <AcctKeys>\r\n                        <ifx:AcctIdent>\r\n                           <ifx:AcctIdentValue>00001289008516</ifx:AcctIdentValue>\r\n                        </ifx:AcctIdent>\r\n                        <ifx:AcctType>\r\n                           <ifx:AcctTypeValue>SDA</ifx:AcctTypeValue>\r\n                        </ifx:AcctType>\r\n                        <ifx:FIIdent>0011000101280200</ifx:FIIdent>\r\n                     </AcctKeys>\r\n                     <AcctInfo>\r\n                        <ifx:CurCode>\r\n                           <ifx:CurrencyCodeValue/>\r\n                        </ifx:CurCode>\r\n                     </AcctInfo>\r\n                     <AcctStatus>\r\n                        <ifx:AcctStatusCode/>\r\n                     </AcctStatus>\r\n                  </AcctRec>\r\n               </FromAcctRef>\r\n               <ifx:ToAcctRef>\r\n                  <AcctRec>\r\n                     <AcctKeys>\r\n                        <ifx:AcctIdent>\r\n                           <ifx:AcctIdentValue>00000012014353</ifx:AcctIdentValue>\r\n                        </ifx:AcctIdent>\r\n                        <ifx:AcctType>\r\n                           <ifx:AcctTypeValue>SDA</ifx:AcctTypeValue>\r\n                        </ifx:AcctType>\r\n                        <ifx:FIIdent>0011000100010200</ifx:FIIdent>\r\n                     </AcctKeys>\r\n                     <AcctInfo>\r\n                        <ifx:CurCode>\r\n                           <ifx:CurrencyCodeValue/>\r\n                        </ifx:CurCode>\r\n                     </AcctInfo>\r\n                     <AcctStatus>\r\n                        <ifx:AcctStatusCode/>\r\n                     </AcctStatus>\r\n                  </AcctRec>\r\n               </ifx:ToAcctRef>\r\n               <ifx:CurAmt>\r\n                  <ifx:Amt>48.00</ifx:Amt>\r\n               </ifx:CurAmt>\r\n               <WaiverCode>I</WaiverCode>\r\n               <ifx:PostedDt>2013-07-17</ifx:PostedDt>\r\n               <PostedTime>085900</PostedTime>\r\n            </XferKeys>\r\n         </ifx:XferSel>\r\n      </XferInqRq>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "xpressgateway: XPRESSGateway/ifx20/PartyInqRq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{xpressgateway}}/XPRESSGateway/ifx20",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\r\n\t<soapenv:Header/>\r\n\t<soapenv:Body>\r\n\t\t<fnis:PartyInqRq xsi:schemaLocation=\"http://www.fnf.com/xes file:///D:\\workspaces\\schema20\\ifx-xboc\\xbo-ifx20\\src\\main\\config\\schema\\prod\\FNIS_Party.xsd\" xmlns=\"http://www.fnf.com/xes\" xmlns:fnis=\"http://www.fnf.com/xes\" xmlns:ifx=\"urn:ifxforum-org:XSD:1\">\r\n\t\t\t<RqUID>4064464E-3256-4D19-9B26-0F40F0152DB7</RqUID>\r\n\t\t\t<MsgRqHdr>\r\n\t\t\t\t<CredentialsRqHdr>\r\n\t\t\t\t\t<ifx:SubjectRole/>\r\n\t\t\t\t</CredentialsRqHdr>\r\n\t\t\t\t<ContextRqHdr>\r\n\t\t\t\t\t<ifx:ClientDt>2014-08-05T17:41:39.121000+07:00</ifx:ClientDt>\r\n\t\t\t\t\t<ifx:CustLangPref>en_US</ifx:CustLangPref>\r\n\t\t\t\t\t<ifx:ClientApp>\r\n\t\t\t\t\t\t<ifx:Org>com.fnis.xes</ifx:Org>\r\n\t\t\t\t\t\t<ifx:Name>CIB</ifx:Name>\r\n\t\t\t\t\t\t<ifx:Version>2.0</ifx:Version>\r\n\t\t\t\t\t</ifx:ClientApp>\r\n\t\t\t\t\t<Interface>\r\n\t\t\t\t\t\t<ifx:InterfaceName/>\r\n\t\t\t\t\t\t<ifx:InterfaceVersion>01</ifx:InterfaceVersion>\r\n\t\t\t\t\t\t<SvcVersion>01</SvcVersion>\r\n\t\t\t\t\t\t<SvcAdapterVersion>02</SvcAdapterVersion>\r\n\t\t\t\t\t</Interface>\r\n\t\t\t\t\t<ifx:SPName>com.fnis.xes.RM</ifx:SPName>\r\n\t\t\t\t</ContextRqHdr>\r\n\t\t\t</MsgRqHdr>\r\n\t\t\t<PartySel>\r\n\t\t\t\t<PartyKeys>\r\n\t\t\t\t\t<PartyIdent>\r\n\t\t\t\t\t\t<!--Person - 00000009863866 -->\r\n\t\t\t\t\t\t<!--Org - 00000000815772 00000011245635 00000001955267 00000008713698 00000000816184  00000000822118 -->\r\n\t\t\t\t\t\t<ifx:PartyIdentValue>00000001955267</ifx:PartyIdentValue>\r\n\t\t\t\t\t</PartyIdent>\r\n\t\t\t\t\t<ifx:FIIdent>0011000000000000</ifx:FIIdent>\r\n\t\t\t\t</PartyKeys>\r\n\t\t\t</PartySel>\r\n\t\t</fnis:PartyInqRq>\r\n\t</soapenv:Body>\r\n</soapenv:Envelope>\r\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "dgwdopaverifyciid: DGW/DOPAVerifyCIID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{dgwdopaverifyciid}}/DGW/DOPAVerifyCIID",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:tem=\"http://tempuri.org/\">\r\n   <soapenv:Header/>\r\n   <soapenv:Body>\r\n      <tem:CheckCardBank>  \r\n      <tem:birthday>25270714</tem:birthday>\r\n\t<tem:channel>MEbyTMB</tem:channel>\r\n\t<tem:customerid/>\r\n\t<tem:firstname>วรศักดิ์</tem:firstname>\r\n\t<tem:laser>800063542248</tem:laser>\r\n\t<tem:lastname>โอรัตนสถาพร</tem:lastname>\r\n\t<tem:pid>1509990003452</tem:pid>\r\n\t<tem:transactionid>20160411000011421</tem:transactionid>\r\n\t</tem:CheckCardBank>\r\n   </soapenv:Body>\r\n</soapenv:Envelope>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "dgwanyidregistration: DGW/AnyidRegistration",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{dgwanyidregistration}}/DGW/AnyidRegistration",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<PIVOT_XPRESS_DGW>\r\n      <provider>ITMXANYID</provider>\r\n      <sender>\r\n        <senderRole>MIB</senderRole>\r\n      </sender>\r\n      <productCode>ANYID</productCode>\r\n      <command>INQUIRY</command>\r\n      <transactionType>RQT</transactionType>\r\n      <headType>MSISDN</headType>\r\n      <customerRefNo>+660970829028</customerRefNo>\r\n      <contract>\r\n        <contractNo>00000000506001</contractNo>\r\n      </contract>\r\n      <transmitDateTime>2016-05-25T11:21:08.000078-00:00</transmitDateTime>\r\n    </PIVOT_XPRESS_DGW>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "creditnotifyservice: merchant/CreditNotifyService",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{creditnotifyservice}}/merchant/CreditNotifyService",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RTPActivityService: rtpapp/RTPActivityService/inq",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{RTPActivityService}}/rtpapp/RTPActivityService/inq",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<RTPActivityInquiryRequest>\r\n\t<RTPTranRef></RTPTranRef>\r\n\t<RMNo></RMNo>\r\n\t<FromCreateDate></FromCreateDate>\r\n\t<ToCreateDate></ToCreateDate>\r\n\t<FromExpiryDate></FromExpiryDate>\r\n\t<ToExpiryDate></ToExpiryDate>\r\n\t<RTPType>InwardRTP</RTPType>\r\n\t<RTPProduct></RTPProduct>\r\n\t<RTPStatus></RTPStatus>\r\n\t<PageNumber></PageNumber>\r\n</RTPActivityInquiryRequest> "
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RTPActivityService:  rtpapp/RTPActivityService/update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{RTPActivityService}}/rtpapp/RTPActivityService/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<RTPActivityUpdateRequest>\r\n\t<RTPTranRef>R014727800000964</RTPTranRef>\r\n\t<RMNo></RMNo>\r\n\t<RTPStatus>00</RTPStatus>\r\n\t<RTPStatusDesc></RTPStatusDesc>\r\n</RTPActivityUpdateRequest>"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RTPActivityService:  rtpapp/RTPActivityService/add",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"X-MULE_SESSION is present\", function () {",
+							"    pm.response.to.have.header(\"X-MULE_SESSION\");",
+							"});",
+							"",
+							"pm.test(\"Successful POST request\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+							"});",
+							"",
+							"pm.test(\"Search fault message\", function () {",
+							"    var faultReg = new RegExp('Fault');",
+							"    pm.expect(faultReg.test(responseBody)).to.equal(false);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://{{SERVER}}:{{RTPActivityService}}/rtpapp/RTPActivityService/add",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/xml",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<RTPActivityAddRequest>\r\n\t<RTPTranRef>R014727800000964</RTPTranRef>\r\n\t<RMNo>001100000000000000000011006666</RMNo>\r\n\t<TranAmt>10.01</TranAmt>\r\n\t<SenderFEE>0.01</SenderFEE>\r\n\t<SenderAcctFee>0.01</SenderAcctFee>\r\n\t<SenderProxyID>384010012676301</SenderProxyID>\r\n\t<SenderProxyType>05</SenderProxyType>\r\n\t<SenderBankCode>014</SenderBankCode>\r\n\t<SenderAcctNo>2081015717</SenderAcctNo>\r\n\t<SenderAcctName>นายรวย ทั้งโคตร</SenderAcctName>\r\n\t<ReceiverAcctFee>0.01</ReceiverAcctFee>\r\n\t<ReceiverProxyID>0867006398</ReceiverProxyID>\r\n\t<ReceiverProxyType>02</ReceiverProxyType>\r\n\t<ReceiverBankCode>011</ReceiverBankCode>\r\n\t<ReceiverAcctNo>0262683592</ReceiverAcctNo>\r\n\t<ReceiverAcctDispName>ETE ACCT</ReceiverAcctDispName>\r\n\t<ReceiverAcctName>ETE TMB</ReceiverAcctName>\r\n\t<ReceiverAcctName>ETE TMB2</ReceiverAcctName>\r\n\t<Memo>Transfer to me</Memo>\t\r\n\t<SenderRefNo></SenderRefNo>\r\n\t<Reference1>1234567891234567</Reference1>\r\n\t<Reference2></Reference2>\r\n\t<Reference3></Reference3>\r\n\t<Reference4></Reference4>\r\n\t<Reference5></Reference5>\r\n\t<PresentURL></PresentURL>\r\n\t<ExpiryDate>2017-12-10 00:00:00</ExpiryDate>\r\n\t<TMBChannel></TMBChannel>\r\n\t<PPAcctNo>0123457890</PPAcctNo>\r\n\t<TMBProduct>155</TMBProduct>\r\n\t<BaseTraceNO>727806108262</BaseTraceNO>\r\n\t<RTPType>InwardRTP</RTPType>\r\n\t<SenderRMNo>00000011003091</SenderRMNo>\r\n\t<RTPErrorCode></RTPErrorCode>\r\n</RTPActivityAddRequest>"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
