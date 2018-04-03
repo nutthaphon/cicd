@@ -204,8 +204,9 @@ pipeline {
 									echo ----------------------------------------------------------
 									
 									cd target
-									zip -g ${ETE_APP_NAME}.zip classes/*.properties 2>/dev/null
-									unzip -v ${ETE_APP_NAME}.zip
+									zip -g *.zip classes/*.properties 2>/dev/null
+									unzip -v *.zip
+									
 								fi
 							'''
 					}
