@@ -17,6 +17,8 @@ pipeline {
 			        ZIP_DIR			= params.ZIP_DIR
 			        RA_DEPLOY_TYPE	= params.RA_DEPLOY_TYPE
 			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
+			        JAVA_VERSION	= params.JAVA_VERSION
+			        MAVEN_VERSION	= params.MAVEN_VERSION
 
             		if(params.ETE_BRANCH != '') {
             			ETE_BRANCH	 	= params.ETE_BRANCH
@@ -24,21 +26,26 @@ pipeline {
 	            		if (ETE_BRANCH =~ /DEV/) { SVN_BRANCH_PATH = 'trunk/' } else { SVN_BRANCH_PATH = "branches/${ETE_BRANCH}/" }
             		}
             			
-            		if(params.ETE_APP_NAME != '') { 
-            			ETE_APP_NAME 	= params.ETE_APP_NAME
+            		if(params.SVN_APP_NAME != '') { 
+            			SVN_APP_NAME	= params.SVN_APP_NAME
+            			ETE_APP_NAME 	= SVN_APP_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'apps'
 						RA_PATH		 	= 'App/'
 						
-				    } else if (params.ETE_BATCH_NAME != '') {
-				    	ETE_BATCH_NAME	= params.ETE_BATCH_NAME
+				    } else if (params.SVN_BATCH_NAME != '') {
+				    	SVN_BATCH_NAME	= params.SVN_BATCH_NAME
+				    	ETE_BATCH_NAME	= SVN_BATCH_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'apps'
 				        ETE_APP_NAME 	= ETE_BATCH_NAME
+				        SVN_APP_NAME 	= SVN_BATCH_NAME
 				        RA_PATH		 	= 'Batch/'
 
-				    } else if (params.ETE_DOMAIN_NAME != '') {
-				    	ETE_DOMAIN_NAME	= params.ETE_DOMAIN_NAME
+				    } else if (params.SVN_DOMAIN_NAME != '') {
+				    	SVN_DOMAIN_NAME	= params.SVN_DOMAIN_NAME
+				    	ETE_DOMAIN_NAME	= SVN_DOMAIN_NAME.toLowerCase()
 				        ETE_TYPE	 	= 'domains'
 				        ETE_APP_NAME 	= ETE_DOMAIN_NAME
+				        SVN_APP_NAME 	= SVN_DOMAIN_NAME
 				        RA_PATH		 	= 'App/'
 
 				    } else if (params.ETE_CONF_FILE != '') {
@@ -178,7 +185,7 @@ pipeline {
 
             	script {
 
-					sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
+					sh "svn checkout --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${SVN_APP_NAME} ${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 	                CURRENT_DIR = "${ETE_REPO}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}"
 					
 					dir (CURRENT_DIR) {
@@ -186,10 +193,15 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									export MAVEN_HOME=/home/appusr/bo/apache-maven-3.5.0
-									export JAVA_HOME=/home/appusr/bo/jdk1.7.0_80
+									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
+									export JAVA_HOME=/app/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
+									echo ##########################################################
+									mvn -v
+									echo ##########################################################
+									echo ##########################################################
 									mvn clean package -o
+									echo ##########################################################
 								fi
 							'''
 					}
@@ -201,7 +213,7 @@ pipeline {
 					BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 					    RA_BASE_PATH = "env/${envname}/ETE/"
 						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
-						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.zip ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
+						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.??? ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					}
                 }
 				
@@ -328,18 +340,19 @@ pipeline {
 
         
     }
+    
     post {
         success {
-        	mail (to: "${MAIL_TO}",
+        	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Success.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
-        	mail (to: "${MAIL_TO}",
+        	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Fail.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${ETE_DOMAIN_NAME}${ETE_APP_NAME}${ETE_BATCH_NAME}${ETE_CONF_FILE}${ETE_SQL_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
     }
     

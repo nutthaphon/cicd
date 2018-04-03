@@ -1,0 +1,278 @@
+pipeline { 
+    agent any
+    
+    
+    stages {
+    
+    	stage('(1) Preparation'){
+        	steps {
+                script {
+                	
+					DELETE_DIR		= params.DELETE_DIR
+					ETE_BRANCH		= params.ETE_BRANCH
+					SVN_DOMAIN_NAME	= params.SVN_DOMAIN_NAME
+					SVN_APP_NAME	= params.SVN_APP_NAME
+					SVN_BATCH_NAME	= params.SVN_BATCH_NAME
+					ETE_CONF_FILE	= params.ETE_CONF_FILE
+					ETE_SQL_FILE	= params.ETE_SQL_FILE
+			        ZIP_DIR			= params.ZIP_DIR
+			        RA_DEPLOY_TYPE	= params.RA_DEPLOY_TYPE
+			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
+			        TRIGGER_DEPLOY_PLAN = params.TRIGGER_DEPLOY_PLAN
+			        JAVA_VERSION	= params.JAVA_VERSION
+			        MAVEN_VERSION	= params.MAVEN_VERSION
+			        PROPAGATE		= params.PROPAGATE
+    				
+    				sh 'printenv'
+                }
+            }
+        }
+    	
+    	stage('(2) Cleanup') {
+    		when {
+                allOf { 
+                    expression { return (DELETE_DIR == true) };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+             			
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: true), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+						
+                }
+            }
+        }
+    	
+        stage('(3) Build Domains') {
+        	when {
+                allOf { 
+                    expression { return (SVN_DOMAIN_NAME != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	SVN_DOMAIN_NAME.tokenize(",").eachWithIndex { domainName, index ->
+                		println "${index+1}. Domain ${domainName}"
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: domainName], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+					}
+					
+    				
+                }
+            }
+        }
+        
+        stage('(4) Build Applications') {
+        	when {
+                allOf { 
+                    expression { return (SVN_APP_NAME != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	SVN_APP_NAME.tokenize(",").eachWithIndex { appName, index ->
+                		println "${index+1}. App ${appName}"
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: appName], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+					}
+					
+    				
+                }
+            }
+        }
+        
+        stage('(5) Build Batches') {
+        	when {
+                allOf { 
+                    expression { return (SVN_BATCH_NAME != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	SVN_BATCH_NAME.tokenize(",").eachWithIndex { batchName, index ->
+                		println "${index+1}. Batch ${batchName}"
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: batchName], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+					}
+					
+    				
+                }
+            }
+        }
+        
+		stage('(6) Pick configuration files') {
+        	when {
+                allOf { 
+                    expression { return (ETE_CONF_FILE != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+                	ETE_CONF_FILE.tokenize(",").eachWithIndex { confName, index ->
+                		println "${index+1}. Config ${confName}"
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: confName), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+					}
+					
+    				
+                }
+            }
+        }
+        
+        stage('(7) Pick SQL files') {
+        	when {
+                allOf { 
+                    expression { return (ETE_SQL_FILE != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ETE_SQL_FILE), 
+								booleanParam(name: 'ZIP_DIR', value: false), 
+								string(name: 'RA_DEPLOY_TYPE', value: ''), 
+								string(name: 'RA_ENV_SERVERS', value: ''), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+                }
+            }
+        }
+		
+		stage('(8) Packaging and Transfering') {
+        	when {
+                allOf { 
+                    expression { return (ZIP_DIR == true) };
+                    expression { return (RA_DEPLOY_TYPE != '') };
+                    expression { return (RA_ENV_SERVERS != '') };
+                    expression { return (ETE_BRANCH != '') } 
+                } 
+            }
+            steps { 
+                script {
+                	
+						build job: 'ETE Cold Deployment Step 1 of 2 (Single)', 
+							parameters: [
+								booleanParam(name: 'DELETE_DIR', value: false), 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'ETE_BRANCH', value: ETE_BRANCH], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_DOMAIN_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_APP_NAME', value: ''], 
+								[$class: 'com.cwctravel.hudson.plugins.extended_choice_parameter.ExtendedChoiceParameterValue', name: 'SVN_BATCH_NAME', value: ''], 
+								string(name: 'ETE_CONF_FILE', value: ''), 
+								text(name: 'ETE_SQL_FILE', value: ''), 
+								booleanParam(name: 'ZIP_DIR', value: true), 
+								string(name: 'RA_DEPLOY_TYPE', value: RA_DEPLOY_TYPE), 
+								string(name: 'RA_ENV_SERVERS', value: RA_ENV_SERVERS), 
+								booleanParam(name: 'TRIGGER_DEPLOY_PLAN', value: false), 
+								string(name: 'JAVA_VERSION', value: JAVA_VERSION), 
+								string(name: 'MAVEN_VERSION', value: MAVEN_VERSION)
+							],
+							propagate: PROPAGATE
+
+                }
+            }
+        }
+    }
+
+}
