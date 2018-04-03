@@ -1,0 +1,13 @@
+version: "2"
+services:
+  newman:
+    image: "newman"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - .:/home/node/app
+    expose:
+      - "8081"
+    command: "newman run collection/ETE_Applications.postman_collection.json --environment collection/${ETEENV}.postman_environment.json --reporters html,cli --timeout-request 30000 --reporter-html-export collection/ETE_${ETEENV}_Applications.postman_collection.html"
