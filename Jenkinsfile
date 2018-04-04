@@ -231,6 +231,11 @@ pipeline {
 						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
 						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.??? ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					}
+					
+					// Set access workspace
+					//https://jenkins.tmbbank.local:8443/job/ETE%20Cold%20Deployment%20Step%201%20of%202%20(Single)/116/execution/node/3/ws/
+					WORKSPACE_URL	= "${env.BUILD_URL}execution/node/${env.EXECUTOR_NUMBER}/ws/"
+
                 }
 				
             }
@@ -362,13 +367,13 @@ pipeline {
         	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Success.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'green\'>SUCCESS</font>. <br> FTP => ${RA_DEPLOY_TYPE}. <br> access <a href=\'${WORKSPACE_URL}\'>Workspace</a> <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
         failure {
         	mail (to: "${ETE_CM_EMAIL}",
          	subject: "ETE Build Job '${env.JOB_NAME}' (${env.BUILD_NUMBER}) Fail.",
          	mimeType: 'text/html',
-         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
+         	body: "${ETE_TYPE} ${SVN_APP_NAME}${SVN_DOMAIN_NAME}${SVN_BATCH_NAME}${ETE_CONF_FILE} on branch ${ETE_BRANCH} built <font color=\'red\'>FAIL</font>.  <br> FTP => ${RA_DEPLOY_TYPE}. <br> access <a href=\'${WORKSPACE_URL}\'>Workspace</a> <br> see <a href=\'${env.BUILD_URL}consoleText\'>Console Log</a>");
         }
     }
     
