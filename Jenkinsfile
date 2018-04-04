@@ -204,7 +204,7 @@ pipeline {
 									echo ----------------------------------------------------------
 									
 									cd target
-									zip -g *.zip classes/*.properties 2>/dev/null
+									zip -g *.zip classes/* > /dev/null 2>&1 || echo "Empty Directory"
 									unzip -v *.zip
 									
 								fi
