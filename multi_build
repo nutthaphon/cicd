@@ -8,20 +8,23 @@ pipeline {
         	steps {
                 script {
                 	
-					DELETE_DIR		= params.DELETE_DIR
-					ETE_BRANCH		= params.ETE_BRANCH
-					SVN_DOMAIN_NAME	= params.SVN_DOMAIN_NAME
-					SVN_APP_NAME	= params.SVN_APP_NAME
-					SVN_BATCH_NAME	= params.SVN_BATCH_NAME
-					ETE_CONF_FILE	= params.ETE_CONF_FILE
-					ETE_SQL_FILE	= params.ETE_SQL_FILE
-			        ZIP_DIR			= params.ZIP_DIR
-			        RA_DEPLOY_TYPE	= params.RA_DEPLOY_TYPE
-			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
-			        TRIGGER_DEPLOY_PLAN = params.TRIGGER_DEPLOY_PLAN
-			        JAVA_VERSION	= params.JAVA_VERSION
-			        MAVEN_VERSION	= params.MAVEN_VERSION
-			        PROPAGATE		= params.PROPAGATE
+					DELETE_DIR				= params.DELETE_DIR
+					ETE_BRANCH				= params.ETE_BRANCH
+					SVN_DOMAIN_NAME			= params.SVN_DOMAIN_NAME
+					SVN_APP_NAME			= params.SVN_APP_NAME
+					SVN_BATCH_NAME			= params.SVN_BATCH_NAME
+					ETE_CONF_FILE			= params.ETE_CONF_FILE
+					ETE_SQL_FILE			= params.ETE_SQL_FILE
+			        ZIP_DIR					= params.ZIP_DIR
+			        RA_DEPLOY_TYPE			= params.RA_DEPLOY_TYPE
+			        RA_ENV_SERVERS			= params.RA_ENV_SERVERS
+			        TRIGGER_DEPLOY_PLAN 	= params.TRIGGER_DEPLOY_PLAN
+			        JAVA_VERSION			= params.JAVA_VERSION
+			        MAVEN_VERSION			= params.MAVEN_VERSION
+			        PROPAGATE				= params.PROPAGATE
+			        TRIGGER_CA				= params.CA_TRIGGER
+    				DEPLOYMENT_ENVIRONMENT	= params.CA_DEPLOYMENT_ENVIRONMENT
+    				ISSUE					= params.CA_ISSUE
     				
     				sh 'printenv'
                 }
@@ -273,6 +276,36 @@ pipeline {
                 }
             }
         }
+        
+        stage('(9) CA Deployment Plan') {
+        	when {
+                allOf { 
+                    expression { return (ZIP_DIR == true) };
+                    expression { return (RA_DEPLOY_TYPE != '') };
+                    expression { return (RA_ENV_SERVERS != '') };
+                    expression { return (ETE_BRANCH != '') };
+                    expression { return (TRIGGER_CA == true) };
+                    expression { return (DEPLOYMENT_ENVIRONMENT != '') };
+                    expression { return (ISSUE != '') }
+                } 
+            }
+            steps {
+                script {
+                    
+                    build job: 'ETE Cold Deployment Step 2 of 2', 
+						parameters: [
+							[$class: 'JiraIssueParameterValue', name: 'ISSUE', value: ISSUE], 
+							string(name: 'Deployment Environments', value: DEPLOYMENT_ENVIRONMENT)
+						]
+
+                    
+                }
+
+            }
+
+            
+        }
+
     }
 
 }
