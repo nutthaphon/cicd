@@ -234,7 +234,7 @@ pipeline {
 					
 					// Set access workspace
 					//https://jenkins.tmbbank.local:8443/job/ETE%20Cold%20Deployment%20Step%201%20of%202%20(Single)/116/execution/node/3/ws/
-					WORKSPACE_URL	= "${env.BUILD_URL}execution/node/${env.EXECUTOR_NUMBER}/ws/"
+					WORKSPACE_URL	= "${env.BUILD_URL}execution/node/3/ws/"
 
                 }
 				
