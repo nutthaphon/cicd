@@ -211,9 +211,20 @@ pipeline {
 							'''
 					}
 					
-					if (ETE_APP_NAME =~ /^atm/) { DIR_IDX = 1; } 
-					else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
-					else { DIR_IDX = 0; }
+					//if (ETE_APP_NAME =~ /^atm/) { DIR_IDX = 1; } 
+					//else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
+					//else { DIR_IDX = 0; }
+					
+					switch(ETE_APP_NAME) {
+					case ~/^atm/:
+									DIR_IDX = 1;
+									break
+					case ~/^promptpay/:
+									DIR_IDX = 2;
+									break
+					default:
+									DIR_IDX = 0;
+					}
 					
 					BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 					    RA_BASE_PATH = "env/${envname}/ETE/"
