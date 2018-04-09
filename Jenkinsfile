@@ -19,6 +19,7 @@ pipeline {
 			        RA_ENV_SERVERS	= params.RA_ENV_SERVERS
 			        JAVA_VERSION	= params.JAVA_VERSION
 			        MAVEN_VERSION	= params.MAVEN_VERSION
+			        WORKSPACE_URL	= ''
 
             		if(params.ETE_BRANCH != '') {
             			ETE_BRANCH	 	= params.ETE_BRANCH
