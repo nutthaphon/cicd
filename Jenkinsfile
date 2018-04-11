@@ -213,7 +213,7 @@ pipeline {
 					case ~/^promptpay/:
 									DIR_IDX = 2;
 									break
-					case ~/_3.9.0$/:
+					case ~/^eventtrigger/:
 									DIR_IDX = 3;
 									break
 					default:
