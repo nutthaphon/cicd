@@ -193,7 +193,7 @@ pipeline {
 								if [ -f "pom.xml" ]
 								then
 									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
-									export JAVA_HOME=/home/eteadm/software/installed/${JAVA_VERSION}
+									export JAVA_HOME=/app/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
 									mvn -v
 									mvn clean package -o
