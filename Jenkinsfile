@@ -209,13 +209,13 @@ pipeline {
 					switch(ETE_APP_NAME) {
 					case ~/^atm/:
 									DIR_IDX = 1;
-									break
+									break;
 					case ~/^promptpay/:
 									DIR_IDX = 2;
-									break
+									break;
 					case ~/^eventtrigger/:
 									DIR_IDX = 3;
-									break
+									break;
 					default:
 									DIR_IDX = 0;
 					}
