@@ -217,6 +217,9 @@ pipeline {
 					case ~/^promptpay/:
 									DIR_IDX = 2;
 									break
+					case ~/_3.9.0$/:
+									DIR_IDX = 3;
+									break
 					default:
 									DIR_IDX = 0;
 					}
