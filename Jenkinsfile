@@ -264,7 +264,7 @@ pipeline {
 	    						
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
 								
-								sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf; rename -- '-${ENV_LOWERCASE}' '' ${RA_BASE_PATH}${RA_PATH}${name}/conf/* || echo Copy files fail!"   
+								sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf || echo Copy files fail!; rename -- '-${ENV_LOWERCASE}' '' ${RA_BASE_PATH}${RA_PATH}${name}/conf/*"   
 
 	    						// sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
 	    						
