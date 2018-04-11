@@ -192,15 +192,11 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									export MAVEN_HOME=/home/eteadm/software/installed/${MAVEN_VERSION}
+									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
 									export JAVA_HOME=/home/eteadm/software/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
-									echo ----------------------------------------------------------
 									mvn -v
-									echo ----------------------------------------------------------
-									echo ----------------------------------------------------------
 									mvn clean package -o
-									echo ----------------------------------------------------------
 									
 									cd target
 									zip -g *.zip classes/* > /dev/null 2>&1 || echo "Empty Directory"
