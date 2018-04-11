@@ -257,7 +257,7 @@ pipeline {
 				
 			        BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
-			        	ENV_LOWERCASE = ${envname}.toLowerCase()
+			        	ENV_LOWERCASE = envname.toLowerCase()
  					
 	 					if (RA_PATH == 'App/') {
 							ENV_APPS_INFO[envname]['dir'].eachWithIndex { name, diridx ->
