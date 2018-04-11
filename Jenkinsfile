@@ -87,10 +87,8 @@ pipeline {
 										[ 	sql		: 'Result/ETEAPP',		result		: 'SQL/ETEAPP']
 								  	]
 					]
-					
-					MULE_CONF_NAME = ['mule-app-global.properties'		,'mule-batch-global.properties']
-					
-					//Environments share replica source code
+										
+					//For build app
 					BRANCH_TO_ENV	   = [
 							DEV	 : ['DEV'],
 							SIT	 : ['SIT', 'VIT'],
@@ -98,7 +96,7 @@ pipeline {
 							PRD	 : ['PRD', 'PPRD']
 					]
 					
-					//Environments deployment target
+					//For deployment
 					ENV_TO_SERVER	   = [
 							DEV	 : ['DEV'],
 							SIT	 : ['SIT'],
@@ -108,12 +106,12 @@ pipeline {
 					]
 						
 					ENV_APPS_INFO  = [
-					        DEV	 : [	conf	: 'mule-app-global{.,-[1-9].}properties'	  	, 		dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
-					        VIT	 : [	conf	: 'mule-app-global{-vit.,-[1-9]-vit.}properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
-					        SIT	 : [	conf	: 'mule-app-global{-sit.,-[1-9]-sit.}properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP']],
-					        UAT	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
-					        PPRD : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
-					        PRD	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']]
+					        DEV	 : [	conf	: 'mule-app-global{.,-[1-9].}properties'	  	, 		dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV'		,'mule-esb-3.9.0-DEV']],	
+					        VIT	 : [	conf	: 'mule-app-global{-vit.,-[1-9]-vit.}properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT'		,'mule-esb-3.9.0-VIT']],
+					        SIT	 : [	conf	: 'mule-app-global{-sit.,-[1-9]-sit.}properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP'	,'mule-esb-3.9.0-SIT']],
+					        UAT	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'		,'mule-esb-3.9.0']],
+					        PPRD : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'		,'mule-esb-3.9.0']],
+					        PRD	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP'		,'mule-esb-3.9.0']]
 					]
 					
 					ENV_BATCH_INFO = [
@@ -194,8 +192,8 @@ pipeline {
 							sh '''
 								if [ -f "pom.xml" ]
 								then
-									export MAVEN_HOME=/app/installed/${MAVEN_VERSION}
-									export JAVA_HOME=/app/installed/${JAVA_VERSION}
+									export MAVEN_HOME=/home/eteadm/software/installed/${MAVEN_VERSION}
+									export JAVA_HOME=/home/eteadm/software/installed/${JAVA_VERSION}
 									export PATH=$JAVA_HOME/bin:$MAVEN_HOME/bin:$PATH
 									echo ----------------------------------------------------------
 									mvn -v
