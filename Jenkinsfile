@@ -206,6 +206,8 @@ pipeline {
 							'''
 					}
 					
+					println "App= $ETE_APP_NAME"
+					
 					switch(ETE_APP_NAME) {
 					case ~/^atm/:
 									DIR_IDX = 1;
