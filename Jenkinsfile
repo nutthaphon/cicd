@@ -108,21 +108,21 @@ pipeline {
 					]
 						
 					ENV_APPS_INFO  = [
-					        DEV	 : [	conf	: 'mule-app-global.properties'	  , 	dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
-					        VIT	 : [	conf	: 'mule-app-global-vit.properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
-					        SIT	 : [	conf	: 'mule-app-global-sit.properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP']],
-					        UAT	 : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
-					        PPRD : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
-					        PRD	 : [	conf	: 'mule-app-global-uat.properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']]
+					        DEV	 : [	conf	: 'mule-app-global{.,-[1-9].}properties'	  	, 		dir		: ['mule-esb-3.7.3-DEV','mule-esb-3.7.3-DEV'	 ,'mule-esb-3.7.3-DEV']],	
+					        VIT	 : [	conf	: 'mule-app-global{-vit.,-[1-9]-vit.}properties',		dir		: ['mule-esb-3.7.3-VIT','mule-esb-3.7.3-VIT'	 ,'mule-esb-3.7.3-VIT']],
+					        SIT	 : [	conf	: 'mule-app-global{-sit.,-[1-9]-sit.}properties',		dir		: ['mule-esb-3.7.3-SIT','mule-esb-3.7.3-SIT-ATM' ,'mule-esb-3.7.3-SIT-PP']],
+					        UAT	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
+					        PPRD : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']],
+					        PRD	 : [	conf	: 'mule-app-global{-uat.,-[1-9]-uat.}properties',		dir		: ['mule-esb-3.7.3'    ,'mule-esb-3.7.3-ATM'     ,'mule-esb-3.7.3-PP']]
 					]
 					
 					ENV_BATCH_INFO = [
-					        DEV	 : [	conf	: 'mule-batch-global.properties'	, 	dir		: ['mule-esb-3.7.3-DEV']],	
-					        VIT	 : [	conf	: 'mule-batch-global-vit.properties',	dir		: ['mule-esb-3.7.3-VIT']],
-					        SIT	 : [	conf	: 'mule-batch-global-sit.properties',	dir		: ['mule-esb-3.7.3-SIT']],
-					        UAT	 : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
-					        PPRD : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']],
-					        PRD	 : [	conf	: 'mule-batch-global-uat.properties',	dir		: ['mule-esb-3.7.3']]
+					        DEV	 : [	conf	: 'mule-batch-global{.,-[1-9].}properties'		, 	dir		: ['mule-esb-3.7.3-DEV']],	
+					        VIT	 : [	conf	: 'mule-batch-global{-vit.,-[1-9]-vit.}properties',	dir		: ['mule-esb-3.7.3-VIT']],
+					        SIT	 : [	conf	: 'mule-batch-global{-sit.,-[1-9]-sit.}properties',	dir		: ['mule-esb-3.7.3-SIT']],
+					        UAT	 : [	conf	: 'mule-batch-global{-uat.,-[1-9]-uat.}properties',	dir		: ['mule-esb-3.7.3']],
+					        PPRD : [	conf	: 'mule-batch-global{-uat.,-[1-9]-uat.}properties',	dir		: ['mule-esb-3.7.3']],
+					        PRD	 : [	conf	: 'mule-batch-global{-uat.,-[1-9]-uat.}properties',	dir		: ['mule-esb-3.7.3']]
 					]
 					
 	                sh 'printenv'
@@ -257,17 +257,37 @@ pipeline {
 				
 			        BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
 			        	RA_BASE_PATH = "env/${envname}/ETE/"
+			        	ENV_LOWERCASE = ${envname}.toLowerCase()
  					
 	 					if (RA_PATH == 'App/') {
 							ENV_APPS_INFO[envname]['dir'].eachWithIndex { name, diridx ->
+	    						
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
+	    						
+	    						dir ("${RA_BASE_PATH}${RA_PATH}${name}/conf") {
+	    						sh """  
+	    							cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} .; 
+	    							rename -- '-${ENV_LOWERCASE}' '' *
+	    						"""        
+	    						}
+
+	    						// sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
+	    						
 							}
 	 						       
 	 					} else {
 	 					    ENV_BATCH_INFO[envname]['dir'].eachWithIndex { name, diridx ->
+	    						
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
-	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
+	    						
+	    						dir ("${RA_BASE_PATH}${RA_PATH}${name}/conf") {
+	    						sh """  
+	    							cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} .; 
+	    							rename -- '-${ENV_LOWERCASE}' '' *
+	    						"""        
+	    						}
+	    						
+	    						//sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
 							}	     
 	 					}
  					}
