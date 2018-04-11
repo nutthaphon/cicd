@@ -206,20 +206,25 @@ pipeline {
 							'''
 					}
 					
-					println "App= $ETE_APP_NAME"
+					println "App = $ETE_APP_NAME"
 					
 					switch(ETE_APP_NAME) {
-					case ~/^atm/:
-									DIR_IDX = 1;
-									break;
-					case ~/^promptpay/:
-									DIR_IDX = 2;
-									break;
-					case ~/^eventtrigger/:
-									DIR_IDX = 3;
-									break;
-					default:
-									DIR_IDX = 0;
+					
+						case ~/^atm.*$/:
+										DIR_IDX = 1;
+										break;
+										
+						case ~/^promptpay.*$/:
+										DIR_IDX = 2;
+										break;
+										
+						case ~/^eventtrigger.*$/:
+										DIR_IDX = 3;
+										break;
+										
+						default:
+										DIR_IDX = 0;
+									
 					}
 					
 					BRANCH_TO_ENV[ETE_BRANCH].eachWithIndex { envname, envidx ->
