@@ -212,10 +212,6 @@ pipeline {
 							'''
 					}
 					
-					//if (ETE_APP_NAME =~ /^atm/) { DIR_IDX = 1; } 
-					//else if (ETE_APP_NAME =~ /^promptpay/) { DIR_IDX = 2; } 
-					//else { DIR_IDX = 0; }
-					
 					switch(ETE_APP_NAME) {
 					case ~/^atm/:
 									DIR_IDX = 1;
@@ -233,8 +229,6 @@ pipeline {
 						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/${ETE_APP_NAME}.??? ${RA_BASE_PATH}${RA_PATH}${ENV_APPS_INFO[envname]['dir'][DIR_IDX]}/${ETE_TYPE}"
 					}
 					
-					// Set access workspace
-					//https://jenkins.tmbbank.local:8443/job/ETE%20Cold%20Deployment%20Step%201%20of%202%20(Single)/116/execution/node/3/ws/
 					WORKSPACE_URL	= "${env.BUILD_URL}execution/node/3/ws/${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/${ETE_APP_NAME}/target/"
 
                 }
@@ -265,8 +259,6 @@ pipeline {
 	    						sh "mkdir -p ${RA_BASE_PATH}${RA_PATH}${name}/conf"
 								
 								sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf || echo Copy files fail!; rename -- '-${ENV_LOWERCASE}' '' ${RA_BASE_PATH}${RA_PATH}${name}/conf/*"   
-
-	    						// sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_APPS_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[0]}"
 	    						
 							}
 	 						       
@@ -277,7 +269,6 @@ pipeline {
 	    						
 	    						sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf || echo Copy files fail!; rename -- '-${ENV_LOWERCASE}' '' ${RA_BASE_PATH}${RA_PATH}${name}/conf/*"
 	    							    						
-	    						//sh "cp -rp ${ETE_WORKSPACE}/${SVN_BRANCH_PATH}${ETE_TYPE}/src/${ENV_BATCH_INFO[envname]['conf']} ${RA_BASE_PATH}${RA_PATH}${name}/conf/${MULE_CONF_NAME[1]}"
 							}	     
 	 					}
  					}
