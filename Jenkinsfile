@@ -330,7 +330,7 @@ pipeline {
 							sh "svn export --force ${ETE_SVN_HOST}/${ETE_REPO}/${SVN_BRANCH_PATH}docs/jenkins/ETE_config_manifest.xml ETE"
 							
 							//choice 1
-							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/*-PP/*\""
+							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/*-PP/*\" -x \"ETE/App/mule-esb-3.9.0*/*\""
 							//choice 2
 							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/*-PP/*\""
 							//choice 3
