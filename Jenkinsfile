@@ -332,11 +332,11 @@ pipeline {
 							//choice 1
 							sh "zip -vr ETE-3.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/*-PP/*\" -x \"ETE/App/mule-esb-3.9.0*/*\""
 							//choice 2
-							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/*-PP/*\""
+							sh "zip -vr ETE-NOPP.zip ./ETE -x \"ETE/App/*-PP/*\" -x \"ETE/App/mule-esb-3.9.0*/*\""
 							//choice 3
-							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/*-ATM/*\""
+							sh "zip -vr ETE-NOATM.zip ./ETE -x \"ETE/App/*-ATM/*\" -x \"ETE/App/mule-esb-3.9.0*/*\""
 		                	//choice 4
-		                	sh "zip -vr ETE-ALL.zip ./ETE" 
+		                	sh "zip -vr ETE-ALL.zip ./ETE -x \"ETE/App/mule-esb-3.9.0*/*\"" 
 		                	  
 		                }
 		            }    
